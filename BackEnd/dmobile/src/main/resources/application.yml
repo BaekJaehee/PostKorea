@@ -16,8 +16,8 @@ spring:
 #    password: ssafy
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
-#    hibernate:
-#      ddl-auto: create
+    hibernate:
+      ddl-auto: create
     properties:
       hibernate:
         #show_sql: true
