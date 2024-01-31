@@ -1,7 +1,7 @@
-package com.ssafy.dmobile.Relic.entity;
+package com.ssafy.dmobile.relic.entity;
 
-import com.ssafy.dmobile.Relic.entity.DetailData;
-import com.ssafy.dmobile.Relic.entity.Tag;
+import com.ssafy.dmobile.relic.entity.DetailData;
+import com.ssafy.dmobile.relic.entity.Tag;
 import jakarta.persistence.*;
 import lombok.Getter;
 
