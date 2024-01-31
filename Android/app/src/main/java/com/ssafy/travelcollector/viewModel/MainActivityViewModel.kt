@@ -23,8 +23,8 @@ enum class DetailStateEnum(private val state: Int) {
 
 class MainActivityViewModel : ViewModel() {
 
+    val detailState = arraySetOf(DetailStateEnum.None)
 
-    private var detailState = arraySetOf(DetailStateEnum.None)
     fun addDetailState(state: DetailStateEnum): MainActivityViewModel{
         detailState.add(state)
         return this
@@ -50,13 +50,13 @@ class MainActivityViewModel : ViewModel() {
         return  userInfoToSignUP.value
     }
 
-    private var _travelPlanHeritageList = MutableStateFlow(arrayListOf(TDto(1), TDto(2), TDto(3)))
+    private var _travelPlanHeritageList = MutableStateFlow(arrayListOf(Heritage(name="3"), Heritage(name="4")))
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
     fun loadTravelPlanHeritageList(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
     }
 
-    fun setTravelPlanHeritageList(list: ArrayList<TDto>){
+    fun setTravelPlanHeritageList(list: ArrayList<Heritage>){
         _travelPlanHeritageList.update { list }
     }
 
@@ -77,6 +77,12 @@ class MainActivityViewModel : ViewModel() {
 
     fun loadRecommendedTheme(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
+    }
+
+    private var _curHeritageList = MutableStateFlow(arrayListOf(Heritage(name = "1"), Heritage(name = "2")))
+    val curHeritageList = _curHeritageList.asStateFlow()
+    fun setCurHeritageList(list: ArrayList<Heritage>){
+        _curHeritageList.update { list }
     }
 
 }

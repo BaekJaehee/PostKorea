@@ -76,7 +76,20 @@
         tools:layout="@layout/fragment_heritage_post" />
     <fragment
         android:id="@+id/themeListFragment"
-        android:name="com.ssafy.travelcollector.ThemeListFragment"
+        android:name="com.ssafy.travelcollector.fragment.theme.ThemeListFragment"
         android:label="fragment_theme_list"
-        tools:layout="@layout/fragment_theme_list" />
+        tools:layout="@layout/fragment_theme_list" >
+        <action
+            android:id="@+id/action_themeListFragment_to_themeDetailFragment"
+            app:destination="@id/themeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeDetailFragment"
+        android:name="com.ssafy.travelcollector.fragment.theme.ThemeDetailFragment"
+        android:label="fragment_theme_detail"
+        tools:layout="@layout/fragment_theme_detail" >
+        <action
+            android:id="@+id/action_themeDetailFragment_to_travelPlanFragment"
+            app:destination="@id/travelPlanFragment" />
+    </fragment>
 </navigation>

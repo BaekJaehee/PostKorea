@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/background"
     android:padding="16dp"
-    tools:context=".ThemeDetailFragment">
+    tools:context=".fragment.theme.ThemeDetailFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="40dp"
-        android:layout_marginHorizontal="10dp"/>
+        android:layout_marginHorizontal="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
 
     <View
         android:layout_width="match_parent"

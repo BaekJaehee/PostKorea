@@ -1,9 +1,10 @@
 package com.ssafy.travelcollector.fragment.travel
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.navigation.Navigation
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -13,10 +14,12 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTravelPlanBinding
 import com.ssafy.travelcollector.R
+import com.ssafy.travelcollector.adapter.HeritageAdapter
 import com.ssafy.travelcollector.config.ItemTouchCallBack
 import com.ssafy.travelcollector.test.TDto
 import com.ssafy.travelcollector.test.TestAdapter
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar.getInstance
 import java.util.Collections
@@ -26,11 +29,10 @@ private const val TAG = "TravelPlanFragment"
 class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTravelPlanBinding::bind,
     R.layout.fragment_travel_plan
 ) {
-    private val testAdapter: TestAdapter by lazy{
-        TestAdapter()
-    }
 
-    val data = arrayListOf(TDto(1), TDto(2), TDto(3))
+    private val heritageAdapter: HeritageAdapter by lazy{
+        HeritageAdapter()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         }
 
         binding.travelPlanBtnRecommendTheme.setOnClickListener {
+            mainActivityViewModel.addDetailState(DetailStateEnum.AddToTravel)
             findNavController().navigate(R.id.themeListFragment)
         }
 
@@ -73,46 +76,46 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
     }
 
     private fun initAdapter(){
-        testAdapter.deleteListener = object: TestAdapter.DeleteListener{
-            override fun delete(position: Int) {
-                val newList = mainActivityViewModel.travelPlanHeritageList.value
-                newList.removeAt(position)
-                mainActivityViewModel.setTravelPlanHeritageList(newList)
-                testAdapter.submitList(mainActivityViewModel.travelPlanHeritageList.value)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    mainActivityViewModel.travelPlanHeritageList.collect{
+                        heritageAdapter.submitList(it)
+                    }
+                }
             }
         }
+
 
         val itemTouchCallBack = ItemTouchHelper(ItemTouchCallBack())
         itemTouchCallBack.attachToRecyclerView(binding.travelPlanRv)
 
-        testAdapter.startDragListener = object : TestAdapter.StartDragListener{
+        heritageAdapter.eventListener = object : HeritageAdapter.EventListener{
             override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
                 itemTouchCallBack.startDrag(viewHolder)
             }
-        }
 
-        testAdapter.moveListener = object : TestAdapter.MoveListener{
-            override fun onMove(from: Int, to: Int) {
-                val newList = testAdapter.currentList.toMutableList()
-                Collections.swap(newList, from, to)
-                mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
-                testAdapter.submitList(newList)
+            override fun delete(position: Int) {
+                val newList = mainActivityViewModel.travelPlanHeritageList.value
+                newList.removeAt(position)
+                mainActivityViewModel.setTravelPlanHeritageList(newList)
             }
-        }
 
-        testAdapter.removeListener = object : TestAdapter.RemoveListener{
             override fun onRemove(position: Int) {
-                val newList = testAdapter.currentList.toMutableList()
+                val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
                 newList.removeAt(position)
                 mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
-                testAdapter.submitList(newList)
             }
 
+            override fun onMove(from: Int, to: Int) {
+                val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
+                Collections.swap(newList, from, to)
+                mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
+            }
         }
 
-        testAdapter.submitList(mainActivityViewModel.travelPlanHeritageList.value)
-        binding.travelPlanRv.adapter = testAdapter
-        binding.travelPlanRv.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+        binding.travelPlanRv.adapter = heritageAdapter
 
     }
 

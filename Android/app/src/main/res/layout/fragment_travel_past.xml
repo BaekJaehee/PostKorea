@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:background="@color/background"
     android:padding="16dp"
-    tools:context=".TravelPastFragment">
+    tools:context=".fragment.travel.TravelPastFragment">
 
     <TextView
         android:id="@+id/travel_past_travel_name"

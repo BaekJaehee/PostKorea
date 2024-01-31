@@ -1,19 +1,21 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.fragment.theme
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.ThemeAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentThemeListBinding
 import kotlinx.coroutines.launch
 
-private const val TAG = "ThemeListFragment"
-class ThemeListFragment : BaseFragment<FragmentThemeListBinding>(FragmentThemeListBinding::bind, R.layout.fragment_theme_list){
+class ThemeListFragment : BaseFragment<FragmentThemeListBinding>(
+    FragmentThemeListBinding::bind,
+    R.layout.fragment_theme_list
+){
 
     private val themeAdapter: ThemeAdapter by lazy{
         ThemeAdapter()
@@ -54,9 +56,10 @@ class ThemeListFragment : BaseFragment<FragmentThemeListBinding>(FragmentThemeLi
             }
         }
 
-        themeAdapter.clickListener = object : ThemeAdapter.ClickListener{
+        themeAdapter.clickListener = object : ThemeAdapter.ClickListener {
             override fun onItemClick(position: Int) {
-
+//                mainActivityViewModel.setCurHeritageList(mainActivityViewModel.recommendedTheme.value[position].contents)
+                findNavController().navigate(R.id.themeDetailFragment)
             }
 
             override fun onBookMarkClick(position: Int) {
