@@ -1,9 +1,9 @@
-package com.ssafy.dmobile.Relic.controller;
+package com.ssafy.dmobile.relic.controller;
 
-import com.ssafy.dmobile.Relic.entity.DetailData;
-import com.ssafy.dmobile.Relic.entity.ListData;
-import com.ssafy.dmobile.Relic.repository.DetailDataRepository;
-import com.ssafy.dmobile.Relic.repository.ListDataRepository;
+import com.ssafy.dmobile.relic.entity.DetailData;
+import com.ssafy.dmobile.relic.entity.ListData;
+import com.ssafy.dmobile.relic.repository.DetailDataRepository;
+import com.ssafy.dmobile.relic.repository.ListDataRepository;
 //import com.ssafy.dmobile.service.DetailDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,7 @@ public class RelicController {
 
     @Autowired
     private DetailDataRepository detailDataRepository;
-
-
+    
     @GetMapping("/list")
     public ResponseEntity<List<ListData>> getRelic() {
         List<ListData> listData = listDataRepository.findAll();

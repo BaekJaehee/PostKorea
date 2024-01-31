@@ -1,7 +1,7 @@
-package com.ssafy.dmobile.Shop.controller;
+package com.ssafy.dmobile.shop.controller;
 
-import com.ssafy.dmobile.Shop.entity.Product;
-import com.ssafy.dmobile.Shop.repository.ProductRepository;
+import com.ssafy.dmobile.shop.entity.Product;
+import com.ssafy.dmobile.shop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

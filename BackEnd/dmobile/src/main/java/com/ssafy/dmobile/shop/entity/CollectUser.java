@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.Shop.entity;
+package com.ssafy.dmobile.shop.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

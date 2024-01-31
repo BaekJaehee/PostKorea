@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.Relic.entity;
+package com.ssafy.dmobile.relic.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

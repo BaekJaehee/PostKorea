@@ -1,6 +1,6 @@
-package com.ssafy.dmobile.Relic.repository;
+package com.ssafy.dmobile.relic.repository;
 
-import com.ssafy.dmobile.Relic.entity.DetailData;
+import com.ssafy.dmobile.relic.entity.DetailData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DetailDataRepository extends JpaRepository<DetailData, Integer> {
