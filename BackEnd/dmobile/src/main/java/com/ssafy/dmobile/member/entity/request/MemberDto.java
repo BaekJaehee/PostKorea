@@ -2,6 +2,7 @@ package com.ssafy.dmobile.member.entity.request;
 
 import com.ssafy.dmobile.oauth.service.OAuthInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,6 +11,7 @@ import lombok.Getter;
 public class MemberDto {
 
     @JsonProperty("user_email")
+    @Schema(description = "사용자의 고유 식별자")
     private String userEmail;
     @JsonProperty("user_pwd")
     private String userPwd;

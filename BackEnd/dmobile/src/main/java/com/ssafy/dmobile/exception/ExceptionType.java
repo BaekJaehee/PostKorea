@@ -15,7 +15,10 @@ public enum ExceptionType {
     
     // 파일관리
     MAX_FILE_SIZE_EXCEPTION(401, "저장가능한 파일 용량을 초과하였습니다."),
-    FILE_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다.")
+    FILE_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다."),
+
+    // 계획관리
+    PLAN_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다.")
     ;
 
     // 사용자 정의 enum 을 통해 exception 세분화

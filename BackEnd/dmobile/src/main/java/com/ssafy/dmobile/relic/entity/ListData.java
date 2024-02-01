@@ -1,5 +1,7 @@
 package com.ssafy.dmobile.relic.entity;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,6 +14,7 @@ public class ListData { // 자바에서는 카멜 케이스로
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "list_id")
+    @Schema(description = "리스트의 고유 식별자")
     private Integer listId;
 
     @Column(name = "no")

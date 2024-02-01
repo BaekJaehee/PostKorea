@@ -7,21 +7,20 @@ import com.ssafy.dmobile.relic.repository.ListDataRepository;
 //import com.ssafy.dmobile.service.DetailDataService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController // 이건 json이랑 xml 받을때
-// rest api로 통신
+@RestController
 @RequestMapping("/relic")
+@RequiredArgsConstructor
 @Tag(name = "Relic", description = "문화재 관리 API Document")
 public class RelicController {
-    @Autowired
-    private ListDataRepository listDataRepository;
 
-    @Autowired
+    private ListDataRepository listDataRepository;
     private DetailDataRepository detailDataRepository;
     
     @GetMapping("/list")
