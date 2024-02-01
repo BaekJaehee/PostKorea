@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +20,41 @@ import java.util.List;
 public class ExplorePlanController {
 
     private final ExplorePlanService explorePlanService;
-    private final RelicExplorePlanService relicExplorePlanService;
     private final AuthTokensGenerator authTokensGenerator;
+
+    @PostMapping
+    @Operation(summary = "탐방 계획 생성", description = "이름, 시간 등의 정보를 받아 탐방 계획을 생성합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<ExplorePlan> createPlan(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ExplorePlan explorePlan) {
+        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
+        ExplorePlan newPlan = explorePlanService.createPlan(userId, explorePlan);
+        return ResponseEntity.ok(newPlan);
+    }
+
+    @PutMapping("/{planId}")
+    @Operation(summary = "탐방 계획 수정", description = "이름, 시간 등의 정보를 받아 탐방 계획을 수정합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<ExplorePlan> updatePlan(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long planId,
+            @RequestBody ExplorePlan explorePlan) {
+        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
+        ExplorePlan updatedPlan = explorePlanService.updatePlan(planId, userId, explorePlan);
+        return ResponseEntity.ok(updatedPlan);
+    }
+
+    @DeleteMapping("/{planId}")
+    @Operation(summary = "탐방 계획 삭제", description = "하당 아이디를 지닌 계획을 삭제합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<Void> deletePlan(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long planId) {
+        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
+        explorePlanService.deletePlan(planId, userId);
+        return ResponseEntity.ok().build();
+    }
 
     // DTO를 사용하면 좋으나, 시간관계상 List 그대로 출력 (변환은 Jackson 라이브러리 제공)
     @GetMapping("/ongoing")
@@ -45,39 +79,5 @@ public class ExplorePlanController {
     public List<ExplorePlan> getCompletedPlans(@RequestHeader("Authorization") String token) {
         Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
         return explorePlanService.getCompletedPlans(userId);
-    }
-
-    @PostMapping("/manage/{planId}/{relicId}")
-    @Operation(summary = "탐방 계획에 문화재 추가", description = "탐방의 id값과 문화재의 id값을 받아서 token의 id를 지닌 유저에게 추가합니다. 기본 방문여부는 false이며 계획 추가 단계에서 t/f여부는 받지 않습니다.")
-    @SecurityRequirement(name = "Authorization")
-    public void addExplorePlan(
-            @PathVariable Long relicId,
-            @PathVariable Long planId,
-            @RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        relicExplorePlanService.addRelicToPlan(planId, relicId, userId);
-    }
-
-    @PutMapping("/manage/{planId}/{relicId}")
-    @Operation(summary = "탐방 계획에 문화재 방문처리", description = "탐방의 id값과 문화재의 id값을 받아서 token의 id를 지닌 유저의 방문여부를 변경합니다.")
-    @SecurityRequirement(name = "Authorization")
-    public void updateExplorePlan(
-            @PathVariable Long relicId,
-            @PathVariable Long planId,
-            @RequestParam boolean visited,
-            @RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        relicExplorePlanService.updateRelicToPlan(planId, relicId, userId, visited);
-    }
-
-    @DeleteMapping("/manage/{planId}/{relicId}")
-    @Operation(summary = "탐방 계획에 문화재 삭제", description = "탐방의 id값과 문화재의 id값을 받아서 token의 id를 지닌 유저에게서 삭제합니다.")
-    @SecurityRequirement(name = "Authorization")
-    public void deleteExplorePlan(
-            @PathVariable Long relicId,
-            @PathVariable Long planId,
-            @RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        relicExplorePlanService.deleteRelicToPlan(planId, relicId, userId);
     }
 }

@@ -18,7 +18,8 @@ public enum ExceptionType {
     FILE_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다."),
 
     // 계획관리
-    PLAN_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다.")
+    PLAN_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다."),
+    INVALID_USER_FOR_PLAN_EXCEPTION(401, "해당 계획에 접근할 수 있는 사용자가 아닙니다."),
     ;
 
     // 사용자 정의 enum 을 통해 exception 세분화

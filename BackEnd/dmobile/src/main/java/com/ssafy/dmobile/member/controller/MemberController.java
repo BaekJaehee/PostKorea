@@ -88,7 +88,7 @@ public class MemberController {
         memberService.editMemberInfo(userId, memberDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user_email", memberDto.getUserEmail());
+//        response.put("user_email", memberDto.getUserEmail());
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -107,7 +107,7 @@ public class MemberController {
         memberService.editMemberPassword(userId, pwdDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user_email", pwdDto.getUserEmail());
+//        response.put("user_email", pwdDto.getUserEmail());
         response.put("code", 0);
         response.put("msg", "succeed");
 

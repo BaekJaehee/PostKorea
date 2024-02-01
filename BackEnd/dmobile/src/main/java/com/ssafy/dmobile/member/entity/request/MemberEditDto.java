@@ -8,8 +8,6 @@ import lombok.Getter;
 @Builder
 public class MemberEditDto {
 
-    @JsonProperty("user_email")
-    private String userEmail;
     @JsonProperty("user_nickname")
     private String userNickname;
     @JsonProperty("user_age")

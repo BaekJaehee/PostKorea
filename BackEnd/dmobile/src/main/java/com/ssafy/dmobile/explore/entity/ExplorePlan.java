@@ -1,12 +1,13 @@
 package com.ssafy.dmobile.explore.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.Date;
 
 @Entity
-@Getter
+@Data
 @Table(name = "explore_plan")
 public class ExplorePlan {
 
