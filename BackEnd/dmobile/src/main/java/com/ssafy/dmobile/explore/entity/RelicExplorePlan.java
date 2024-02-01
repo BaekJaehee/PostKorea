@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "relic-explore_plan")
+@Table(name = "relic_explore_plan")
 @IdClass(RelicExplorePlanKey.class)
 public class RelicExplorePlan {
 
@@ -18,8 +18,8 @@ public class RelicExplorePlan {
     private Long relicId;
 
     @Id
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "visited", nullable = false)
     private boolean visited;

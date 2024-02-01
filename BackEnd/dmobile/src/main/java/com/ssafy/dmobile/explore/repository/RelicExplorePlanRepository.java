@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface RelicExplorePlanRepository extends JpaRepository<RelicExplorePlan, Long> {
-    Optional<RelicExplorePlan> findByPlanIdAndRelicIdAndUserId(Long planId, Long relicId, Long userId);
+    Optional<RelicExplorePlan> findByPlanIdAndRelicIdAndMemberId(Long planId, Long relicId, Long memberId);
 }

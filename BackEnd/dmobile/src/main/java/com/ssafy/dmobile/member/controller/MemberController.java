@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/member")
 @Tag(name = "Member", description = "회원관리 API Document")
 public class MemberController {
 
@@ -36,7 +36,7 @@ public class MemberController {
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
         response.put("msg", "succeed");
-        response.put("user_email", registeredMember.getEmail());
+        response.put("member_email", registeredMember.getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
     }
@@ -47,9 +47,8 @@ public class MemberController {
             @RequestBody MemberLoginDto memberDto) {
         Member loginMember = memberService.loginMember(memberDto);
 
-        Long userId = loginMember.getId();
-        AuthTokens tokens = authTokensGenerator.generate(userId);
-
+        Long memberId = loginMember.getId();
+        AuthTokens tokens = authTokensGenerator.generate(memberId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
@@ -68,9 +67,9 @@ public class MemberController {
     public ResponseEntity<?> getMemberDetails(
             @RequestHeader("Authorization") String token) {
 
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        Map<String, Object> response = memberService.getMemberDetails(userId);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        Map<String, Object> response = memberService.getMemberDetails(memberId);
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -83,12 +82,12 @@ public class MemberController {
     public ResponseEntity<?> editMemberInfo(
             @RequestHeader("Authorization") String token,
             @RequestBody MemberEditDto memberDto) {
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        memberService.editMemberInfo(userId, memberDto);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        memberService.editMemberInfo(memberId, memberDto);
 
         Map<String, Object> response = new HashMap<>();
-//        response.put("user_email", memberDto.getUserEmail());
+        response.put("member_email", memberService.getMemberEmailById(memberId));
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -102,12 +101,12 @@ public class MemberController {
     public ResponseEntity<?> editMemberPassword(
             @RequestHeader("Authorization") String token,
             @RequestBody MemberEditPwdDto pwdDto) {
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        memberService.editMemberPassword(userId, pwdDto);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        memberService.editMemberPassword(memberId, pwdDto);
 
         Map<String, Object> response = new HashMap<>();
-//        response.put("user_email", pwdDto.getUserEmail());
+        response.put("member_email", memberService.getMemberEmailById(memberId));
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -119,9 +118,9 @@ public class MemberController {
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> removeMember(
             @RequestHeader("Authorization") String token) {
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        memberService.removeMember(userId);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        memberService.removeMember(memberId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
@@ -139,7 +138,7 @@ public class MemberController {
         memberService.editMemberTempoPassword(memberDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user_email", memberDto.getUserEmail());
+        response.put("member_email", memberDto.getMemberEmail());
         response.put("code", 0);
         response.put("msg", "succeed");
 

@@ -28,8 +28,8 @@ public class ExplorePlanController {
     public ResponseEntity<ExplorePlan> createPlan(
             @RequestHeader("Authorization") String token,
             @RequestBody ExplorePlan explorePlan) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        ExplorePlan newPlan = explorePlanService.createPlan(userId, explorePlan);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        ExplorePlan newPlan = explorePlanService.createPlan(memberId, explorePlan);
         return ResponseEntity.ok(newPlan);
     }
 
@@ -40,8 +40,8 @@ public class ExplorePlanController {
             @RequestHeader("Authorization") String token,
             @PathVariable Long planId,
             @RequestBody ExplorePlan explorePlan) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        ExplorePlan updatedPlan = explorePlanService.updatePlan(planId, userId, explorePlan);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        ExplorePlan updatedPlan = explorePlanService.updatePlan(planId, memberId, explorePlan);
         return ResponseEntity.ok(updatedPlan);
     }
 
@@ -51,8 +51,8 @@ public class ExplorePlanController {
     public ResponseEntity<Void> deletePlan(
             @RequestHeader("Authorization") String token,
             @PathVariable Long planId) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        explorePlanService.deletePlan(planId, userId);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        explorePlanService.deletePlan(planId, memberId);
         return ResponseEntity.ok().build();
     }
 
@@ -61,23 +61,23 @@ public class ExplorePlanController {
     @Operation(summary = "진행중인 탐방", description = "현재 시간을 기준으로 진행중인 탐방을 출력합니다.")
     @SecurityRequirement(name = "Authorization")
     public List<ExplorePlan> getOngoingPlans(@RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        return explorePlanService.getOngoingPlans(userId);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        return explorePlanService.getOngoingPlans(memberId);
     }
 
     @GetMapping("/upcoming")
     @Operation(summary = "앞으로의 탐방", description = "현재 시간을 기준으로 계획중인 탐방을 출력합니다.")
     @SecurityRequirement(name = "Authorization")
     public List<ExplorePlan> getUpcomingPlans(@RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        return explorePlanService.getUpcomingPlans(userId);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        return explorePlanService.getUpcomingPlans(memberId);
     }
 
     @GetMapping("/completed")
     @Operation(summary = "지금까지의 탐방", description = "현재 시간을 기준으로 지금까지 경험한 탐방을 출력합니다.")
     @SecurityRequirement(name = "Authorization")
     public List<ExplorePlan> getCompletedPlans(@RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        return explorePlanService.getCompletedPlans(userId);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        return explorePlanService.getCompletedPlans(memberId);
     }
 }

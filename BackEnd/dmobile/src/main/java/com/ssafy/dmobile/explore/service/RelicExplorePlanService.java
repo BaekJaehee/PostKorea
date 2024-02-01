@@ -17,19 +17,19 @@ public class RelicExplorePlanService {
     private final RelicExplorePlanRepository repository;
 
     @Transactional
-    public void addRelicToPlan(Long planId, Long relicId, Long userId) {
+    public void addRelicToPlan(Long planId, Long relicId, Long memberId) {
 
         RelicExplorePlan newPlan = new RelicExplorePlan();
         newPlan.setPlanId(planId);
         newPlan.setRelicId(relicId);
-        newPlan.setUserId(userId);
+        newPlan.setMemberId(memberId);
         repository.save(newPlan);
     }
 
     @Transactional
-    public void updateRelicToPlan(Long planId, Long relicId, Long userId, boolean visited) {
+    public void updateRelicToPlan(Long planId, Long relicId, Long memberId, boolean visited) {
 
-        Optional<RelicExplorePlan> optionalPlan = repository.findByPlanIdAndRelicIdAndUserId(planId, relicId, userId);
+        Optional<RelicExplorePlan> optionalPlan = repository.findByPlanIdAndRelicIdAndMemberId(planId, relicId, memberId);
         if (optionalPlan.isEmpty()) {
             throw new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION);
         }
@@ -41,9 +41,9 @@ public class RelicExplorePlanService {
     }
 
     @Transactional
-    public void deleteRelicToPlan(Long planId, Long relicId, Long userId) {
+    public void deleteRelicToPlan(Long planId, Long relicId, Long memberId) {
 
-        Optional<RelicExplorePlan> optionalPlan = repository.findByPlanIdAndRelicIdAndUserId(planId, relicId, userId);
+        Optional<RelicExplorePlan> optionalPlan = repository.findByPlanIdAndRelicIdAndMemberId(planId, relicId, memberId);
         if (optionalPlan.isEmpty()) {
             throw new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION);
         }

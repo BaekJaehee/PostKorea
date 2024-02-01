@@ -16,8 +16,8 @@ public class ExplorePlan {
     @Column(name = "plan_id", nullable = false)
     private Long planId;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "member_id", nullable = false)
+    private Long memberId;
 
     @Column(name = "plan_name", nullable = false, length = 225)
     private String planName;

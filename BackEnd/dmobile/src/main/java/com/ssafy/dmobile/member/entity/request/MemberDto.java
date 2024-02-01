@@ -10,19 +10,19 @@ import lombok.Getter;
 @Builder
 public class MemberDto {
 
-    @JsonProperty("user_email")
+    @JsonProperty("member_email")
     @Schema(description = "사용자의 고유 식별자")
-    private String userEmail;
-    @JsonProperty("user_pwd")
-    private String userPwd;
-    @JsonProperty("user_name")
-    private String userName;
-    @JsonProperty("user_nickname")
-    private String userNickname;
-    @JsonProperty("user_age")
-    private Integer userAge;
-    @JsonProperty("user_gender")
-    private String userGender;
-    @JsonProperty("user_auth")
-    private OAuthInfo userAuth;
+    private String memberEmail;
+    @JsonProperty("member_pwd")
+    private String memberPwd;
+    @JsonProperty("member_name")
+    private String memberName;
+    @JsonProperty("member_nickname")
+    private String memberNickname;
+    @JsonProperty("member_age")
+    private Integer memberAge;
+    @JsonProperty("member_gender")
+    private String memberGender;
+    @JsonProperty("member_auth")
+    private OAuthInfo memberAuth;
 }

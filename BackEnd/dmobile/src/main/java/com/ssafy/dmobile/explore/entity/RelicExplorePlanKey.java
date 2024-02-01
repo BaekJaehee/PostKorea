@@ -6,5 +6,5 @@ import java.io.Serializable;
 public class RelicExplorePlanKey implements Serializable {
     private Long planId;
     private Long relicId;
-    private Long userId;
+    private Long memberId;
 }

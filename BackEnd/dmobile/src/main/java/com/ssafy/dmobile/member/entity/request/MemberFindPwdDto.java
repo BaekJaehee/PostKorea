@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 public class MemberFindPwdDto {
 
-    @JsonProperty("user_email")
-    private String userEmail;
-    @JsonProperty("user_name")
-    private String userName;
+    @JsonProperty("member_email")
+    private String memberEmail;
+    @JsonProperty("member_name")
+    private String memberName;
 }

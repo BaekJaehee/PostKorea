@@ -28,8 +28,8 @@ public class ExplorePlanManageController {
             @PathVariable Long relicId,
             @PathVariable Long planId,
             @RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        relicExplorePlanService.addRelicToPlan(planId, relicId, userId);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        relicExplorePlanService.addRelicToPlan(planId, relicId, memberId);
     }
 
     @PutMapping("/{planId}/{relicId}")
@@ -40,8 +40,8 @@ public class ExplorePlanManageController {
             @PathVariable Long planId,
             @RequestParam boolean visited,
             @RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        relicExplorePlanService.updateRelicToPlan(planId, relicId, userId, visited);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        relicExplorePlanService.updateRelicToPlan(planId, relicId, memberId, visited);
     }
 
     @DeleteMapping("/{planId}/{relicId}")
@@ -51,7 +51,7 @@ public class ExplorePlanManageController {
             @PathVariable Long relicId,
             @PathVariable Long planId,
             @RequestHeader("Authorization") String token) {
-        Long userId = authTokensGenerator.extractMemberId(token); // 토큰에서 userId 추출하는 로직 구현 필요
-        relicExplorePlanService.deleteRelicToPlan(planId, relicId, userId);
+        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
+        relicExplorePlanService.deleteRelicToPlan(planId, relicId, memberId);
     }
 }

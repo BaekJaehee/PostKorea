@@ -29,33 +29,33 @@ public class MemberService {
     public Member registerMember(MemberDto memberDto) {
         
         // 이메일 중복 체크
-        if(memberRepository.existsByEmail(memberDto.getUserEmail())) {
+        if(memberRepository.existsByEmail(memberDto.getMemberEmail())) {
             throw new CustomException(ExceptionType.DUPLICATE_EMAIL_EXCEPTION);
         }
 
         // 닉네임 중복 체크
-        if (memberRepository.existsByNickname(memberDto.getUserNickname())) {
+        if (memberRepository.existsByNickname(memberDto.getMemberNickname())) {
             throw new CustomException(ExceptionType.DUPLICATE_NICKNAME_EXCEPTION);
         }
 
         // 비밀번호가 생성 규칙 체크 (예. 4자리 미만)
-        if (memberDto.getUserPwd().length() < 4) {
+        if (memberDto.getMemberPwd().length() < 4) {
             throw new CustomException(ExceptionType.INVALID_PASSWORD_FORMAT_EXCEPTION);
         }
         
         // Spring Security 를 통한 비밀번호 암호화
-        String password = passwordEncoder.encode(memberDto.getUserPwd());
+        String password = passwordEncoder.encode(memberDto.getMemberPwd());
 
         // DTO 기반 Member 엔티티 생성
         Member member = Member.builder()
-                .email(memberDto.getUserEmail())
+                .email(memberDto.getMemberEmail())
                 .password(password)
-                .name(memberDto.getUserName())
-                .nickname(memberDto.getUserNickname())
-                .age(memberDto.getUserAge())
-                .gender(memberDto.getUserGender())
+                .name(memberDto.getMemberName())
+                .nickname(memberDto.getMemberNickname())
+                .age(memberDto.getMemberAge())
+                .gender(memberDto.getMemberGender())
                 // 프로필 이미지의 경우 추가적인 작업 필요
-                .oAuthInfo(memberDto.getUserAuth())
+                .oAuthInfo(memberDto.getMemberAuth())
                 .point(0)
                 .build();
         
@@ -65,8 +65,8 @@ public class MemberService {
     // 로그인
     public Member loginMember(MemberLoginDto memberDto) {
 
-        String email = memberDto.getUserEmail();
-        String password = memberDto.getUserPwd();
+        String email = memberDto.getMemberEmail();
+        String password = memberDto.getMemberPwd();
 
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         // 이메일 정보 없는 경우
@@ -95,12 +95,12 @@ public class MemberService {
         Map<String, Object> response = new HashMap<>();
 
         // 아이디, OAuth 정보 생략
-        response.put("user_email", member.getEmail());
-        response.put("user_name", member.getName());
-        response.put("user_nickname", member.getNickname());
-        response.put("user_age", member.getAge());
-        response.put("user_gender", member.getGender());
-        response.put("user_point", member.getPoint());
+        response.put("member_email", member.getEmail());
+        response.put("member_name", member.getName());
+        response.put("member_nickname", member.getNickname());
+        response.put("member_age", member.getAge());
+        response.put("member_gender", member.getGender());
+        response.put("member_point", member.getPoint());
 
         return response;
     }
@@ -119,18 +119,18 @@ public class MemberService {
         // 현재 변경 가능한 필드 : 닉네임, 나이, 성별 (변경가능)
 
         // 닉네임 중복 체크
-        if (memberRepository.existsByNickname(memberDto.getUserNickname())) {
+        if (memberRepository.existsByNickname(memberDto.getMemberNickname())) {
             throw new CustomException(ExceptionType.DUPLICATE_NICKNAME_EXCEPTION);
         }
 
-        if (memberDto.getUserNickname() != null) {
-            builder.nickname(memberDto.getUserNickname());
+        if (memberDto.getMemberNickname() != null) {
+            builder.nickname(memberDto.getMemberNickname());
         }
-        if (memberDto.getUserAge() != null) {
-            builder.age(memberDto.getUserAge());
+        if (memberDto.getMemberAge() != null) {
+            builder.age(memberDto.getMemberAge());
         }
-        if (memberDto.getUserGender() != null) {
-            builder.gender(memberDto.getUserGender());
+        if (memberDto.getMemberGender() != null) {
+            builder.gender(memberDto.getMemberGender());
         }
 
         return memberRepository.save(builder.build());
@@ -186,7 +186,7 @@ public class MemberService {
     @Transactional
     public Member editMemberTempoPassword(MemberFindPwdDto pwdDto) {
 
-        Optional<Member> optionalMember = memberRepository.findByEmail(pwdDto.getUserEmail());
+        Optional<Member> optionalMember = memberRepository.findByEmail(pwdDto.getMemberEmail());
         // 유저 정보가 없는 경우
         if (optionalMember.isEmpty()) {
             throw new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION);
@@ -213,13 +213,13 @@ public class MemberService {
     }
 
     // Direct JPA Resources -----
-    public Long getUserIdByEmail(String email) {
+    public Long getMemberIdByEmail(String email) {
         return memberRepository.findByEmail(email)
                 .map(Member::getId)
                 .orElseThrow(() -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
     }
 
-    public String getUserEmailById(Long id) {
+    public String getMemberEmailById(Long id) {
         return memberRepository.findById(id)
                 .map(Member::getEmail)
                 .orElseThrow(() -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
