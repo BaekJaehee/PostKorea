@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.ssafy.travelcollector.LoginFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.ssafy.travelcollector.SignUpFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
     </fragment>

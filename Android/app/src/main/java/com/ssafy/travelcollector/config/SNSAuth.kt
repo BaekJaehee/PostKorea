@@ -4,18 +4,13 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import androidx.navigation.Navigation
-import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-import com.ssafy.travelcollector.LoginFragment
-import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.dto.User
-import kotlin.math.log
 
 private const val TAG = "SNSAuth"
 object SNSAuth{
