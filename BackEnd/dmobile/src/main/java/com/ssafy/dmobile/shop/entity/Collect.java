@@ -13,7 +13,7 @@ public class Collect {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "collect_id")
-    private Integer collectId;
+    private Long collectId;
 
     @Column(name = "collect_url")
     private String collectUrl;
