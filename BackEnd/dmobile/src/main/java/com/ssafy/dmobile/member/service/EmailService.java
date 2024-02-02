@@ -11,18 +11,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender javaMailSender;
     private final MailSender mailSender;
 
     @Value("${spring.mail.username}")
     private String adminEmail;
 
-    public void sendTemporaryPassword(String toEmail, String userName, String tempoPassword) {
+    public void sendTemporaryPassword(String toEmail, String memberName, String tempoPassword) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(adminEmail);
         message.setTo(toEmail);
         message.setSubject("[DMobile] 임시 비밀번호 안내 이메일입니다.");
-        message.setText(userName + "님의 임시 비밀번호는 " + tempoPassword + " 입니다.");
+        message.setText(memberName + "님의 임시 비밀번호는 " + tempoPassword + " 입니다.");
         mailSender.send(message);
     }
 }

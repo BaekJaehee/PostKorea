@@ -6,8 +6,6 @@ import lombok.Getter;
 @Getter
 public class MemberEditPwdDto {
 
-    @JsonProperty("user_email")
-    private String userEmail;
     @JsonProperty("current_pwd")
     private String currentPwd;
     @JsonProperty("new_pwd")

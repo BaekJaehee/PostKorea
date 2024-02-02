@@ -21,7 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user/profile")
+@RequestMapping("/member/profile")
 @Tag(name = "Profile", description = "회원 프로필 API Document")
 public class ProfileController {
 
@@ -36,8 +36,8 @@ public class ProfileController {
     public ResponseEntity<?> uploadProfileImage(
             @RequestHeader("Authorization") String token,
             @RequestPart MultipartFile file) throws IOException {
-            Long userId = authTokensGenerator.extractMemberId(token);
-            String fileName = profileService.uploadProfileImage(userId, file);
+            Long memberId = authTokensGenerator.extractMemberId(token);
+            String fileName = profileService.uploadProfileImage(memberId, file);
 
             Map<String, Object> response = new HashMap<>();
             response.put("code", 0);
@@ -48,14 +48,14 @@ public class ProfileController {
     }
     
     // 이미지 조회 시, 친구 등 다른 사용자의 프로필 이미지도 조회할 수 있어야함
-    // 지금은 토큰을 통해 조회가능하며 차후 토큰 -> userId -> 친구목록 조회 기능도 추가 예정
+    // 지금은 토큰을 통해 조회가능하며 차후 토큰 -> memberId -> 친구목록 조회 기능도 추가 예정
     @GetMapping(value = "/image", produces = "multipart/form-data")
     @Operation(summary = "프로필 이미지 조회", description = "사용자의 프로필 이미지를 조회합니다. 인가 과정에서 Token이 사용됩니다.")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> downloadProfileImage(
             @RequestHeader("Authorization") String token) throws MalformedURLException {
-        Long userId = authTokensGenerator.extractMemberId(token);
-        Resource resource = profileService.downloadImage(userId);
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        Resource resource = profileService.downloadImage(memberId);
 
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)

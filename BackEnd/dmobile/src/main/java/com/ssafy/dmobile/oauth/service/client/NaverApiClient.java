@@ -1,6 +1,6 @@
 package com.ssafy.dmobile.oauth.service.client;
 
-import com.ssafy.dmobile.oauth.service.OAuthInfo;
+import com.ssafy.dmobile.oauth.service.OAuthType;
 import com.ssafy.dmobile.oauth.service.params.OAuthLoginParams;
 import com.ssafy.dmobile.oauth.service.response.NaverInfoResponse;
 import com.ssafy.dmobile.oauth.service.response.OAuthInfoResponse;
@@ -38,8 +38,8 @@ public class NaverApiClient implements OAuthApiClient {
     private final RestTemplate restTemplate;
 
     @Override
-    public OAuthInfo oAuthInfo() {
-        return OAuthInfo.NAVER;
+    public OAuthType oAuthInfo() {
+        return OAuthType.NAVER;
     }
 
     // 네이버 로그인 API 명세

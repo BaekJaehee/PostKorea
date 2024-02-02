@@ -19,7 +19,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/member")
 @Tag(name = "Member", description = "회원관리 API Document")
 public class MemberController {
 
@@ -27,7 +27,11 @@ public class MemberController {
     private final AuthTokensGenerator authTokensGenerator;
 
     @PostMapping("/signup")
-    @Operation(summary = "회원가입", description = "회원 가입 절차를 진행합니다.")
+    @Operation(summary = "회원가입", description = "회원 가입 절차를 진행합니다.<br>" +
+            "나이를 제외한 모든 값은 문자열로 입력받으며, 아래의 컬럼은 제한된 문자열만 입력받습니다.<br>" +
+            "&nbsp;&nbsp;&nbsp;member_gender: MALE, FEMALE<br>" +
+            "&nbsp;&nbsp;&nbsp;member_auth  : NONE, KAKAO, NAVER, GOOGLE<br>" +
+            "&nbsp;&nbsp;&nbsp;member_role  : MEMBER, ADMIN")
     public ResponseEntity<?> registerMember(
             @RequestBody MemberDto memberDto) {
 
@@ -36,7 +40,7 @@ public class MemberController {
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
         response.put("msg", "succeed");
-        response.put("user_email", registeredMember.getEmail());
+        response.put("member_email", registeredMember.getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response); // 201
     }
@@ -47,9 +51,8 @@ public class MemberController {
             @RequestBody MemberLoginDto memberDto) {
         Member loginMember = memberService.loginMember(memberDto);
 
-        Long userId = loginMember.getId();
-        AuthTokens tokens = authTokensGenerator.generate(userId);
-
+        Long memberId = loginMember.getId();
+        AuthTokens tokens = authTokensGenerator.generate(memberId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
@@ -68,9 +71,9 @@ public class MemberController {
     public ResponseEntity<?> getMemberDetails(
             @RequestHeader("Authorization") String token) {
 
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        Map<String, Object> response = memberService.getMemberDetails(userId);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        Map<String, Object> response = memberService.getMemberDetails(memberId);
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -83,12 +86,12 @@ public class MemberController {
     public ResponseEntity<?> editMemberInfo(
             @RequestHeader("Authorization") String token,
             @RequestBody MemberEditDto memberDto) {
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        memberService.editMemberInfo(userId, memberDto);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        memberService.editMemberInfo(memberId, memberDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user_email", memberDto.getUserEmail());
+        response.put("member_email", memberService.getMemberEmailById(memberId));
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -102,12 +105,12 @@ public class MemberController {
     public ResponseEntity<?> editMemberPassword(
             @RequestHeader("Authorization") String token,
             @RequestBody MemberEditPwdDto pwdDto) {
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        memberService.editMemberPassword(userId, pwdDto);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        memberService.editMemberPassword(memberId, pwdDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user_email", pwdDto.getUserEmail());
+        response.put("member_email", memberService.getMemberEmailById(memberId));
         response.put("code", 0);
         response.put("msg", "succeed");
 
@@ -119,9 +122,9 @@ public class MemberController {
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> removeMember(
             @RequestHeader("Authorization") String token) {
-        // 토큰을 통해 userId 추출 후 Member 객체 생성
-        Long userId = authTokensGenerator.extractMemberId(token);
-        memberService.removeMember(userId);
+        // 토큰을 통해 memberId 추출 후 Member 객체 생성
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        memberService.removeMember(memberId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
@@ -139,7 +142,7 @@ public class MemberController {
         memberService.editMemberTempoPassword(memberDto);
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user_email", memberDto.getUserEmail());
+        response.put("member_email", memberDto.getMemberEmail());
         response.put("code", 0);
         response.put("msg", "succeed");
 
