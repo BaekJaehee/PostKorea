@@ -12,6 +12,4 @@ public class MemberEditDto {
     private String memberNickname;
     @JsonProperty("member_age")
     private Integer memberAge;
-    @JsonProperty("member_gender")
-    private String memberGender;
 }

@@ -1,8 +1,10 @@
 package com.ssafy.dmobile.explore.controller;
 
 import com.ssafy.dmobile.explore.entity.ExplorePlan;
+import com.ssafy.dmobile.explore.entity.dto.ExplorePlanDto;
 import com.ssafy.dmobile.explore.service.ExplorePlanService;
 import com.ssafy.dmobile.explore.service.RelicExplorePlanService;
+import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,9 +30,9 @@ public class ExplorePlanController {
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<ExplorePlan> createPlan(
             @RequestHeader("Authorization") String token,
-            @RequestBody ExplorePlan explorePlan) {
-        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        ExplorePlan newPlan = explorePlanService.createPlan(memberId, explorePlan);
+            @RequestBody ExplorePlanDto explorePlanDto) {
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        ExplorePlan newPlan = explorePlanService.createPlan(memberId, explorePlanDto);
         return ResponseEntity.ok(newPlan);
     }
 
@@ -39,9 +42,9 @@ public class ExplorePlanController {
     public ResponseEntity<ExplorePlan> updatePlan(
             @RequestHeader("Authorization") String token,
             @PathVariable Long planId,
-            @RequestBody ExplorePlan explorePlan) {
-        Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        ExplorePlan updatedPlan = explorePlanService.updatePlan(planId, memberId, explorePlan);
+            @RequestBody ExplorePlanDto explorePlanDto) {
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        ExplorePlan updatedPlan = explorePlanService.updatePlan(planId, memberId, explorePlanDto);
         return ResponseEntity.ok(updatedPlan);
     }
 
@@ -79,5 +82,16 @@ public class ExplorePlanController {
     public List<ExplorePlan> getCompletedPlans(@RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
         return explorePlanService.getCompletedPlans(memberId);
+    }
+
+    @GetMapping("/list/{planId}")
+    @Operation(summary = "탐방 상세 내역 조회", description = "PlanId를 지닌 탐방 내 지금까지 다녀온 문화재 조회, 아직 미구현")
+    @SecurityRequirement(name = "Authorization")
+    public List<DetailData> getVisitedRelicList(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Long planId) {
+
+        List<DetailData> list = new ArrayList<>();
+        return list;
     }
 }

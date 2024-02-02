@@ -27,7 +27,11 @@ public class MemberController {
     private final AuthTokensGenerator authTokensGenerator;
 
     @PostMapping("/signup")
-    @Operation(summary = "회원가입", description = "회원 가입 절차를 진행합니다.")
+    @Operation(summary = "회원가입", description = "회원 가입 절차를 진행합니다.<br>" +
+            "나이를 제외한 모든 값은 문자열로 입력받으며, 아래의 컬럼은 제한된 문자열만 입력받습니다.<br>" +
+            "&nbsp;&nbsp;&nbsp;member_gender: MALE, FEMALE<br>" +
+            "&nbsp;&nbsp;&nbsp;member_auth  : NONE, KAKAO, NAVER, GOOGLE<br>" +
+            "&nbsp;&nbsp;&nbsp;member_role  : MEMBER, ADMIN")
     public ResponseEntity<?> registerMember(
             @RequestBody MemberDto memberDto) {
 

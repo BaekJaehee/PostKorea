@@ -1,6 +1,6 @@
 package com.ssafy.dmobile.oauth.service.params;
 
-import com.ssafy.dmobile.oauth.service.OAuthInfo;
+import com.ssafy.dmobile.oauth.service.OAuthType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,8 +14,8 @@ public class NaverLoginParams implements OAuthLoginParams {
     private String state;
 
     @Override
-    public OAuthInfo oAuthInfo() {
-        return OAuthInfo.NAVER;
+    public OAuthType oAuthInfo() {
+        return OAuthType.NAVER;
     }
 
     @Override

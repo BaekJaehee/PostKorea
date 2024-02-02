@@ -1,6 +1,8 @@
 package com.ssafy.dmobile.member.entity.request;
 
-import com.ssafy.dmobile.oauth.service.OAuthInfo;
+import com.ssafy.dmobile.member.entity.MemberGenderType;
+import com.ssafy.dmobile.member.entity.MemberRoleType;
+import com.ssafy.dmobile.oauth.service.OAuthType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -22,7 +24,9 @@ public class MemberDto {
     @JsonProperty("member_age")
     private Integer memberAge;
     @JsonProperty("member_gender")
-    private String memberGender;
+    private MemberGenderType memberGender;
     @JsonProperty("member_auth")
-    private OAuthInfo memberAuth;
+    private OAuthType memberAuth;
+    @JsonProperty("member_role")
+    private MemberRoleType memberRole;
 }

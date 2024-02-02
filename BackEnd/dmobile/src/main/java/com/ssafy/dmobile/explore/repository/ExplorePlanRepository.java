@@ -10,9 +10,9 @@ import java.util.List;
 public interface ExplorePlanRepository extends JpaRepository<ExplorePlan, Long> {
 
     @Query("select e from ExplorePlan e where e.memberId = :id and e.planStartDate <= :now and e.planEndDate >= :now")
-    List<ExplorePlan> findOngoingPlans(Long id, Date now);
+    List<ExplorePlan> findOngoingPlans(Long id, Long now);
     @Query("select e from ExplorePlan e where e.memberId = :id and e.planStartDate > :now")
-    List<ExplorePlan> findUpcomingPlans(Long id, Date now);
+    List<ExplorePlan> findUpcomingPlans(Long id, Long now);
     @Query("select e from ExplorePlan e where e.memberId = :id and e.planEndDate < :now")
-    List<ExplorePlan> findCompletedPlans(Long id, Date now);
+    List<ExplorePlan> findCompletedPlans(Long id, Long now);
 }

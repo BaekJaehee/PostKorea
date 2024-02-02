@@ -3,8 +3,8 @@ package com.ssafy.dmobile.relic.repository;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface DetailDataRepository extends JpaRepository<DetailData, Integer> {
-    DetailData findByListId(Integer listId);
+public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
+    DetailData findByItemId(Long listId);
 
 //    @Query("SELECT dd FROM DetailData dd " +
 //        "JOIN dd.tags t " +

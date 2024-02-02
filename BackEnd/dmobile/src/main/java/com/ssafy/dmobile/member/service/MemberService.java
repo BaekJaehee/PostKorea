@@ -44,22 +44,23 @@ public class MemberService {
         }
         
         // Spring Security 를 통한 비밀번호 암호화
-        String password = passwordEncoder.encode(memberDto.getMemberPwd());
+        String pwd = passwordEncoder.encode(memberDto.getMemberPwd());
 
         // DTO 기반 Member 엔티티 생성
-        Member member = Member.builder()
+        Member newMember = Member.builder()
                 .email(memberDto.getMemberEmail())
-                .password(password)
+                .password(pwd)
                 .name(memberDto.getMemberName())
                 .nickname(memberDto.getMemberNickname())
                 .age(memberDto.getMemberAge())
                 .gender(memberDto.getMemberGender())
                 // 프로필 이미지의 경우 추가적인 작업 필요
-                .oAuthInfo(memberDto.getMemberAuth())
+                .oAuthType(memberDto.getMemberAuth())
+                .memberRoleType(memberDto.getMemberRole())
                 .point(0)
                 .build();
         
-        return memberRepository.save(member);
+        return memberRepository.save(newMember);
     }
 
     // 로그인
@@ -128,9 +129,6 @@ public class MemberService {
         }
         if (memberDto.getMemberAge() != null) {
             builder.age(memberDto.getMemberAge());
-        }
-        if (memberDto.getMemberGender() != null) {
-            builder.gender(memberDto.getMemberGender());
         }
 
         return memberRepository.save(builder.build());

@@ -1,9 +1,8 @@
 package com.ssafy.dmobile.member.entity;
 
-import com.ssafy.dmobile.oauth.service.OAuthInfo;
+import com.ssafy.dmobile.oauth.service.OAuthType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.checkerframework.checker.units.qual.C;
 
 @Getter
 @Entity
@@ -17,9 +16,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
-    @Column(name = "member_id")
+    @Column(name = "member_email")
     private String email;
-    @Column(name = "member_password")
+    @Column(name = "member_pwd")
     private String password;
     @Column(name = "member_name")
     private String name;
@@ -27,12 +26,20 @@ public class Member {
     private String nickname;
     @Column(name = "member_age")
     private Integer age;
-    @Column(name = "member_gender")
-    private String gender;
     @Column(name = "member_profile_url")
     private String profileUrl;
     @Column(name = "member_point")
     private Integer point = 0;
-    @Column(name = "member_auth")
-    private OAuthInfo oAuthInfo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_gender")
+    private MemberGenderType gender;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "member_role")
+    private MemberRoleType memberRoleType = MemberRoleType.MEMBER;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "member_oauth_info")
+    private OAuthType oAuthType = OAuthType.NONE;
 }

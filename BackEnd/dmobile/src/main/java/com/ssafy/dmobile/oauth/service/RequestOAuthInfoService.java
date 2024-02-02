@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class RequestOAuthInfoService {
 
-    private final Map<OAuthInfo, OAuthApiClient> clients;
+    private final Map<OAuthType, OAuthApiClient> clients;
 
     public RequestOAuthInfoService(List<OAuthApiClient> clients) {
         this.clients = clients.stream().collect(

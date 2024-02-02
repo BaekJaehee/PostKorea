@@ -12,10 +12,9 @@ public class DetailData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "relic_id")
-    private Integer relicId;
-
-    @Column(name = "list_id")   // FK
-    private Integer listId;
+    private Long relicId;
+    @Column(name = "item_id")   // FK
+    private Long itemId;
 
     @Column(name = "ccma_name")
     private String ccmaName;

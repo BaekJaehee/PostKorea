@@ -20,8 +20,8 @@ import java.util.List;
 @Tag(name = "Relic", description = "문화재 관리 API Document")
 public class RelicController {
 
-    private ListDataRepository listDataRepository;
-    private DetailDataRepository detailDataRepository;
+    private final ListDataRepository listDataRepository;
+    private final DetailDataRepository detailDataRepository;
     
     @GetMapping("/list")
     @Operation(summary = "문화재 리스트", description = "문화재 리스트를 출력합니다.")
@@ -32,8 +32,8 @@ public class RelicController {
 
     @GetMapping("/detail/{id}")
     @Operation(summary = "문화재 디테일", description = "문화재 상세를 출력합니다.")
-    public ResponseEntity<DetailData> getDetail(@PathVariable Integer id) {
-        DetailData detailData = detailDataRepository.findByListId(id);
+    public ResponseEntity<DetailData> getDetail(@PathVariable Long id) {
+        DetailData detailData = detailDataRepository.findByItemId(id);
         return ResponseEntity.ok().body(detailData);
     }
 }

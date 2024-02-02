@@ -1,6 +1,6 @@
 package com.ssafy.dmobile.oauth.service.response;
 
-import com.ssafy.dmobile.oauth.service.OAuthInfo;
+import com.ssafy.dmobile.oauth.service.OAuthType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -40,7 +40,7 @@ public class NaverInfoResponse implements OAuthInfoResponse {
     }
 
     @Override
-    public OAuthInfo getOAuthInfo() {
-        return OAuthInfo.NAVER;
+    public OAuthType getOAuthInfo() {
+        return OAuthType.NAVER;
     }
 }

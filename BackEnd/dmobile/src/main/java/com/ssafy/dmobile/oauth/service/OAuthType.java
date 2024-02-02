@@ -1,5 +1,5 @@
 package com.ssafy.dmobile.oauth.service;
 
-public enum OAuthInfo {
+public enum OAuthType {
     NONE, KAKAO, NAVER, GOOGLE
 }
