@@ -7,7 +7,6 @@ import com.ssafy.dmobile.relic.mapping.RegionMappings;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.relic.repository.ListDataRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
@@ -26,14 +25,22 @@ public class RelicController {
     private final ListDataRepository listDataRepository;
     private final DetailDataRepository detailDataRepository;
 
-
     @GetMapping("/list")
-    public ResponseEntity<List<ListData>> getRelic() {
-        int limit = 50; // 리미트 개수 임의 설정
+    public ResponseEntity<?> getRelic() {
+        int limit = 10; // 개수 임의 설정
         Pageable pageable = PageRequest.of(0, limit);
-        List<ListData> listData = listDataRepository.findListDataByLimit(pageable);
-        return ResponseEntity.ok().body(listData);
+        List<Object[]> detailData = detailDataRepository.findDataByLimit(pageable);
+        return ResponseEntity.ok().body(detailData);
     }
+    // 조인 해보려다가 주말안에 될지를 모르겠어서 일단 DetailData에서 이미지 주소랑 이름만
+
+//    @GetMapping("/list")
+//    public ResponseEntity<List<ListData>> getRelic() {
+//        int limit = 50; // 리미트 개수 임의 설정
+//        Pageable pageable = PageRequest.of(0, limit);
+//        List<ListData> listData = listDataRepository.findListDataByLimit(pageable);
+//        return ResponseEntity.ok().body(listData);
+//    }
 
     @GetMapping("/search")
     public ResponseEntity<List<DetailData>> searchData(

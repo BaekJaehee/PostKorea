@@ -1,6 +1,7 @@
 package com.ssafy.dmobile.relic.repository;
 
 import com.ssafy.dmobile.relic.entity.DetailData;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +22,7 @@ public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
             @Param("ccceName") String ccceName,
             @Param("scodeName") String scodeName
     );
+
+    @Query("SELECT d.imageUrl, d.ccbaMnm1 FROM DetailData d")
+    List<Object[]> findDataByLimit(Pageable pageable);
 }
