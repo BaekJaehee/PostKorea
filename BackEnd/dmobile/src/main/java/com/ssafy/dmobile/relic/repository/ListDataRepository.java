@@ -2,6 +2,7 @@ package com.ssafy.dmobile.relic.repository;
 
 import com.ssafy.dmobile.relic.entity.ListData;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
