@@ -25,7 +25,7 @@ class ThemeDetailFragment : BaseFragment<FragmentThemeDetailBinding>(FragmentThe
     }
 
     private fun initView(){
-        binding.themeDetailAdd.visibility = if(mainActivityViewModel.detailState.contains(DetailStateEnum.AddToTravel)) View.VISIBLE else View.GONE
+        binding.themeDetailAdd.visibility = if(mainActivityViewModel.detailState.value.contains(DetailStateEnum.AddToTravel)) View.VISIBLE else View.GONE
         binding.themeDetailAdd.setOnClickListener{
             val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
             newList.addAll(mainActivityViewModel.curHeritageList.value)

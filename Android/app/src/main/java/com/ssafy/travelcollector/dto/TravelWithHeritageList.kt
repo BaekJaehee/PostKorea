@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector.dto
 
 data class TravelWithHeritageList(
+    var id: Int = -1,
     var name: String = "",
     var startDate: Long = 0,
     var endDate: Long = 0,

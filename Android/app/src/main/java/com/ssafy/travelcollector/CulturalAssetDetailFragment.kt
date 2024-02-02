@@ -1,13 +1,36 @@
 package com.ssafy.travelcollector
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.ssafy.travelcollector.config.BaseFragment
-import com.ssafy.travelcollector.databinding.FragmentMainBinding
+import com.ssafy.travelcollector.databinding.FragmentCulturalAssetDetailBinding
+import com.ssafy.travelcollector.viewModel.DetailStateEnum
+import kotlinx.coroutines.launch
 
-class CulturalAssetDetailFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::bind, R.layout.fragment_main) {
+class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBinding>(FragmentCulturalAssetDetailBinding::bind, R.layout.fragment_cultural_asset_detail) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
 
+    private fun initView(){
+        lifecycleScope.launch{
+            mainActivityViewModel.detailState.collect{
+                if(it.contains(DetailStateEnum.MiniGame)){
+                    binding.culturalAssetDetailBtnGame.visibility = View.VISIBLE
+                    binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
+                }else if(it.contains(DetailStateEnum.AddToTravel)){
+                    binding.culturalAssetDetailBtnGame.visibility = View.GONE
+                    binding.culturalAssetDetailBtnAddToTravel.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        binding.culturalAssetDetailBtnAddToTravel.setOnClickListener {
+            mainActivityViewModel.addHeritageToTravelPlan(mainActivityViewModel.curHeritage.value)
+            parentFragmentManager.popBackStack()
+        }
+
+    }
 }

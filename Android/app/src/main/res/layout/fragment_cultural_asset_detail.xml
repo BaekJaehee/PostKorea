@@ -100,6 +100,19 @@
             android:textColor="@color/black"
             android:textSize="15sp" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cultural_asset_detail_btn_add_to_travel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="여행 목록에 추가"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </ScrollView>

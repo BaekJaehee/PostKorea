@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.TravelListRvItemBinding
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
+import com.ssafy.travelcollector.util.TimeConverter
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -16,13 +17,15 @@ class TravelAdapter: BaseAdapter<TravelWithHeritageList>() {
         @SuppressLint("SetTextI18n")
         override fun bindInfo(data: TravelWithHeritageList) {
             binding.mainPostingTitle.text = data.name
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = data.startDate
-            val startDate = SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(calendar.time).toString()
-            calendar.timeInMillis = data.endDate
-            val endDate = SimpleDateFormat("yyyy.MM.dd", Locale.KOREAN).format(calendar.time).toString()
+            val startDate = TimeConverter.timeMilliToDateString(data.startDate)
+            val endDate = TimeConverter.timeMilliToDateString(data.endDate)
             binding.travelListRvItemTvDuration.text =
                 "$startDate ~ $endDate"
+            binding.travelListOiImg.setImages()
+
+            binding.root.setOnClickListener{
+                clickListener.onClick(layoutPosition, data.condition)
+            }
         }
     }
 
@@ -34,5 +37,10 @@ class TravelAdapter: BaseAdapter<TravelWithHeritageList>() {
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {
         holder.bindInfo(getItem(position))
     }
+
+    interface ClickListener{
+        fun onClick(position: Int, state: Int)
+    }
+    lateinit var clickListener: ClickListener
 
 }

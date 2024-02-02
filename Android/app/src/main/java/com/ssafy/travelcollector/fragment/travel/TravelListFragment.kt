@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.TravelAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTravelListBinding
+import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import kotlinx.coroutines.launch
 
 class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTravelListBinding::bind,
@@ -21,7 +23,11 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.travelListAddBtnMyTravel.setOnClickListener{
-            Navigation.findNavController(view).navigate(R.id.travelPlanFragment)
+            mainActivityViewModel.apply {
+                setTravelPlanHeritageList(arrayListOf())
+                setUserTravel(TravelWithHeritageList())
+            }
+            findNavController().navigate(R.id.travelPlanFragment)
         }
         initAdapter()
     }
@@ -32,6 +38,20 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
                 travelAdapter.submitList(it)
             }
         }
+        travelAdapter.clickListener = object : TravelAdapter.ClickListener{
+            override fun onClick(position: Int, state: Int) {
+                val curTravel = mainActivityViewModel.userTravelList.value[position]
+                mainActivityViewModel.apply {
+                    setTravelPlanHeritageList(curTravel.heritageList)
+                    setUserTravel(curTravel)
+                    setUserTravelId(curTravel.id)
+                }
+                if(state != 2){
+                    findNavController().navigate(R.id.travelPlanFragment)
+                }
+            }
+        }
+
         binding.travelListRvMyTravel.adapter = travelAdapter
     }
 

@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginLeft
 import androidx.core.view.size
+import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.databinding.OverlapImagesBinding
 import okhttp3.internal.wait
@@ -21,6 +22,15 @@ class OverlapImages constructor(context: Context, attrs: AttributeSet) :  Constr
             LayoutInflater.from(context).inflate(R.layout.overlap_images, this, false)
         )
     }
+
+    fun setImages(){
+        val imgArray = arrayListOf(binding.firstImg, binding.secondImg, binding.thirdImg)
+        Glide.with(context)
+            .load(R.drawable.cultural_asset_image_temp)
+            .fallback(R.drawable.ic_launcher_foreground)
+            .into(binding.firstImg)
+    }
+
     init{
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OverlapImages)
         val size = typedArray.getInt(R.styleable.OverlapImages_size, 70)

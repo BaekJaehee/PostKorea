@@ -17,10 +17,10 @@
         android:paddingHorizontal="10dp">
 
         <com.ssafy.travelcollector.customView.OverlapImages
+            android:id="@+id/travel_list_oi_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:size="70"
-            />
+            app:size="70" />
 
         <LinearLayout
             android:layout_width="wrap_content"

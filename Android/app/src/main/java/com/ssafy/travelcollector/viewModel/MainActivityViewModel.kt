@@ -26,11 +26,20 @@ enum class DetailStateEnum(private val state: Int) {
 
 class MainActivityViewModel : ViewModel() {
 
-    val detailState = arraySetOf(DetailStateEnum.None)
+    private val _curLocation = MutableStateFlow(Pair(0.0, 0.0))
+    val curLocation = _curLocation.asStateFlow()
+    fun setCurLocation(lat: Double, lng: Double){
+        _curLocation.update { Pair(lat, lng) }
+    }
 
-    fun addDetailState(state: DetailStateEnum): MainActivityViewModel{
-        detailState.add(state)
-        return this
+    private val _detailState = MutableStateFlow(arraySetOf(DetailStateEnum.None))
+    val detailState = _detailState.asStateFlow()
+
+    fun addDetailState(states: ArrayList<DetailStateEnum>){
+        _detailState.update {
+            it.addAll(states)
+            it
+        }
     }
 
     private val _selectedPostingId = MutableStateFlow(0)
@@ -42,6 +51,17 @@ class MainActivityViewModel : ViewModel() {
     private val _posting = MutableStateFlow(arrayListOf<Posting>())
     val posting = _posting.asStateFlow()
 
+    private val _userTravelId = MutableStateFlow(-1)
+    val userTravelId = _userTravelId.asStateFlow()
+    fun setUserTravelId(id: Int){
+        _userTravelId.update { id }
+    }
+
+    private val _userTravel = MutableStateFlow(TravelWithHeritageList())
+    val userTravel=_userTravel.asStateFlow()
+    fun setUserTravel(travel: TravelWithHeritageList){
+        _userTravel.update { travel }
+    }
 
     private val _userTravelList = MutableStateFlow(arrayListOf<TravelWithHeritageList>())
     val userTravelList = _userTravelList.asStateFlow()
@@ -56,10 +76,12 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-
+    fun setUserTravelList(newList: ArrayList<TravelWithHeritageList>){
+        _userTravelList.update { newList }
+    }
 
     //계획 중인 여행 목록의 원본. 저장 시 해당 리스트로 저장.
-    private var _travelPlanHeritageList = MutableStateFlow(arrayListOf(Heritage(name="3"), Heritage(name="4")))
+    private val _travelPlanHeritageList = MutableStateFlow(arrayListOf(Heritage(name="3"), Heritage(name="4")))
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
     fun loadTravelPlanHeritageList(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
@@ -69,7 +91,22 @@ class MainActivityViewModel : ViewModel() {
         _travelPlanHeritageList.update { list }
     }
 
-   //눈에 보이는 여행 목록. 저장 및 삭제 될 수 있는 임시 리스트.
+    fun addHeritageToTravelPlan(heritage: Heritage){
+        _travelPlanHeritageList.update {
+            it.add(heritage)
+            it
+        }
+    }
+
+    private val _curHeritage = MutableStateFlow(Heritage())
+    val curHeritage = _curHeritage.asStateFlow()
+    fun setCurHeritage(heritage: Heritage){
+        _curHeritage.update { heritage }
+    }
+
+
+    //눈에 보이는 여행 목록. db에 저장되지 않는 임시 리스트.
+    //테마 내의 목록이나 문화재 검색 결과가 될 수 있다
     private var _curHeritageList = MutableStateFlow(arrayListOf(Heritage(name = "1"), Heritage(name = "2")))
     val curHeritageList = _curHeritageList.asStateFlow()
     fun setCurHeritageList(list: ArrayList<Heritage>){
@@ -94,8 +131,5 @@ class MainActivityViewModel : ViewModel() {
     fun loadRecommendedTheme(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
     }
-
-
-
 
 }
