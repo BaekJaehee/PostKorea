@@ -13,6 +13,7 @@ import androidx.viewbinding.ViewBinding
 import com.ssafy.travelcollector.MainActivity
 import com.ssafy.travelcollector.viewModel.AccountViewModel
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
+import com.ssafy.travelcollector.viewModel.TravelViewModel
 
 // Fragment의 기본을 작성, 뷰 바인딩 활용
 abstract class BaseFragment<B : ViewBinding>(
@@ -25,6 +26,7 @@ abstract class BaseFragment<B : ViewBinding>(
 
     protected val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     protected val accountViewModel: AccountViewModel by activityViewModels()
+    protected val travelViewModel: TravelViewModel by activityViewModels()
 
     protected lateinit var mainActivity: MainActivity
 

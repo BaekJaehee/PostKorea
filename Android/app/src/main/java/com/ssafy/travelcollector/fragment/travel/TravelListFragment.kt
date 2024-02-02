@@ -23,7 +23,7 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.travelListAddBtnMyTravel.setOnClickListener{
-            mainActivityViewModel.apply {
+            travelViewModel.apply {
                 setTravelPlanHeritageList(arrayListOf())
                 setUserTravel(TravelWithHeritageList())
             }
@@ -34,14 +34,14 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
 
     private fun initAdapter(){
         lifecycleScope.launch {
-            mainActivityViewModel.userTravelList.collect{
+            travelViewModel.userTravelList.collect{
                 travelAdapter.submitList(it)
             }
         }
         travelAdapter.clickListener = object : TravelAdapter.ClickListener{
             override fun onClick(position: Int, state: Int) {
-                val curTravel = mainActivityViewModel.userTravelList.value[position]
-                mainActivityViewModel.apply {
+                val curTravel = travelViewModel.userTravelList.value[position]
+                travelViewModel.apply {
                     setTravelPlanHeritageList(curTravel.heritageList)
                     setUserTravel(curTravel)
                     setUserTravelId(curTravel.id)

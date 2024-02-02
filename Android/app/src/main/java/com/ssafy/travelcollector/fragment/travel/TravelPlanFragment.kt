@@ -53,7 +53,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         var startDate = 0L
         var endDate = 0L
 
-        curTravel = mainActivityViewModel.userTravel.value
+        curTravel = travelViewModel.userTravel.value
 
         if(curTravel.id == -1){
             binding.travelPlanTvDuration.text = "기간을 선택하세요"
@@ -99,34 +99,34 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                 showToast("날짜를 입력하세요")
             }else{
                 if(curTravel.id == -1){
-                    mainActivityViewModel.addTravel(
+                    travelViewModel.addTravel(
                         TravelWithHeritageList(
                             name = binding.travelPlanEtName.text.toString(),
                             startDate = startDate,
                             endDate = endDate,
-                            heritageList = mainActivityViewModel.travelPlanHeritageList.value
+                            heritageList = travelViewModel.travelPlanHeritageList.value
                         ).apply {
                             // 임시
-                            id = mainActivityViewModel.userTravelList.value.count()+1
+                            id = travelViewModel.userTravelList.value.count()+1
                         }
                     )
                 }else{
                     //임시
                     //db에 저장한 후 다시 불러 오는 과정으로 대체해야 함
                     //현재는 로컬에 저장 후 강제로 필터링해서 찾음
-                    val newList = mainActivityViewModel.userTravelList.value.toMutableList()
+                    val newList = travelViewModel.userTravelList.value.toMutableList()
                     for( (idx,item) in newList.withIndex()){
                         if(item.id == curTravel.id){
                             newList[idx] = TravelWithHeritageList(
                                 name = binding.travelPlanEtName.text.toString(),
                                 startDate = startDate,
                                 endDate = endDate,
-                                heritageList = mainActivityViewModel.travelPlanHeritageList.value
+                                heritageList = travelViewModel.travelPlanHeritageList.value
                             )
                             break
                         }
                     }
-                    mainActivityViewModel.setUserTravelList(newList as ArrayList)
+                    travelViewModel.setUserTravelList(newList as ArrayList)
                 }
                 findNavController().popBackStack()
             }
@@ -139,7 +139,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 launch {
-                    mainActivityViewModel.travelPlanHeritageList.collect{
+                    travelViewModel.travelPlanHeritageList.collect{
                         heritageAdapter.submitList(it)
                     }
                 }
@@ -156,21 +156,21 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
             }
 
             override fun delete(position: Int) {
-                val newList = mainActivityViewModel.travelPlanHeritageList.value
+                val newList = travelViewModel.travelPlanHeritageList.value
                 newList.removeAt(position)
-                mainActivityViewModel.setTravelPlanHeritageList(newList)
+                travelViewModel.setTravelPlanHeritageList(newList)
             }
 
             override fun onRemove(position: Int) {
-                val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
+                val newList = travelViewModel.travelPlanHeritageList.value.toMutableList()
                 newList.removeAt(position)
-                mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
+                travelViewModel.setTravelPlanHeritageList(newList as ArrayList)
             }
 
             override fun onMove(from: Int, to: Int) {
-                val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
+                val newList = travelViewModel.travelPlanHeritageList.value.toMutableList()
                 Collections.swap(newList, from, to)
-                mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
+                travelViewModel.setTravelPlanHeritageList(newList as ArrayList)
             }
 
             override fun onClick(position: Int) {

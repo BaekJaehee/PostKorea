@@ -28,7 +28,7 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
         }
 
         binding.culturalAssetDetailBtnAddToTravel.setOnClickListener {
-            mainActivityViewModel.addHeritageToTravelPlan(mainActivityViewModel.curHeritage.value)
+            travelViewModel.addHeritageToTravelPlan(mainActivityViewModel.curHeritage.value)
             parentFragmentManager.popBackStack()
         }
 
