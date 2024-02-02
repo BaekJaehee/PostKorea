@@ -22,7 +22,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
         mainActivity.setNavigationBarStatus(true)
 
         lifecycleScope.launch{
-            mainActivityViewModel.user.collect{
+            accountViewModel.user.collect{
                 Log.d(TAG, "onViewCreated: $it")
             }
         }

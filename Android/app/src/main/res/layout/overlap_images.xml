@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/first_img"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        tools:src="@color/black"
-        android:src="@color/black"
         android:elevation="2dp"
-        app:civ_border_width="1dp" />
+        android:paddingBottom="5dp"
+        android:src="@color/white"
+        app:civ_border_width="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/white" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/second_img"
-        android:layout_width="69dp"
-        android:layout_height="69dp"
-        android:layout_marginLeft="-50dp"
-        android:src="@color/design_default_color_error"
-        tools:src="@color/design_default_color_error"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:elevation="1dp"
-        app:civ_border_width="1dp"/>
+        android:layout_marginLeft="20dp"
+        android:paddingBottom="5dp"
+        android:src="@color/design_default_color_error"
+        app:civ_border_width="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/design_default_color_error" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/third_img"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_marginLeft="-52dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:paddingBottom="5dp"
         android:src="@color/material_dynamic_tertiary95"
         app:civ_border_width="1dp"
+        android:layout_marginLeft="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:src="@color/material_dynamic_tertiary95" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,13 @@
 package com.ssafy.travelcollector.fragment.travel
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.ssafy.travelcollector.config.BaseFragment
@@ -16,8 +15,7 @@ import com.ssafy.travelcollector.databinding.FragmentTravelPlanBinding
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.HeritageAdapter
 import com.ssafy.travelcollector.config.ItemTouchCallBack
-import com.ssafy.travelcollector.test.TDto
-import com.ssafy.travelcollector.test.TestAdapter
+import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -46,32 +44,51 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
     }
 
     private fun initView(){
-        binding.travelListDaySelect.setOnClickListener{
+        var startDate = 0L
+        var endDate = 0L
 
+        binding.travelListDaySelect.setOnClickListener{
             val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
                 .setTitleText("기간 선택").build()
-
             dateRangePicker.show(childFragmentManager, "date_picker")
             dateRangePicker.addOnPositiveButtonClickListener { selection ->
-                val calendar = getInstance()
-                calendar.timeInMillis = selection?.first ?: 0
-                val startDate = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(calendar.time).toString()
-
-                calendar.timeInMillis = selection?.second ?: 0
-                val endDate = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(calendar.time).toString()
-
+//                val calendar = getInstance()
+//                calendar.timeInMillis = selection?.first ?: 0
+//                val startDate = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(calendar.time).toString()
+//                calendar.timeInMillis = selection?.second ?: 0
+//                val endDate = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(calendar.time).toString()
+//                Log.d(TAG, "initView: $startDate $endDate")
+                startDate = selection?.first ?: 0
+                endDate = selection?.first ?: 0
                 binding.travelPlanTvDuration.text = dateRangePicker.headerText
+
             }
         }
 
         binding.travelPlanBtnRecommendTheme.setOnClickListener {
-            mainActivityViewModel.addDetailState(DetailStateEnum.AddToTravel)
+            mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.AddToTravel))
             findNavController().navigate(R.id.themeListFragment)
         }
 
         binding.travelPlanFabAdd.setOnClickListener{
-            mainActivityViewModel.addDetailState(DetailStateEnum.AddToTravel)
+            mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.AddToTravel))
             findNavController().navigate(R.id.heritageListFragment)
+        }
+
+        binding.travelPlanBtnSave.setOnClickListener {
+            if(startDate==0L||endDate==0L){
+                showToast("날짜를 입력하세요")
+            }else{
+                mainActivityViewModel.addTravel(
+                    TravelWithHeritageList(
+                        name = binding.travelPlanEtName.text.toString(),
+                        startDate = startDate,
+                        endDate = endDate,
+                        heritageList = mainActivityViewModel.travelPlanHeritageList.value
+                    )
+                )
+            }
+
         }
     }
 
@@ -112,6 +129,11 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                 val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
                 Collections.swap(newList, from, to)
                 mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
+            }
+
+            override fun onClick(position: Int) {
+                mainActivityViewModel.setCurHeritage(mainActivityViewModel.curHeritageList.value[position])
+                findNavController().navigate(R.id.culturalAssetDetailFragment)
             }
         }
 

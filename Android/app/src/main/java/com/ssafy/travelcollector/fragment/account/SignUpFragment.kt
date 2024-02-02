@@ -1,25 +1,22 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.fragment.account
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentSignUpBinding
 import com.ssafy.travelcollector.dto.User
 import com.ssafy.travelcollector.util.RetrofitUtil
-import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-private const val TAG = "SignUpFragment"
-class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::bind, R.layout.fragment_sign_up) {
+class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
+    FragmentSignUpBinding::bind,
+    R.layout.fragment_sign_up
+) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,7 +24,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     }
 
     private fun initView(){
-        val defaultInfo = mainActivityViewModel.getUserInfoToSignUp()
+        val defaultInfo = accountViewModel.getUserInfoToSignUp()
 
         if(defaultInfo.userEmail.isNotEmpty()){
             binding.signUpEtEMail.setText(defaultInfo.userEmail)
@@ -38,7 +35,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             //db에 회원 정보 저장
             if(isValidInformation()){
                 lifecycleScope.launch {
-                    val msg = withContext(Dispatchers.IO){
+                    val msg = withContext(Dispatchers.IO) {
                         RetrofitUtil.USER_SERVICE.insert(
                             User(
                                 userEmail = binding.signUpEtEMail.text.toString(),
@@ -54,7 +51,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                         showToast("실패ㅠㅠ")
                     }
                 }
-
             }else{
                 showToast("정보가 잘못됨")
             }
@@ -69,7 +65,5 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                 && binding.signUpEtName.text!!.isNotEmpty()
                 && binding.signUpEtPhoneNumber.text!!.isNotEmpty())
     }
-
-
 
 }

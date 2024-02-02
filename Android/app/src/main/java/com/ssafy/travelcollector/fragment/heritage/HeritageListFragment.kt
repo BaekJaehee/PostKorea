@@ -1,0 +1,48 @@
+package com.ssafy.travelcollector.fragment.heritage
+
+import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.ssafy.travelcollector.R
+import com.ssafy.travelcollector.adapter.HeritageAdapter
+import com.ssafy.travelcollector.config.BaseFragment
+import com.ssafy.travelcollector.databinding.FragmentHeritageListBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentHeritageListBinding::bind,
+    R.layout.fragment_heritage_list
+){
+    private val heritageAdapter: HeritageAdapter by lazy{
+        HeritageAdapter()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+    }
+
+    private fun initAdapter () {
+        lifecycleScope.launch {
+            mainActivityViewModel.curHeritageList.collect{
+                heritageAdapter.submitList(it)
+            }
+        }
+        heritageAdapter.eventListener = object : HeritageAdapter.EventListener{
+            override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {}
+            override fun delete(position: Int) {  }
+            override fun onRemove(position: Int) {}
+            override fun onMove(from: Int, to: Int) {}
+            override fun onClick(position: Int) {
+                mainActivityViewModel.setCurHeritage(mainActivityViewModel.curHeritageList.value[position])
+                findNavController().navigate(R.id.culturalAssetDetailFragment)
+            }
+
+        }
+        binding.heritageListRv.adapter = heritageAdapter
+    }
+
+}

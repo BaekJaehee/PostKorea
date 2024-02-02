@@ -17,6 +17,9 @@ class HeritageAdapter : BaseAdapter<Heritage>(), ITouchMove {
         ITouchRemove {
         override fun bindInfo(data: Heritage) {
             binding.heritageName.text = data.name
+            binding.root.setOnClickListener {
+                eventListener.onClick(layoutPosition)
+            }
         }
 
         override fun onCreateContextMenu(
@@ -40,6 +43,7 @@ class HeritageAdapter : BaseAdapter<Heritage>(), ITouchMove {
         fun delete(position: Int)
         fun onRemove(position: Int)
         fun onMove(from: Int, to: Int)
+        fun onClick(position: Int)
     }
 
     lateinit var eventListener: EventListener
