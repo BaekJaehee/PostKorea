@@ -27,7 +27,9 @@ public class RelicController {
 
     @GetMapping("/list")
     public ResponseEntity<List<ListData>> getRelic() {
-        List<ListData> listData = listDataRepository.findAll();
+        int limit = 50; // 리미트 개수 임의 설정
+        Pageable pageable = PageRequest.of(0, limit);
+        List<ListData> listData = listDataRepository.findListDataByLimit(pageable);
         return ResponseEntity.ok().body(listData);
     }
 
