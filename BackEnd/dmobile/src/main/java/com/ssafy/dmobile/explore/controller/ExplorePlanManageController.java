@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("explore-plans/manage")
 @RequiredArgsConstructor
@@ -26,6 +28,17 @@ public class ExplorePlanManageController {
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
         relicExplorePlanService.addRelicInPlan(planId, relicId, memberId);
+    }
+
+    @PostMapping("/{planId}/bulk-add")
+    @Operation(summary = "탐방 계획에 여러 문화재 추가", description = "탐방의 id값과 문화재의 id값들을 받아서 token의 id를 지닌 유저에게 추가합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public void addMultipleRelicsToPlan(
+            @PathVariable Long planId,
+            @RequestBody List<Long> relicIds,
+            @RequestHeader("Authorization") String token) {
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        relicExplorePlanService.addRelicsInPlan(planId, relicIds, memberId);
     }
 
     @PutMapping("/{planId}/{relicId}")

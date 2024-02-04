@@ -36,6 +36,14 @@ public class RelicExplorePlanService {
     }
 
     @Transactional
+    public void addRelicsInPlan(Long planId, List<Long> relicIds, Long memberId) {
+
+        for(Long relicId : relicIds) {
+            addRelicInPlan(planId, relicId, memberId);
+        }
+    }
+
+    @Transactional
     public void updateRelicInPlan(Long planId, Long relicId, Long memberId, boolean visited) {
 
         RelicExplorePlan currentPlan = relicExplorePlanRepository
