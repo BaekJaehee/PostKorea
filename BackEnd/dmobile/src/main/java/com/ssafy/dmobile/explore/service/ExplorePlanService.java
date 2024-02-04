@@ -5,15 +5,12 @@ import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.explore.entity.ExplorePlan;
 import com.ssafy.dmobile.explore.entity.dto.ExplorePlanDto;
 import com.ssafy.dmobile.explore.repository.ExplorePlanRepository;
-import com.ssafy.dmobile.member.entity.Member;
-import com.ssafy.dmobile.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +42,7 @@ public class ExplorePlanService {
 
         // 해당 계획을 수립한 유저가 아니면 수정 불가능
         if (!explorePlan.getMemberId().equals(memberId)) {
-            throw new CustomException(ExceptionType.INVALID_USER_FOR_PLAN_EXCEPTION);
+            throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
         explorePlan.setPlanName(modifiedExplorePlan.getPlanName());
@@ -65,7 +62,7 @@ public class ExplorePlanService {
 
         // 해당 계획에 권한이 있는 유저가 아니면 삭제 불가능
         if (!explorePlan.getMemberId().equals(memberId)) {
-            throw new CustomException(ExceptionType.INVALID_USER_FOR_PLAN_EXCEPTION);
+            throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
         explorePlanRepository.deleteById(planId);

@@ -1,7 +1,5 @@
 package com.ssafy.dmobile.explore.controller;
 
-import com.ssafy.dmobile.explore.entity.ExplorePlan;
-import com.ssafy.dmobile.explore.service.ExplorePlanService;
 import com.ssafy.dmobile.explore.service.RelicExplorePlanService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,8 +7,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("explore-plans/manage")
@@ -29,7 +25,7 @@ public class ExplorePlanManageController {
             @PathVariable Long planId,
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        relicExplorePlanService.addRelicToPlan(planId, relicId, memberId);
+        relicExplorePlanService.addRelicInPlan(planId, relicId, memberId);
     }
 
     @PutMapping("/{planId}/{relicId}")
@@ -41,7 +37,7 @@ public class ExplorePlanManageController {
             @RequestParam boolean visited,
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        relicExplorePlanService.updateRelicToPlan(planId, relicId, memberId, visited);
+        relicExplorePlanService.updateRelicInPlan(planId, relicId, memberId, visited);
     }
 
     @DeleteMapping("/{planId}/{relicId}")
@@ -52,6 +48,6 @@ public class ExplorePlanManageController {
             @PathVariable Long planId,
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        relicExplorePlanService.deleteRelicToPlan(planId, relicId, memberId);
+        relicExplorePlanService.deleteRelicInPlan(planId, relicId, memberId);
     }
 }

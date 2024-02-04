@@ -1,5 +1,7 @@
 package com.ssafy.dmobile.explore.controller;
 
+import com.ssafy.dmobile.exception.CustomException;
+import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.explore.entity.ExplorePlan;
 import com.ssafy.dmobile.explore.entity.dto.ExplorePlanDto;
 import com.ssafy.dmobile.explore.service.ExplorePlanService;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ExplorePlanController {
 
     private final ExplorePlanService explorePlanService;
+    private final RelicExplorePlanService relicExplorePlanService;
     private final AuthTokensGenerator authTokensGenerator;
 
     @PostMapping
@@ -85,13 +88,17 @@ public class ExplorePlanController {
     }
 
     @GetMapping("/list/{planId}")
-    @Operation(summary = "탐방 상세 내역 조회", description = "PlanId를 지닌 탐방 내 지금까지 다녀온 문화재 조회, 아직 미구현")
+    @Operation(summary = "탐방 상세 내역 조회", description = "PlanId를 지닌 탐방 내 지금까지 다녀온 문화재 조회<br>DetailData 엔티티 그대로 출력되며 필요에 의해 DTO 생성 가능")
     @SecurityRequirement(name = "Authorization")
     public List<DetailData> getVisitedRelicList(
             @RequestHeader("Authorization") String token,
             @PathVariable Long planId) {
+        Long memberId = authTokensGenerator.extractMemberId(token);
 
-        List<DetailData> list = new ArrayList<>();
-        return list;
+        if(!relicExplorePlanService.canAccessPlan(memberId, planId)) {
+            throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
+        }
+
+        return relicExplorePlanService.getRelicsInPlan(planId);
     }
 }
