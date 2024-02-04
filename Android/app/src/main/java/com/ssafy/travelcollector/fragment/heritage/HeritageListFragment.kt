@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector.fragment.heritage
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -9,10 +10,12 @@ import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.HeritageAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentHeritageListBinding
+import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+private const val TAG = "HeritageListFragment"
 class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentHeritageListBinding::bind,
     R.layout.fragment_heritage_list
 ){
@@ -47,7 +50,7 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
                 heritageViewModel.loadHeritageDetail(
                     heritageViewModel.curHeritageList.value[position].id
                 )
-                findNavController().navigate(R.id.culturalAssetDetailFragment)
+                findNavController().navigate(R.id.action_heritageListFragment_to_culturalAssetDetailFragment)
             }
 
         }

@@ -39,7 +39,7 @@ class TravelAdapter: BaseAdapter<TravelWithHeritageList>() {
     }
 
     interface ClickListener{
-        fun onClick(position: Int, state: Int)
+        fun onClick(position: Int, state: Boolean)
     }
     lateinit var clickListener: ClickListener
 

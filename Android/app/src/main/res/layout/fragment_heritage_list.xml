@@ -124,7 +124,7 @@
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/travel_plan_btn_save"
+            android:id="@+id/heritage_list_btn_map_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/button_brown"
