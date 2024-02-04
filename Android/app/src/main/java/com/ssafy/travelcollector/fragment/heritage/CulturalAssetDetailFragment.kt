@@ -1,14 +1,17 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.fragment.heritage
 
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentCulturalAssetDetailBinding
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import kotlinx.coroutines.launch
 
-class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBinding>(FragmentCulturalAssetDetailBinding::bind, R.layout.fragment_cultural_asset_detail) {
+class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBinding>(FragmentCulturalAssetDetailBinding::bind,
+    R.layout.fragment_cultural_asset_detail
+) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()

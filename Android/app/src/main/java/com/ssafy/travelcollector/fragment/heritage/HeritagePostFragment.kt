@@ -1,20 +1,20 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.fragment.heritage
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.CommentAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentHeritagePostBinding
 import com.ssafy.travelcollector.dto.Comment
 
-class HeritagePostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeritagePostBinding::bind, R.layout.fragment_heritage_post){
+class HeritagePostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeritagePostBinding::bind,
+    R.layout.fragment_heritage_post
+){
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private val bottomSheet by lazy{ binding.root.findViewById<LinearLayout>(R.id.bottom_sheet)}

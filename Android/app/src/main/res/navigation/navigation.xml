@@ -78,7 +78,7 @@
         tools:layout="@layout/fragment_travel_post_edit" />
     <fragment
         android:id="@+id/heritagePostFragment"
-        android:name="com.ssafy.travelcollector.HeritagePostFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.HeritagePostFragment"
         android:label="fragment_heritage_post"
         tools:layout="@layout/fragment_heritage_post" />
     <fragment
@@ -104,7 +104,7 @@
     </fragment>
     <fragment
         android:id="@+id/culturalAssetDetailFragment"
-        android:name="com.ssafy.travelcollector.CulturalAssetDetailFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.CulturalAssetDetailFragment"
         android:label="fragment_cultural_asset_detail"
         tools:layout="@layout/fragment_cultural_asset_detail" />
 </navigation>
