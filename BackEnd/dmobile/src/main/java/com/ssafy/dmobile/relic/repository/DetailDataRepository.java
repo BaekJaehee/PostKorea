@@ -23,6 +23,6 @@ public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
             @Param("scodeName") String scodeName
     );
 
-    @Query("SELECT d.imageUrl, d.ccbaMnm1 FROM DetailData d")
+    @Query("SELECT d.relicId, d.imageUrl, d.ccbaMnm1 FROM DetailData d")
     List<Object[]> findDataByLimit(Pageable pageable);
 }
