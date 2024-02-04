@@ -45,36 +45,13 @@ class MainActivityViewModel : ViewModel() {
 
     private val _selectedPostingId = MutableStateFlow(0)
     val selectedPostingId = _selectedPostingId.asStateFlow()
-    fun setSelectedPostingId(idx: Int){
-        _selectedPostingId.value = idx
+    fun setSelectedPostingId(id: Int){
+        _selectedPostingId.value = id
     }
+
 
     private val _posting = MutableStateFlow(arrayListOf<Posting>())
     val posting = _posting.asStateFlow()
-
-    private val _curHeritage = MutableStateFlow(Heritage())
-    val curHeritage = _curHeritage.asStateFlow()
-    fun setCurHeritage(heritage: Heritage){
-        _curHeritage.update { heritage }
-    }
-
-
-    //눈에 보이는 여행 목록. db에 저장되지 않는 임시 리스트.
-    //테마 내의 목록이나 문화재 검색 결과가 될 수 있다
-    private var _curHeritageList = MutableStateFlow(arrayListOf(Heritage(name = "1"), Heritage(name = "2")))
-    val curHeritageList = _curHeritageList.asStateFlow()
-    fun setCurHeritageList(list: ArrayList<Heritage>){
-        _curHeritageList.update { list }
-    }
-
-    fun loadHeritageList(){
-        viewModelScope.launch {
-            val result = withContext(Dispatchers.IO){
-                RetrofitUtil.HERITAGE_SERVICE.getHeritageList()
-            }
-            setCurHeritageList(ArrayList(result.body()))
-        }
-    }
 
     private var _recommendedTheme = MutableStateFlow(arrayListOf(
         TravelTheme(title = "1", isBookMarked = false),

@@ -28,13 +28,13 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
 
     private fun initView(){
         lifecycleScope.launch {
-            mainActivityViewModel.loadHeritageList()
+            heritageViewModel.loadHeritageList()
         }
     }
 
     private fun initAdapter () {
         lifecycleScope.launch {
-            mainActivityViewModel.curHeritageList.collect{
+            heritageViewModel.curHeritageList.collect{
                 heritageAdapter.submitList(it)
             }
         }
@@ -44,7 +44,9 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
             override fun onRemove(position: Int) {}
             override fun onMove(from: Int, to: Int) {}
             override fun onClick(position: Int) {
-                mainActivityViewModel.setCurHeritage(mainActivityViewModel.curHeritageList.value[position])
+                heritageViewModel.loadHeritageDetail(
+                    heritageViewModel.curHeritageList.value[position].id
+                )
                 findNavController().navigate(R.id.culturalAssetDetailFragment)
             }
 

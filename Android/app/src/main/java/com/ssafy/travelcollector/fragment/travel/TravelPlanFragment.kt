@@ -174,7 +174,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
             }
 
             override fun onClick(position: Int) {
-                mainActivityViewModel.setCurHeritage(mainActivityViewModel.curHeritageList.value[position])
+                heritageViewModel.setCurHeritage(heritageViewModel.curHeritageList.value[position])
                 findNavController().navigate(R.id.culturalAssetDetailFragment)
             }
         }

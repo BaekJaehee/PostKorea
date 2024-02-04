@@ -7,5 +7,6 @@ data class Heritage(
     @SerializedName("relicId") var id: Int = 0,
     @SerializedName("ccbaMnm1") var name: String = "",
     @SerializedName("imageUrl") var imageUrl: String = "",
+    @SerializedName("content") var content: String = "",
     var isBookMarked: Boolean = false
 )

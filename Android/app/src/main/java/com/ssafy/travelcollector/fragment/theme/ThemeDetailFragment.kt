@@ -28,7 +28,7 @@ class ThemeDetailFragment : BaseFragment<FragmentThemeDetailBinding>(FragmentThe
         binding.themeDetailAdd.visibility = if(mainActivityViewModel.detailState.value.contains(DetailStateEnum.AddToTravel)) View.VISIBLE else View.GONE
         binding.themeDetailAdd.setOnClickListener{
             val newList = travelViewModel.travelPlanHeritageList.value.toMutableList()
-            newList.addAll(mainActivityViewModel.curHeritageList.value)
+            newList.addAll(heritageViewModel.curHeritageList.value)
             travelViewModel.setTravelPlanHeritageList(newList as ArrayList)
             findNavController().popBackStack(R.id.travelPlanFragment, false)
         }
@@ -36,7 +36,7 @@ class ThemeDetailFragment : BaseFragment<FragmentThemeDetailBinding>(FragmentThe
 
     private fun initAdapter(){
         binding.themeDetailHeritageRv.adapter = heritageAdapter.apply{
-            submitList(mainActivityViewModel.curHeritageList.value)
+            submitList(heritageViewModel.curHeritageList.value)
         }
 
     }

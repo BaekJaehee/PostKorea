@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="40dp">
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/cultural_asset_detail_iv"
             android:layout_width="330dp"
-            android:layout_height="316dp"
-            android:background="@drawable/cultural_asset_image_temp" />
+            android:layout_height="wrap_content"
+            tools:background="@drawable/cultural_asset_image_temp" />
 
         <TextView
             android:id="@+id/cultural_asset_detail_tv_name"
@@ -34,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/cultural_asset_description_temp"
-            android:textSize="15sp"
-            android:gravity="center"/>
+            android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -54,7 +53,6 @@
                 android:gravity="center"
                 android:background="@drawable/bg_round_brown"
                 android:textColor="@color/black"
-                android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
 
                 />
@@ -68,7 +66,6 @@
                 android:gravity="center"
                 android:background="@drawable/bg_round_brown"
                 android:textColor="@color/black"
-                android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
 
                 />
@@ -82,7 +79,6 @@
                 android:gravity="center"
                 android:background="@drawable/bg_round_brown"
                 android:textColor="@color/black"
-                android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
                 />
 
