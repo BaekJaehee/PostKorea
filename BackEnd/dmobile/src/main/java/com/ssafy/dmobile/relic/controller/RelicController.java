@@ -29,7 +29,7 @@ public class RelicController {
     public ResponseEntity<?> getRelic() {
         int limit = 10; // 개수 임의 설정
         Pageable pageable = PageRequest.of(0, limit);
-        List<Object[]> detailData = detailDataRepository.findDataByLimit(pageable);
+        List<DetailData> detailData = detailDataRepository.findDataByLimit(pageable);
         return ResponseEntity.ok().body(detailData);
     }
     // 조인 해보려다가 주말안에 될지를 모르겠어서 일단 DetailData에서 이미지 주소랑 이름만
