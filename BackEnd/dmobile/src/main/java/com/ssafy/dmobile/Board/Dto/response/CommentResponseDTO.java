@@ -14,15 +14,15 @@ public class CommentResponseDTO {
     private Long commentId;
     private String content;
     private Long createdDate;
-    private Member member;
+    private Long memberId;
     private Long boardId;
 
     public CommentResponseDTO(Comment comment) {
         this.commentId = comment.getCommentId();
         this.content = comment.getContent();
         this.createdDate = comment.getCreatedDate();
-//        this.member = comment.getMember();
-        this.boardId = comment.getBoardId();
+        this.memberId = comment.getMember().getId();
+        this.boardId = comment.getBoard().getBoardId();
     }
 
 }

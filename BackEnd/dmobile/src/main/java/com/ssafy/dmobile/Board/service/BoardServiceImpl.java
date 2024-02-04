@@ -36,7 +36,7 @@ public class BoardServiceImpl implements BoardService {
         if (dto.getTitle().trim().isEmpty()) {
             throw new CustomException(ExceptionType.TITLE_CANNOT_BE_EMPTY);
         }
-        if (dto.getContent() == null || dto.getContent().trim().isEmpty()) {
+        if (dto.getContent().trim().isEmpty()) {
             throw new CustomException(ExceptionType.CONTENT_CANNOT_BE_EMPTY);
         }
         // 작성자가 없으면 못 만들게 해야 함 + 현재 토큰을 넘겨줘야 함
@@ -57,11 +57,11 @@ public class BoardServiceImpl implements BoardService {
                 () -> new CustomException(ExceptionType.BOARD_NOT_FOUND)
         );
         // 수정한 게시판 제목이 있는지
-        if (dto.getBoardId() == null || dto.getTitle().trim().isEmpty()) {
+        if (dto.getTitle().trim().isEmpty()) {
             throw new CustomException(ExceptionType.TITLE_CANNOT_BE_EMPTY);
         }
         // 수정한 게시판 내용이 있는지
-        if (dto.getContent() == null || dto.getContent().trim().isEmpty()) {
+        if (dto.getContent().trim().isEmpty()) {
             throw new CustomException(ExceptionType.CONTENT_CANNOT_BE_EMPTY);
         }
         // 게시판 작성자와 현재 로그인된 사람의 아이디가 같은지 비교

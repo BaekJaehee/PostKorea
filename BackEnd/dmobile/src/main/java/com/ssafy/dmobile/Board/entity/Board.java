@@ -23,7 +23,7 @@ public class Board {
 
     // 게시글 ID
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @Column(name = "board_Id")
     private Long boardId;
 
     // title(제목)
@@ -36,7 +36,7 @@ public class Board {
 
     // User(유저 ID)
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_Id")
     private Member member;
 
     // post_image(이미지 업로드)

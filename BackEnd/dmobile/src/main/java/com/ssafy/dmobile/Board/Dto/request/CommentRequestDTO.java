@@ -24,11 +24,8 @@ public class CommentRequestDTO {
 
     public Comment dtoToEntity(CommentRequestDTO dto) {
         return Comment.builder()
-//                .commentId(dto.getCommentId())
                 .content(dto.getContent())
                 .createdDate(dto.getCreatedDate())
-//                .member(dto.getMember())
-//                .board(dto.getBoardId())
                 .build();
     }
 }

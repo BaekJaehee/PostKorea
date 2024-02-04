@@ -24,7 +24,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "comment_Id")
     private Long commentId;
 
     // content
@@ -33,19 +33,19 @@ public class Comment {
 
     // User
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_Id")
     private Member member;
 
     // board_id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boards_id")
+    @JoinColumn(name = "boards_Id")
     private Board board;
 
     // createdTime
     private Long createdDate;
 
-    @Getter
-    private Long boardId;
+//    @Getter
+//    private Board board;
 
     @Builder
     public Comment(Long commentId, Board board, String content, Member member) {

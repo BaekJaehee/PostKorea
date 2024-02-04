@@ -39,7 +39,7 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 수정", description = "댓글을 수정합니다.")
-    @PutMapping("/{boardId}/{commentId}")
+    @PutMapping("/{boardId}/comments/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId,
                                                             @RequestBody CommentRequestDTO commentRequestDTO,
                                                             @RequestHeader("Authorization") String token) {
@@ -51,7 +51,7 @@ public class CommentController {
 
     // 개별 삭제
     @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
-    @DeleteMapping("/{boardId}/{commentId}")
+    @DeleteMapping("/{boardId}/comments/{commentId}")
     public ResponseEntity<CommentResponseDTO> deleteComment(@PathVariable long commentId,
                                                             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token);
@@ -71,6 +71,7 @@ public class CommentController {
         }
     }
 
+    // 이거 제대로 동작 안함.
     @Operation(summary = "댓글 전체 조회", description = "특정 게시판의 댓글 전체 조회")
     @GetMapping("/{boardId}/comments")
     public ResponseEntity<List<CommentResponseDTO>> getAllComments(@PathVariable Long boardId) {

@@ -31,7 +31,7 @@ public class BoardController {
     @Operation(summary = "게시판 등록", description = "특정 게시판을 등록합니다.")
     @PostMapping
     // requestbody로 요청 받은 본문 값 매핑
-    public ResponseEntity<BoardResponseDTO> registerBoard(@RequestBody BoardRequestDTO boardRequestDto,
+    public ResponseEntity<BoardResponseDTO> createBoard(@RequestBody BoardRequestDTO boardRequestDto,
                                                           @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token);
         BoardResponseDTO boardResponseDto = boardService.createBoard(boardRequestDto, memberId);
@@ -50,12 +50,12 @@ public class BoardController {
         return new ResponseEntity<>(boardResponseDto, HttpStatus.OK);
     }
 
-    // 게시글 전체 조회
-//    @GetMapping
-//    public ResponseEntity<List<BoardResponseDTO>> getAllBoards() {
-//        List<BoardResponseDTO> dtoList = boardService.getAllBoards();
-//        return new ResponseEntity<>(dtoList, HttpStatus.OK);
-//    }
+//     게시글 전체 조회
+    @GetMapping
+    public ResponseEntity<List<BoardResponseDTO>> getAllBoards() {
+        List<BoardResponseDTO> dtoList = boardService.getAllBoards();
+        return new ResponseEntity<>(dtoList, HttpStatus.OK);
+    }
 
     // 게시글 단건 조회
     @Operation(summary = "게시판 조회", description = "게시판을 하나 조회합니다.")
@@ -85,8 +85,8 @@ public class BoardController {
 
     // GET /boards?page=0&size=10&sort=id,desc
     @Operation(summary = "게시판 페이징 출력", description = "페이징 기능을 추가한 게시판 조회 기능")
-    @GetMapping
-    public ResponseEntity<Page<Board>> getAllBoards(Pageable pageable) {
+    @GetMapping("/paging")
+    public ResponseEntity<Page<Board>> findAllBoards(Pageable pageable) {
         Page<Board> boards = boardService.findAllBoards(pageable);
         return ResponseEntity.ok(boards);
     }

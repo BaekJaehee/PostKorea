@@ -83,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public List<CommentResponseDTO> getAllComments(Long boardId) {
-        List<Comment> comments = commentRepository.findByBoardId(boardId);
+        List<Comment> comments = commentRepository.findByBoard_boardId(boardId);
         List<CommentResponseDTO> commentResponseDTOS = new ArrayList<>();
         for (Comment comment : comments) {
             commentResponseDTOS.add(new CommentResponseDTO(comment));

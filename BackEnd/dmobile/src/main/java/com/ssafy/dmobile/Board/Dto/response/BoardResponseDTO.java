@@ -3,6 +3,7 @@ package com.ssafy.dmobile.Board.Dto.response;
 import com.ssafy.dmobile.Board.entity.Board;
 import com.ssafy.dmobile.Board.entity.Comment;
 import com.ssafy.dmobile.member.entity.Member;
+import com.ssafy.dmobile.member.entity.request.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class BoardResponseDTO {
     private Long boardId;
     private String title;
     private String content;
-    private Member member;  // 작성자
+    private Long memberId;  // 작성자
 //    private Long boardcreated = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     private Long createdate;
     private List<CommentResponseDTO> comments;
@@ -32,8 +33,7 @@ public class BoardResponseDTO {
         this.title = board.getTitle();
         this.content = board.getContent();
         this.createdate = board.getCreatedDate();
-//        this.member = board.getMember();
-//        this.boardcreated = board.getBoardcreated();
+        this.memberId = board.getMember().getId();
         this.comments = board.getComments().stream().map(CommentResponseDTO::new).collect(Collectors.toList());
     }
 }
