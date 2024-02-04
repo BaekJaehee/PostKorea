@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val TAG = "AccountViewModel"
 class AccountViewModel: ViewModel(){
 
     private val _user = MutableStateFlow(User())
@@ -24,7 +25,7 @@ class AccountViewModel: ViewModel(){
         viewModelScope.launch {
             val response = withContext(Dispatchers.IO){
                 RetrofitUtil.USER_SERVICE.login(
-                    User(userEmail = id, userPwd = pwd)
+                    User(memberEmail = id, memberPwd = pwd)
                 )
             }
             loginResponseCode = response.code()
@@ -41,7 +42,7 @@ class AccountViewModel: ViewModel(){
             }
             _user.update {
                 it.copy(
-                    userEmail = response.body()?.get("user_email").toString(),
+                    memberEmail = response.body()?.get("user_email").toString(),
                     userNickname = response.body()?.get("user_nickname").toString(),
                 )
             }

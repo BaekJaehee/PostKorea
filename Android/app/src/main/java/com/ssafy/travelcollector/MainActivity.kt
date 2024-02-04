@@ -78,7 +78,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_2->{
-
+                    navController.navigate(R.id.heritageListFragment)
                     true
                 }
                 R.id.navigation_page_3->{

@@ -8,11 +8,11 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface UserService {
-    @POST("user/signup")
+    @POST("member/signup")
     suspend fun insert(@Body body: User): Response<HashMap<String, Any>>
-    @POST("user/login")
+    @POST("member/login")
     suspend fun login(@Body body: User): Response<HashMap<String, Any>>
 
-    @GET("user")
+    @GET("member")
     suspend fun getUserInfo(@Header("Authorization") token: String): Response<HashMap<String, Any>>
 }

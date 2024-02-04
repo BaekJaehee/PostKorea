@@ -15,8 +15,8 @@ enum class OAuthInfo{
 }
 
 data class User(
-    var userEmail: String = "",
-    var userPwd: String = "",
+    var memberEmail: String = "",
+    var memberPwd: String = "",
     var userName: String = "1",
     var userNickname: String = "1",
     var userAge: Int = 0,

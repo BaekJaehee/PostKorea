@@ -55,7 +55,7 @@ object SNSAuth{
                     }
                     else if (user != null) {
                         loginCallBack.onSignUp(User(
-                            userEmail = user.kakaoAccount?.email!!,
+                            memberEmail = user.kakaoAccount?.email!!,
                             userNickname = user.properties?.get("nickname")!!,
                         ))
                     }
@@ -87,7 +87,7 @@ object SNSAuth{
                 Log.d(TAG, "onSuccess: $result")
                 Log.d(TAG, "onSuccessId: $userId")
                 loginCallBack.onSignUp(User(
-                    userEmail = result.profile?.email!!,
+                    memberEmail = result.profile?.email!!,
                     userNickname = result.profile?.nickname!!,
                 ))
             }

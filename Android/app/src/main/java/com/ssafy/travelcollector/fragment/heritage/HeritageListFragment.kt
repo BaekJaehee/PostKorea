@@ -22,7 +22,14 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         initAdapter()
+    }
+
+    private fun initView(){
+        lifecycleScope.launch {
+            mainActivityViewModel.loadHeritageList()
+        }
     }
 
     private fun initAdapter () {

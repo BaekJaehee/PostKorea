@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -64,6 +65,15 @@ class MainActivityViewModel : ViewModel() {
     val curHeritageList = _curHeritageList.asStateFlow()
     fun setCurHeritageList(list: ArrayList<Heritage>){
         _curHeritageList.update { list }
+    }
+
+    fun loadHeritageList(){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                RetrofitUtil.HERITAGE_SERVICE.getHeritageList()
+            }
+            setCurHeritageList(ArrayList(result.body()))
+        }
     }
 
     private var _recommendedTheme = MutableStateFlow(arrayListOf(

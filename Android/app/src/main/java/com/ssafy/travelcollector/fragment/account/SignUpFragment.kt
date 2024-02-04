@@ -26,8 +26,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
     private fun initView(){
         val defaultInfo = accountViewModel.getUserInfoToSignUp()
 
-        if(defaultInfo.userEmail.isNotEmpty()){
-            binding.signUpEtEMail.setText(defaultInfo.userEmail)
+        if(defaultInfo.memberEmail.isNotEmpty()){
+            binding.signUpEtEMail.setText(defaultInfo.memberEmail)
             binding.signUpEtName.setText(defaultInfo.userNickname)
         }
 
@@ -38,8 +38,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
                     val msg = withContext(Dispatchers.IO) {
                         RetrofitUtil.USER_SERVICE.insert(
                             User(
-                                userEmail = binding.signUpEtEMail.text.toString(),
-                                userPwd = binding.signUpEtPw.text.toString(),
+                                memberEmail = binding.signUpEtEMail.text.toString(),
+                                memberPwd = binding.signUpEtPw.text.toString(),
                                 userNickname = binding.signUpEtName.text.toString()
                             )
                         ).body()?.get("msg").toString()
