@@ -41,6 +41,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleException(Exception e) {
         // 로그에 예외 정보 기록
         log.error("unhandledException throw Exception : {}", e.getMessage());
-        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다./n" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

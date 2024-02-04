@@ -1,17 +1,21 @@
 package com.ssafy.travelcollector.viewModel
 
 import android.util.Log
-import androidx.collection.ArraySet
 import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.Posting
 import com.ssafy.travelcollector.dto.TravelTheme
+import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import com.ssafy.travelcollector.dto.User
-import com.ssafy.travelcollector.test.TDto
+import com.ssafy.travelcollector.util.RetrofitUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val TAG = "MainActivityViewModel"
 
@@ -23,42 +27,31 @@ enum class DetailStateEnum(private val state: Int) {
 
 class MainActivityViewModel : ViewModel() {
 
-    val detailState = arraySetOf(DetailStateEnum.None)
+    private val _curLocation = MutableStateFlow(Pair(0.0, 0.0))
+    val curLocation = _curLocation.asStateFlow()
+    fun setCurLocation(lat: Double, lng: Double){
+        _curLocation.update { Pair(lat, lng) }
+    }
 
-    fun addDetailState(state: DetailStateEnum): MainActivityViewModel{
-        detailState.add(state)
-        return this
+    private val _detailState = MutableStateFlow(arraySetOf(DetailStateEnum.None))
+    val detailState = _detailState.asStateFlow()
+
+    fun addDetailState(states: ArrayList<DetailStateEnum>){
+        _detailState.update {
+            it.addAll(states)
+            it
+        }
     }
 
     private val _selectedPostingId = MutableStateFlow(0)
     val selectedPostingId = _selectedPostingId.asStateFlow()
-    fun setSelectedPostingId(idx: Int){
-        _selectedPostingId.value = idx
+    fun setSelectedPostingId(id: Int){
+        _selectedPostingId.value = id
     }
+
 
     private val _posting = MutableStateFlow(arrayListOf<Posting>())
     val posting = _posting.asStateFlow()
-
-
-    private val _userInfoToSignUp = MutableStateFlow(User())
-    private val userInfoToSignUP = _userInfoToSignUp.asStateFlow()
-    fun passUserInfoToSignUp(user:User){
-        _userInfoToSignUp.update{user}
-
-    }
-    fun getUserInfoToSignUp(): User{
-        return  userInfoToSignUP.value
-    }
-
-    private var _travelPlanHeritageList = MutableStateFlow(arrayListOf(Heritage(name="3"), Heritage(name="4")))
-    val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
-    fun loadTravelPlanHeritageList(){
-        //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
-    }
-
-    fun setTravelPlanHeritageList(list: ArrayList<Heritage>){
-        _travelPlanHeritageList.update { list }
-    }
 
     private var _recommendedTheme = MutableStateFlow(arrayListOf(
         TravelTheme(title = "1", isBookMarked = false),
@@ -77,12 +70,6 @@ class MainActivityViewModel : ViewModel() {
 
     fun loadRecommendedTheme(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
-    }
-
-    private var _curHeritageList = MutableStateFlow(arrayListOf(Heritage(name = "1"), Heritage(name = "2")))
-    val curHeritageList = _curHeritageList.asStateFlow()
-    fun setCurHeritageList(list: ArrayList<Heritage>){
-        _curHeritageList.update { list }
     }
 
 }

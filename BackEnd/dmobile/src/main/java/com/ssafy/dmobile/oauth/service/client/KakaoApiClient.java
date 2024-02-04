@@ -1,6 +1,6 @@
 package com.ssafy.dmobile.oauth.service.client;
 
-import com.ssafy.dmobile.oauth.service.OAuthInfo;
+import com.ssafy.dmobile.oauth.service.OAuthType;
 import com.ssafy.dmobile.oauth.service.params.OAuthLoginParams;
 import com.ssafy.dmobile.oauth.service.response.KakaoInfoResponse;
 import com.ssafy.dmobile.oauth.service.response.OAuthInfoResponse;
@@ -34,8 +34,8 @@ public class KakaoApiClient implements OAuthApiClient {
     private final RestTemplate restTemplate;
 
     @Override
-    public OAuthInfo oAuthInfo() {
-        return OAuthInfo.KAKAO;
+    public OAuthType oAuthInfo() {
+        return OAuthType.KAKAO;
     }
 
     // 토큰 갱신하기

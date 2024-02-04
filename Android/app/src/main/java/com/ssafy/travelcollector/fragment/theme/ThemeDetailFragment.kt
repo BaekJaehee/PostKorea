@@ -25,18 +25,18 @@ class ThemeDetailFragment : BaseFragment<FragmentThemeDetailBinding>(FragmentThe
     }
 
     private fun initView(){
-        binding.themeDetailAdd.visibility = if(mainActivityViewModel.detailState.contains(DetailStateEnum.AddToTravel)) View.VISIBLE else View.GONE
+        binding.themeDetailAdd.visibility = if(mainActivityViewModel.detailState.value.contains(DetailStateEnum.AddToTravel)) View.VISIBLE else View.GONE
         binding.themeDetailAdd.setOnClickListener{
-            val newList = mainActivityViewModel.travelPlanHeritageList.value.toMutableList()
-            newList.addAll(mainActivityViewModel.curHeritageList.value)
-            mainActivityViewModel.setTravelPlanHeritageList(newList as ArrayList)
+            val newList = travelViewModel.travelPlanHeritageList.value.toMutableList()
+            newList.addAll(heritageViewModel.curHeritageList.value)
+            travelViewModel.setTravelPlanHeritageList(newList as ArrayList)
             findNavController().popBackStack(R.id.travelPlanFragment, false)
         }
     }
 
     private fun initAdapter(){
         binding.themeDetailHeritageRv.adapter = heritageAdapter.apply{
-            submitList(mainActivityViewModel.curHeritageList.value)
+            submitList(heritageViewModel.curHeritageList.value)
         }
 
     }

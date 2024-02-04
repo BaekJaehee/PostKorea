@@ -52,8 +52,8 @@ public class ProfileService {
 
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        // userId 값으로 저장하니까 굳이 profile_img 컬럼이 필요가 없음
-//        memberRepository.updateProfileImage(userId, filePath.toString());
+        // memberId 값으로 저장하니까 굳이 profile_img 컬럼이 필요가 없음
+//        memberRepository.updateProfileImage(memberId, filePath.toString());
         return fileName;
     }
 

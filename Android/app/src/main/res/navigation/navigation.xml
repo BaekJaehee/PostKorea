@@ -40,10 +40,13 @@
         <action
             android:id="@+id/action_travelPlanFragment_to_themeListFragment"
             app:destination="@id/themeListFragment" />
+        <action
+            android:id="@+id/action_travelPlanFragment_to_culturalAssetDetailFragment"
+            app:destination="@id/culturalAssetDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.ssafy.travelcollector.LoginFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -55,15 +58,19 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.ssafy.travelcollector.SignUpFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" >
     </fragment>
     <fragment
         android:id="@+id/heritageListFragment"
-        android:name="com.ssafy.travelcollector.HeritageListFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.HeritageListFragment"
         android:label="fragment_heritage_list"
-        tools:layout="@layout/fragment_heritage_list" />
+        tools:layout="@layout/fragment_heritage_list" >
+        <action
+            android:id="@+id/action_heritageListFragment_to_culturalAssetDetailFragment"
+            app:destination="@id/culturalAssetDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/travelPostEditFragment"
         android:name="com.ssafy.travelcollector.fragment.travel.TravelPostEditFragment"
@@ -71,7 +78,7 @@
         tools:layout="@layout/fragment_travel_post_edit" />
     <fragment
         android:id="@+id/heritagePostFragment"
-        android:name="com.ssafy.travelcollector.HeritagePostFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.HeritagePostFragment"
         android:label="fragment_heritage_post"
         tools:layout="@layout/fragment_heritage_post" />
     <fragment
@@ -91,5 +98,13 @@
         <action
             android:id="@+id/action_themeDetailFragment_to_travelPlanFragment"
             app:destination="@id/travelPlanFragment" />
+        <action
+            android:id="@+id/action_themeDetailFragment_to_culturalAssetDetailFragment"
+            app:destination="@id/culturalAssetDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/culturalAssetDetailFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.CulturalAssetDetailFragment"
+        android:label="fragment_cultural_asset_detail"
+        tools:layout="@layout/fragment_cultural_asset_detail" />
 </navigation>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.config.ITouchMove
 import com.ssafy.travelcollector.config.ITouchRemove
@@ -17,6 +18,12 @@ class HeritageAdapter : BaseAdapter<Heritage>(), ITouchMove {
         ITouchRemove {
         override fun bindInfo(data: Heritage) {
             binding.heritageName.text = data.name
+            Glide.with(binding.root)
+                .load(data.imageUrl)
+                .into(binding.heritageImage)
+            binding.root.setOnClickListener {
+                eventListener.onClick(layoutPosition)
+            }
         }
 
         override fun onCreateContextMenu(
@@ -40,6 +47,7 @@ class HeritageAdapter : BaseAdapter<Heritage>(), ITouchMove {
         fun delete(position: Int)
         fun onRemove(position: Int)
         fun onMove(from: Int, to: Int)
+        fun onClick(position: Int)
     }
 
     lateinit var eventListener: EventListener

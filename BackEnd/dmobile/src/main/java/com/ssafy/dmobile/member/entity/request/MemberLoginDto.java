@@ -8,8 +8,8 @@ import lombok.Getter;
 @Builder
 public class MemberLoginDto {
 
-    @JsonProperty("user_email")
-    private String userEmail;
-    @JsonProperty("user_pwd")
-    private String userPwd;
+    @JsonProperty("member_email")
+    private String memberEmail;
+    @JsonProperty("member_pwd")
+    private String memberPwd;
 }
