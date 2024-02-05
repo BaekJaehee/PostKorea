@@ -9,6 +9,7 @@ import com.ssafy.dmobile.Board.service.BoardService;
 import com.ssafy.dmobile.Board.service.CommentService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class CommentController {
 
     @Operation(summary = "댓글 생성", description = "댓글을 생성합니다.")
     @PostMapping("/{boardId}/comments")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommentResponseDTO> createComment(@PathVariable Long boardId,
                                                             @RequestBody CommentRequestDTO commentRequestDTO,
                                                             @RequestHeader("Authorization") String token) {
@@ -40,6 +42,7 @@ public class CommentController {
 
     @Operation(summary = "댓글 수정", description = "댓글을 수정합니다.")
     @PutMapping("/{boardId}/comments/{commentId}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId,
                                                             @RequestBody CommentRequestDTO commentRequestDTO,
                                                             @RequestHeader("Authorization") String token) {
@@ -52,6 +55,7 @@ public class CommentController {
     // 개별 삭제
     @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
     @DeleteMapping("/{boardId}/comments/{commentId}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<CommentResponseDTO> deleteComment(@PathVariable long commentId,
                                                             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token);

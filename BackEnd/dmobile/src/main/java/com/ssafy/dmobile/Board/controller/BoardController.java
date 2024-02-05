@@ -7,6 +7,7 @@ import com.ssafy.dmobile.Board.entity.Board;
 import com.ssafy.dmobile.Board.service.BoardService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ public class BoardController {
     // 게시판 작성
     @Operation(summary = "게시판 등록", description = "특정 게시판을 등록합니다.")
     @PostMapping
+    @SecurityRequirement(name = "Authorization")
     // requestbody로 요청 받은 본문 값 매핑
     public ResponseEntity<BoardResponseDTO> createBoard(@RequestBody BoardRequestDTO boardRequestDto,
                                                           @RequestHeader("Authorization") String token) {
@@ -44,6 +46,7 @@ public class BoardController {
     // 게시판 수정
     @Operation(summary = "게시판 수정", description = "게시판을 수정합니다.")
     @PutMapping("/{boardId}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<BoardResponseDTO> updateBoard(@PathVariable Long boardId,
                                                         @RequestBody BoardRequestDTO boardRequestDto,
                                                         @RequestHeader("Authorization") String token) {
@@ -75,6 +78,7 @@ public class BoardController {
 
     @Operation(summary = "게시판 삭제", description = "게시판을 삭제합니다.")
     @DeleteMapping("/{boardId}")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<BoardResponseDTO> deleteBoard(@PathVariable Long boardId,
                                                         @RequestHeader("Authorization") String token) {
         // 토큰에서 memberId 추출하는 로직
@@ -131,6 +135,7 @@ public class BoardController {
 
     @Operation(summary = "게시판에 이미지 등록", description = "이미지들을 게시판에 등록합니다.")
     @PostMapping(value = "/{boardId}/images", consumes = "multipart/form-data")
+    @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> uploadBoardImages(@PathVariable Long boardId,
                                                @RequestParam("files") List<MultipartFile> files) throws IOException {
         Board board = boardService.createBoardWithImages(boardId, files);
