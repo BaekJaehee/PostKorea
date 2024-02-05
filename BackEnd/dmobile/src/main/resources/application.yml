@@ -7,22 +7,21 @@
 #    key-store-type: PKCS12
 spring:
   datasource:
-    url: jdbc:mariadb://i10d102.p.ssafy.io:3306/project
-    username: d102
+    url: jdbc:mariadb://i10d102.p.ssafy.io:3306/test
+    username: root
     password: "0125"
-#    # 개인용 데이터베이스 환경에 맞추어 셋업 필요
-#    url: jdbc:mariadb://localhost:3307/project
+    # 개인용 데이터베이스 환경에 맞추어 셋업 필요
+#    url: jdbc:mariadb://localhost:3307/test
 #    username: root
-#    password: ssafy
+#    password: "0000"
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
 #    hibernate:
 #      ddl-auto: create
     properties:
       hibernate:
-#        show_sql: true
+        #show_sql: true
         format_sql: true
-#        default_batch_fetch_size: 1000
   mail:
     host: smtp.gmail.com
     port: 587
@@ -63,6 +62,18 @@ oauth:
     url:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
+
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAU6GDYJBHU62CFVA7
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+
+app:
+  awsServices:
+    bucketName: ssafyd102
 
 springdoc:
   packages-to-scan: com.ssafy.dmobile

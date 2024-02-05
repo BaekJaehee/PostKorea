@@ -1,59 +1,74 @@
 package com.ssafy.travelcollector
 
+import android.content.Context
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.ssafy.travelcollector.config.BaseFragment
+import com.ssafy.travelcollector.databinding.FragmentProfileBinding
+import com.ssafy.travelcollector.util.GalleryLauncher
+import com.ssafy.travelcollector.util.RetrofitUtil
+import com.ssafy.travelcollector.util.UriPartConverter
+import com.ssafy.travelcollector.viewModel.AccountViewModel
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::bind, R.layout.fragment_profile) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val galleryLauncher: GalleryLauncher by lazy{
+        GalleryLauncher(this)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+
+    private fun initView(){
+        galleryLauncher.pictureCallbackListener = object : GalleryLauncher.PictureCallbackListener{
+            override fun onGetData(data: Uri) {
+                Glide.with(requireContext())
+                    .load(data)
+                    .into(binding.profileImage)
+                lifecycleScope.launch {
+                    accountViewModel.editProfileImg(data, requireContext())
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    accountViewModel.user.collect{
+                        Glide.with(requireContext())
+                            .load(it.profileUrl)
+                            .into(binding.profileImage)
+                    }
+                }
+            }
+        }
+
+        binding.profileCamera.setOnClickListener{
+            galleryLauncher.launch()
+        }
+        binding.profileChangePersonalInfo.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_changeUserInfoFragment)
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
-    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

@@ -73,9 +73,9 @@ public class MemberController {
 
         // 토큰을 통해 memberId 추출 후 Member 객체 생성
         Long memberId = authTokensGenerator.extractMemberId(token);
-        Map<String, Object> response = memberService.getMemberDetails(memberId);
-        response.put("code", 0);
-        response.put("msg", "succeed");
+        Member response = memberService.getMemberDetails(memberId);
+//        response.put("code", 0);
+//        response.put("msg", "succeed");
 
         return ResponseEntity.ok(response); // 200
     }

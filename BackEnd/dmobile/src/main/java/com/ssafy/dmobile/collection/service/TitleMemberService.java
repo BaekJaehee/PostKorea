@@ -39,7 +39,7 @@ public class TitleMemberService {
 
         Optional<Title> optionalTitle = titleRepository.findById(titleId);
         if (optionalTitle.isEmpty()) {
-            throw new CustomException(ExceptionType.TITLE_NOT_FOUND_EXCEPTION);
+            throw new CustomException(ExceptionType.BOARD_NOT_FOUND);
         }
 
         return optionalTitle.get();
