@@ -62,7 +62,6 @@ public class ExplorePlanController {
         return relicExplorePlanService.getRelicsInPlan(planId);
     }
 
-    // TODO: 탐방 계획 내에 사용자 매핑
     @GetMapping("/join/{planId}")
     @Operation(summary = "탐방 가입", description = "회원의 아이디를 받아 해당 회원을 탐방에 가입시캅니다.")
     @SecurityRequirement(name = "Authorization")
