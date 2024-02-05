@@ -17,6 +17,6 @@ interface TravelService {
         @Header("Authorization") token: String,
         @Path("planId") travelId: Int,
         @Body travelList: List<Int>
-    ): Response<Any>
+    )
 
 }
