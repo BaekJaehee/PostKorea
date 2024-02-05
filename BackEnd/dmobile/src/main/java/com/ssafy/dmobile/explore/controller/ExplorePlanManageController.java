@@ -29,13 +29,13 @@ public class ExplorePlanManageController {
             "<br>기본 방문여부는 False 이며 계획 추가 단계에서 T/F 여부는 받지 않습니다.")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> addExplorePlan(
-            @PathVariable Long relicId,
             @PathVariable Long planId,
+            @PathVariable Long relicId,
             @RequestHeader("Authorization") String token) {
 
         Long memberId = authTokensGenerator.extractMemberId(token);
 
-        if (!explorePlanService.canAccessPlan(planId, memberId)) {
+        if (!explorePlanService.canAccessPlan(memberId, planId)) {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
@@ -44,7 +44,7 @@ public class ExplorePlanManageController {
     }
 
     @PostMapping("/{planId}/bulk-add")
-    @Operation(summary = "탐방 계획에 여러 문화재 추가", description = "탐방의 id값과 문화재의 id값들을 받아서 token의 id를 지닌 유저에게 추가합니다.")
+    @Operation(summary = "탐방 계획에 여러 문화재 추가", description = "문화재 리스트를 받아서 방문 테이블에 일괄 등록합니다.")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> addMultipleRelicsToPlan(
             @PathVariable Long planId,
@@ -53,7 +53,7 @@ public class ExplorePlanManageController {
 
         Long memberId = authTokensGenerator.extractMemberId(token);
 
-        if (!explorePlanService.canAccessPlan(planId, memberId)) {
+        if (!explorePlanService.canAccessPlan(memberId, planId)) {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
@@ -72,11 +72,30 @@ public class ExplorePlanManageController {
 
         Long memberId = authTokensGenerator.extractMemberId(token);
 
-        if (!explorePlanService.canAccessPlan(planId, memberId)) {
+        if (!explorePlanService.canAccessPlan(memberId, planId)) {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
         relicExplorePlanService.updateRelicInPlan(planId, relicId, visited);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{planId}/bulk-update")
+    @Operation(summary = "탐방 계획에 문화재 일괄 방문처리", description = "해당 문화재들의 방문 여부를 일괄 변경합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<?> updateMultipleRelicsToPlan(
+            @PathVariable Long planId,
+            @RequestBody List<Long> relicIds,
+            @RequestParam boolean visited,
+            @RequestHeader("Authorization") String token) {
+
+        Long memberId = authTokensGenerator.extractMemberId(token);
+
+        if (!explorePlanService.canAccessPlan(memberId, planId)) {
+            throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
+        }
+
+        relicExplorePlanService.updateRelicListInPlan(planId, relicIds, visited);
         return ResponseEntity.ok().build();
     }
 
@@ -90,11 +109,29 @@ public class ExplorePlanManageController {
 
         Long memberId = authTokensGenerator.extractMemberId(token);
 
-        if (!explorePlanService.canAccessPlan(planId, memberId)) {
+        if (!explorePlanService.canAccessPlan(memberId, planId)) {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
         relicExplorePlanService.deleteRelicInPlan(planId, relicId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{planId}/bulk-delete")
+    @Operation(summary = "탐방 계획에서 문화재 일괄 삭제", description = "해당 문화재들을 방문 테이블에서 일괄 삭제합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<?> deleteMultipleRelicsToPlan(
+            @PathVariable Long planId,
+            @RequestBody List<Long> relicIds,
+            @RequestHeader("Authorization") String token) {
+
+        Long memberId = authTokensGenerator.extractMemberId(token);
+
+        if (!explorePlanService.canAccessPlan(memberId, planId)) {
+            throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
+        }
+
+        relicExplorePlanService.deleteRelicListInPlan(planId, relicIds);
         return ResponseEntity.ok().build();
     }
 }

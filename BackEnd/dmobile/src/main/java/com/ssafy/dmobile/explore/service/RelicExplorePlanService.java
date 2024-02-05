@@ -4,6 +4,7 @@ import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.explore.entity.RelicExplorePlan;
 import com.ssafy.dmobile.explore.entity.RelicExplorePlanKey;
+import com.ssafy.dmobile.explore.repository.ExplorePlanRepository;
 import com.ssafy.dmobile.explore.repository.RelicExplorePlanRepository;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 public class RelicExplorePlanService {
 
     private final RelicExplorePlanRepository relicExplorePlanRepository;
+    private final ExplorePlanRepository explorePlanRepository;
     private final DetailDataRepository detailDataRepository;
 
     public List<DetailData> getRelicsInPlan(Long planId) {
@@ -43,6 +45,9 @@ public class RelicExplorePlanService {
 
         RelicExplorePlan newPlan = new RelicExplorePlan();
         newPlan.setKey(key);
+        newPlan.setExplorePlan(explorePlanRepository.getReferenceById(planId));
+        newPlan.setDetailData(detailDataRepository.getReferenceById(relicId));
+        newPlan.setVisited(false);
 
         relicExplorePlanRepository.save(newPlan);
     }
@@ -67,6 +72,14 @@ public class RelicExplorePlanService {
     }
 
     @Transactional
+    public void updateRelicListInPlan(Long planId, List<Long> relicIds, boolean visited) {
+
+        for (Long relicId : relicIds) {
+            updateRelicInPlan(planId, relicId, visited);
+        }
+    }
+
+    @Transactional
     public void deleteRelicInPlan(Long planId, Long relicId) {
 
         RelicExplorePlan currentPlan = relicExplorePlanRepository
@@ -74,5 +87,13 @@ public class RelicExplorePlanService {
                 .orElseThrow(() -> new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION));
 
         relicExplorePlanRepository.delete(currentPlan);
+    }
+
+    @Transactional
+    public void deleteRelicListInPlan(Long planId, List<Long> relicIds) {
+
+        for (Long relicId : relicIds) {
+            deleteRelicInPlan(planId, relicId);
+        }
     }
 }
