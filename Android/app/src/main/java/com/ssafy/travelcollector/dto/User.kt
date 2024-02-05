@@ -15,11 +15,12 @@ enum class OAuthInfo{
 }
 
 data class User(
-    var memberEmail: String = "",
-    var memberPwd: String = "",
-    var userName: String = "1",
-    var userNickname: String = "1",
-    var userAge: Int = 0,
-    var userGender: String = "string",
-    var userAuth: OAuthInfo = OAuthInfo.NONE
+    @SerializedName("member_email") var memberEmail: String = "",
+    @SerializedName("member_pwd") var memberPwd: String = "",
+    @SerializedName("member_name") var userName: String = "1",
+    @SerializedName("member_nickname") var userNickname: String = "1",
+    @SerializedName("member_age") var userAge: Int = 0,
+    @SerializedName("member_gender") var userGender: String = "string",
+    @SerializedName("member_auth") var userAuth: OAuthInfo = OAuthInfo.NONE,
+    @SerializedName("profileUrl") var profileUrl: String = ""
 )

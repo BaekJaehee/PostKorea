@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mainFragment_to_heritagePostFragment"
             app:destination="@id/heritagePostFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/travelListFragment"
@@ -107,4 +110,18 @@
         android:name="com.ssafy.travelcollector.fragment.heritage.CulturalAssetDetailFragment"
         android:label="fragment_cultural_asset_detail"
         tools:layout="@layout/fragment_cultural_asset_detail" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ssafy.travelcollector.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_changeUserInfoFragment"
+            app:destination="@id/changeUserInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeUserInfoFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.ChangeUserInfoFragment"
+        android:label="fragment_change_user_info"
+        tools:layout="@layout/fragment_change_user_info" />
 </navigation>
