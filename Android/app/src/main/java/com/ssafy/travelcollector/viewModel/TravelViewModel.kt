@@ -1,6 +1,5 @@
 package com.ssafy.travelcollector.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Heritage
@@ -36,14 +35,13 @@ class TravelViewModel: ViewModel() {
         val heritageIdList = newTravel.heritageList.map { it.id }
 
         viewModelScope.launch{
-            val newId = withContext(Dispatchers.IO){
-                RetrofitUtil.TRAVEL_SERVICE.planTravel(
-                    "Bearer ${AccountViewModel.ACCESS_TOKEN}", newTravel
-                ).body()!!.id
-            }
             RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
-                token = AccountViewModel.ACCESS_TOKEN,
-                travelId = newId,
+                token = "Bearer ${AccountViewModel.ACCESS_TOKEN}",
+                travelId = withContext(Dispatchers.IO){
+                    RetrofitUtil.TRAVEL_SERVICE.planTravel(
+                        "Bearer ${AccountViewModel.ACCESS_TOKEN}", newTravel
+                    ).body()!!.planId
+                },
                 travelList = heritageIdList
             )
         }
@@ -62,7 +60,7 @@ class TravelViewModel: ViewModel() {
     }
 
     //계획 중인 여행 목록의 원본. 저장 시 해당 리스트로 저장.
-    private val _travelPlanHeritageList = MutableStateFlow(arrayListOf(Heritage(name="3"), Heritage(name="4")))
+    private val _travelPlanHeritageList = MutableStateFlow(arrayListOf<Heritage>())
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
     fun loadTravelPlanHeritageList(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다

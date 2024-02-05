@@ -16,15 +16,15 @@ import com.ssafy.travelcollector.databinding.FragmentTravelPlanBinding
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.HeritageAdapter
 import com.ssafy.travelcollector.config.ItemTouchCallBack
-import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
+import com.ssafy.travelcollector.util.RetrofitUtil
 import com.ssafy.travelcollector.util.TimeConverter
+import com.ssafy.travelcollector.viewModel.AccountViewModel
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Calendar.getInstance
+import kotlinx.coroutines.withContext
 import java.util.Collections
-import java.util.Locale
 
 private const val TAG = "TravelPlanFragment"
 class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTravelPlanBinding::bind,
@@ -104,12 +104,8 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                             name = binding.travelPlanEtName.text.toString(),
                             startDate = startDate,
                             endDate = endDate,
-                            heritageList = travelViewModel.travelPlanHeritageList.value
+                            heritageList = ArrayList(heritageAdapter.currentList)
                         )
-//                            .apply {
-//                            // 임시
-//                            id = travelViewModel.userTravelList.value.count()+1
-//                        }
                     )
                 }else{
                     //임시
@@ -122,7 +118,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                                 name = binding.travelPlanEtName.text.toString(),
                                 startDate = startDate,
                                 endDate = endDate,
-                                heritageList = travelViewModel.travelPlanHeritageList.value
+                                heritageList = ArrayList(heritageAdapter.currentList)
                             )
                             break
                         }
