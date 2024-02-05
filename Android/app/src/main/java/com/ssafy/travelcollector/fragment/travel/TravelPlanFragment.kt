@@ -111,6 +111,9 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                     //임시
                     //db에 저장한 후 다시 불러 오는 과정으로 대체해야 함
                     //현재는 로컬에 저장 후 강제로 필터링해서 찾음
+
+                    
+
                     val newList = travelViewModel.userTravelList.value.toMutableList()
                     for( (idx,item) in newList.withIndex()){
                         if(item.id == curTravel.id){
