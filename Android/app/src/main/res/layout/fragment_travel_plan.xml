@@ -12,8 +12,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:paddingHorizontal="20dp"
+        android:layout_gravity="center"
         >
+
+        <LinearLayout
+            android:id="@+id/travel_list_day_select"
+            android:layout_width="0dp"
+            android:layout_weight="12"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:background="@drawable/edittext_drop_shadow_brown1"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calendar"
+                android:layout_gravity="bottom"
+                />
+            <TextView
+                android:id="@+id/travel_plan_tv_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="xx월 xx일 - xx월 xx일"
+                android:textSize="15sp"
+                android:layout_marginLeft="5dp"
+                />
+
+        </LinearLayout>
 
         <View
             android:layout_width="0dp"
@@ -44,44 +75,16 @@
             android:background="@drawable/edittext_drop_shadow_brown1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:hint="탐방 이름"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:id="@+id/travel_list_day_select"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:paddingVertical="10dp"
-        android:paddingLeft="15dp"
-        android:background="@drawable/edittext_drop_shadow_brown1"
-        >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/calendar"
-            android:layout_gravity="bottom"
-            />
-        <TextView
-            android:id="@+id/travel_plan_tv_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="xx월 xx일 - xx월 xx일"
-            android:textSize="20sp"
-            android:layout_marginLeft="5dp"
-            />
-
-    </LinearLayout>
-
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginBottom="5dp"
         android:background="?android:attr/listDivider" />
 
     <Button
@@ -100,7 +103,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"
         />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/travel_plan_fab_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="end"
+        android:backgroundTint="@color/brown3"
+        android:src="@drawable/add"
+        tools:ignore="SpeakableTextPresentCheck"/>
 
 
 </LinearLayout>

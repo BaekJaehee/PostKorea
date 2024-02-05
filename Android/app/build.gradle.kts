@@ -75,4 +75,6 @@ dependencies {
     implementation("com.kakao.sdk:v2-user:2.12.1")
 
 
+    implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
+
 }

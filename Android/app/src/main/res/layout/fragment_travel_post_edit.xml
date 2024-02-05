@@ -155,6 +155,7 @@
             android:layout_height="match_parent"
             android:textSize="20sp"
             android:hint="내용"
+            android:gravity="top"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
