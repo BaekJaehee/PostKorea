@@ -21,7 +21,7 @@ class TravelAdapter: BaseAdapter<TravelWithHeritageList>() {
             val endDate = TimeConverter.timeMilliToDateString(data.endDate)
             binding.travelListRvItemTvDuration.text =
                 "$startDate ~ $endDate"
-            binding.travelListOiImg.setImages()
+            binding.travelListOiImg.setImages(ArrayList(data.heritageList.map{it.imageUrl}))
 
             binding.root.setOnClickListener{
                 clickListener.onClick(layoutPosition, data.condition)
@@ -39,7 +39,7 @@ class TravelAdapter: BaseAdapter<TravelWithHeritageList>() {
     }
 
     interface ClickListener{
-        fun onClick(position: Int, state: Int)
+        fun onClick(position: Int, state: Boolean)
     }
     lateinit var clickListener: ClickListener
 

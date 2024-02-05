@@ -29,7 +29,14 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
             }
             findNavController().navigate(R.id.travelPlanFragment)
         }
+        initView()
         initAdapter()
+    }
+
+    private fun initView(){
+        lifecycleScope.launch {
+            travelViewModel.loadUserTravelList()
+        }
     }
 
     private fun initAdapter(){
@@ -39,14 +46,14 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
             }
         }
         travelAdapter.clickListener = object : TravelAdapter.ClickListener{
-            override fun onClick(position: Int, state: Int) {
+            override fun onClick(position: Int, state: Boolean) {
                 val curTravel = travelViewModel.userTravelList.value[position]
                 travelViewModel.apply {
                     setTravelPlanHeritageList(curTravel.heritageList)
                     setUserTravel(curTravel)
                     setUserTravelId(curTravel.id)
                 }
-                if(state != 2){
+                if(state){
                     findNavController().navigate(R.id.travelPlanFragment)
                 }
             }

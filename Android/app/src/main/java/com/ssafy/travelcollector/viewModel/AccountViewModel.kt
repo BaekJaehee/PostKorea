@@ -21,6 +21,10 @@ class AccountViewModel: ViewModel(){
     val accessToken = _accessToken.asStateFlow()
     var loginResponseCode: Int = 0
 
+    companion object{
+        var ACCESS_TOKEN: String = ""
+    }
+
     fun login(id: String, pwd: String){
         viewModelScope.launch {
             val response = withContext(Dispatchers.IO){
@@ -29,9 +33,9 @@ class AccountViewModel: ViewModel(){
                 )
             }
             loginResponseCode = response.code()
-            _accessToken.update {
-                response.body()?.get("access_token").toString()
-            }
+            val token = response.body()?.get("access_token").toString()
+            _accessToken.update { token }
+            ACCESS_TOKEN = "Bearer $token"
         }
     }
 

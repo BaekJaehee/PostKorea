@@ -15,4 +15,6 @@ public interface ExplorePlanRepository extends JpaRepository<ExplorePlan, Long> 
     List<ExplorePlan> findUpcomingPlans(Long id, Long now);
     @Query("select e from ExplorePlan e where e.memberId = :id and e.planEndDate < :now")
     List<ExplorePlan> findCompletedPlans(Long id, Long now);
+
+    int countByMemberIdAndPlanId(Long memberId, Long planId);
 }

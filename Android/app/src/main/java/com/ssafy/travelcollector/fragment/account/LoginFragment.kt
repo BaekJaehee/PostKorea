@@ -1,8 +1,10 @@
 package com.ssafy.travelcollector.fragment.account
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
@@ -67,6 +69,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         binding.loginBtnSignUp.setOnClickListener {
             findNavController().navigate(R.id.signUpFragment)
         }
+
     }
 
     private fun setLoginCallBack(){

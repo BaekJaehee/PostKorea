@@ -43,6 +43,13 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
+    fun removeDetailState(state: DetailStateEnum){
+        _detailState.update {
+            if(it.contains(state)) it.remove(state)
+            it
+        }
+    }
+
     private val _selectedPostingId = MutableStateFlow(0)
     val selectedPostingId = _selectedPostingId.asStateFlow()
     fun setSelectedPostingId(id: Int){

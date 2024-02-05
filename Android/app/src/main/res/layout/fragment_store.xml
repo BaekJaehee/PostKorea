@@ -17,9 +17,11 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
-    <View
+    <TextView
+        android:id="@+id/resultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text=""
         android:layout_weight="1"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

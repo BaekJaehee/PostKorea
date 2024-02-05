@@ -1,7 +1,5 @@
 package com.ssafy.dmobile.explore.controller;
 
-import com.ssafy.dmobile.explore.entity.ExplorePlan;
-import com.ssafy.dmobile.explore.service.ExplorePlanService;
 import com.ssafy.dmobile.explore.service.RelicExplorePlanService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,7 +27,18 @@ public class ExplorePlanManageController {
             @PathVariable Long planId,
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        relicExplorePlanService.addRelicToPlan(planId, relicId, memberId);
+        relicExplorePlanService.addRelicInPlan(planId, relicId, memberId);
+    }
+
+    @PostMapping("/{planId}/bulk-add")
+    @Operation(summary = "탐방 계획에 여러 문화재 추가", description = "탐방의 id값과 문화재의 id값들을 받아서 token의 id를 지닌 유저에게 추가합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public void addMultipleRelicsToPlan(
+            @PathVariable Long planId,
+            @RequestBody List<Long> relicIds,
+            @RequestHeader("Authorization") String token) {
+        Long memberId = authTokensGenerator.extractMemberId(token);
+        relicExplorePlanService.addRelicsInPlan(planId, relicIds, memberId);
     }
 
     @PutMapping("/{planId}/{relicId}")
@@ -41,7 +50,7 @@ public class ExplorePlanManageController {
             @RequestParam boolean visited,
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        relicExplorePlanService.updateRelicToPlan(planId, relicId, memberId, visited);
+        relicExplorePlanService.updateRelicInPlan(planId, relicId, memberId, visited);
     }
 
     @DeleteMapping("/{planId}/{relicId}")
@@ -52,6 +61,6 @@ public class ExplorePlanManageController {
             @PathVariable Long planId,
             @RequestHeader("Authorization") String token) {
         Long memberId = authTokensGenerator.extractMemberId(token); // 토큰에서 memberId 추출하는 로직 구현 필요
-        relicExplorePlanService.deleteRelicToPlan(planId, relicId, memberId);
+        relicExplorePlanService.deleteRelicInPlan(planId, relicId, memberId);
     }
 }

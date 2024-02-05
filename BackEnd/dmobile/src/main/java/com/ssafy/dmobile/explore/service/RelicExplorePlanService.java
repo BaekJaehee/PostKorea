@@ -2,29 +2,27 @@ package com.ssafy.dmobile.explore.service;
 
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
-import com.ssafy.dmobile.explore.entity.ExplorePlan;
 import com.ssafy.dmobile.explore.entity.RelicExplorePlan;
 import com.ssafy.dmobile.explore.entity.RelicExplorePlanKey;
-import com.ssafy.dmobile.explore.repository.ExplorePlanRepository;
 import com.ssafy.dmobile.explore.repository.RelicExplorePlanRepository;
-import com.ssafy.dmobile.member.entity.Member;
-import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class RelicExplorePlanService {
 
-    private final RelicExplorePlanRepository repository;
+    private final RelicExplorePlanRepository relicExplorePlanRepository;
+    private final DetailDataRepository detailDataRepository;
 
     @Transactional
-    public void addRelicToPlan(Long planId, Long relicId, Long memberId) {
+    public void addRelicInPlan(Long planId, Long relicId, Long memberId) {
 
         RelicExplorePlanKey key = new RelicExplorePlanKey();
         key.setPlanId(planId);
@@ -34,27 +32,48 @@ public class RelicExplorePlanService {
         RelicExplorePlan newPlan = new RelicExplorePlan();
         newPlan.setKey(key);
 
-        repository.save(newPlan);
+        relicExplorePlanRepository.save(newPlan);
     }
 
     @Transactional
-    public void updateRelicToPlan(Long planId, Long relicId, Long memberId, boolean visited) {
+    public void addRelicsInPlan(Long planId, List<Long> relicIds, Long memberId) {
 
-        RelicExplorePlan currentPlan = repository
+        for(Long relicId : relicIds) {
+            addRelicInPlan(planId, relicId, memberId);
+        }
+    }
+
+    @Transactional
+    public void updateRelicInPlan(Long planId, Long relicId, Long memberId, boolean visited) {
+
+        RelicExplorePlan currentPlan = relicExplorePlanRepository
                 .findByKeyPlanIdAndKeyRelicIdAndKeyMemberId(planId, relicId, memberId)
                 .orElseThrow(() -> new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION));
 
         currentPlan.setVisited(visited);
-        repository.save(currentPlan);
+        relicExplorePlanRepository.save(currentPlan);
     }
 
     @Transactional
-    public void deleteRelicToPlan(Long planId, Long relicId, Long memberId) {
+    public void deleteRelicInPlan(Long planId, Long relicId, Long memberId) {
 
-        RelicExplorePlan currentPlan = repository
+        RelicExplorePlan currentPlan = relicExplorePlanRepository
                 .findByKeyPlanIdAndKeyRelicIdAndKeyMemberId(planId, relicId, memberId)
                 .orElseThrow(() -> new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION));
 
-        repository.delete(currentPlan);
+        relicExplorePlanRepository.delete(currentPlan);
+    }
+
+    public List<DetailData> getRelicsInPlan(Long planId) {
+
+        List<RelicExplorePlan> relicExplorePlans = relicExplorePlanRepository.findRelicExplorePlansByKeyPlanId(planId);
+
+        List<DetailData> relicDetails = new ArrayList<>();
+        for (RelicExplorePlan info : relicExplorePlans) {
+            DetailData detailData = detailDataRepository.findByItemId(info.getKey().getRelicId());
+            relicDetails.add(detailData);
+        }
+
+        return relicDetails;
     }
 }

@@ -29,8 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private val gpsListener = LocationListener { p0 ->
         mainActivityViewModel.setCurLocation(p0.latitude, p0.longitude)
-//        binding.textLat.text = p0.latitude.toString()
-//        binding.textLng.text = p0.longitude.toString()
+
     }
 
     @SuppressLint("MissingPermission")
@@ -78,7 +77,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_2->{
-                    navController.navigate(R.id.heritageListFragment)
+
                     true
                 }
                 R.id.navigation_page_3->{
