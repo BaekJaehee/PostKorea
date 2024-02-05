@@ -79,4 +79,10 @@ public class ExplorePlanService {
     public List<ExplorePlan> getCompletedPlans(Long memberId) {
         return explorePlanRepository.findCompletedPlans(memberId, new Date().getTime());
     }
+
+    public boolean canAccessPlan(Long memberId, Long planId) {
+        // planId와 memberId로 조회하여 접근 가능 여부 확인
+        int count = explorePlanRepository.countByMemberIdAndPlanId(memberId, planId);
+        return count > 0;
+    }
 }

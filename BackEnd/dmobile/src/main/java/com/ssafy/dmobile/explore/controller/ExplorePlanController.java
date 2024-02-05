@@ -12,12 +12,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("explore-plans")
 @RequiredArgsConstructor
@@ -95,7 +97,7 @@ public class ExplorePlanController {
             @PathVariable Long planId) {
         Long memberId = authTokensGenerator.extractMemberId(token);
 
-        if(!relicExplorePlanService.canAccessPlan(memberId, planId)) {
+        if(!explorePlanService.canAccessPlan(memberId, planId)) {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
