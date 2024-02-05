@@ -76,10 +76,4 @@ public class RelicExplorePlanService {
 
         return relicDetails;
     }
-
-    public boolean canAccessPlan(Long memberId, Long planId) {
-        // planId와 memberId로 조회하여 접근 가능 여부 확인
-        int count = relicExplorePlanRepository.countByKeyPlanIdAndKeyMemberId(planId, memberId);
-        return count > 0;
-    }
 }
