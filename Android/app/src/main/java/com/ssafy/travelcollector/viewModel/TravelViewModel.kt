@@ -1,9 +1,9 @@
 package com.ssafy.travelcollector.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Heritage
+import com.ssafy.travelcollector.dto.TravelPlanResponse
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import com.ssafy.travelcollector.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
@@ -36,18 +36,16 @@ class TravelViewModel: ViewModel() {
         val heritageIdList = newTravel.heritageList.map { it.id }
 
         viewModelScope.launch{
-            val newId = withContext(Dispatchers.IO){
-                RetrofitUtil.TRAVEL_SERVICE.planTravel(
-                    "Bearer ${AccountViewModel.ACCESS_TOKEN}", newTravel
-                ).body()!!.id
-            }
             RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
                 token = AccountViewModel.ACCESS_TOKEN,
-                travelId = newId,
+                travelId = withContext(Dispatchers.IO){
+                    RetrofitUtil.TRAVEL_SERVICE.planTravel(
+                        AccountViewModel.ACCESS_TOKEN, newTravel
+                    ).body()!!.planId
+                },
                 travelList = heritageIdList
             )
         }
-
 
         _userTravelList.update { it ->
             it.apply{
@@ -57,12 +55,50 @@ class TravelViewModel: ViewModel() {
         }
     }
 
+    fun loadUserTravelList(){
+        viewModelScope.launch {
+            val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
+            val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
+            val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
+            val responseList = arrayListOf<TravelPlanResponse>()
+            responseList.apply{
+                addAll(ArrayList(upcoming.body()!!))
+                addAll(ArrayList(ongoing.body()!!))
+                addAll(ArrayList(completed.body()!!))
+            }
+
+            val newTravel = withContext(Dispatchers.IO){
+                val newTravel = arrayListOf<TravelWithHeritageList>()
+                for(res in responseList){
+                    newTravel.add(TravelWithHeritageList(
+                        id = res.planId,
+                        name = res.name,
+                        startDate = res.startDate,
+                        endDate = res.endDate,
+                        condition = res.condition,
+                        heritageList = ArrayList(
+                            withContext(Dispatchers.IO){
+                                RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                                    AccountViewModel.ACCESS_TOKEN, res.planId
+                                ).body()!!
+                            })
+                    ))
+                }
+                newTravel
+            }
+            _userTravelList.update {
+                ArrayList(newTravel.sortedBy { it.startDate })
+            }
+
+        }
+    }
+
     fun setUserTravelList(newList: ArrayList<TravelWithHeritageList>){
         _userTravelList.update { newList }
     }
 
     //계획 중인 여행 목록의 원본. 저장 시 해당 리스트로 저장.
-    private val _travelPlanHeritageList = MutableStateFlow(arrayListOf(Heritage(name="3"), Heritage(name="4")))
+    private val _travelPlanHeritageList = MutableStateFlow(arrayListOf<Heritage>())
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
     fun loadTravelPlanHeritageList(){
         //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다

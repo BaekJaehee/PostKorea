@@ -1,11 +1,14 @@
 package com.ssafy.travelcollector.fragment.account
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
+//import com.ssafy.travelcollector.StoreDialogFragment
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.config.SNSAuth
 import com.ssafy.travelcollector.databinding.FragmentLoginBinding
@@ -67,6 +70,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         binding.loginBtnSignUp.setOnClickListener {
             findNavController().navigate(R.id.signUpFragment)
         }
+
+//        binding.modalTest.setOnClickListener {
+//            val dlg = StoreDialogFragment(requireContext())
+//            dlg.show("hi")
+//        }
+
     }
 
     private fun setLoginCallBack(){
