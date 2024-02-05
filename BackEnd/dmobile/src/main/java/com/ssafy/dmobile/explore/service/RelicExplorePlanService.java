@@ -21,6 +21,19 @@ public class RelicExplorePlanService {
     private final RelicExplorePlanRepository relicExplorePlanRepository;
     private final DetailDataRepository detailDataRepository;
 
+    public List<DetailData> getRelicsInPlan(Long planId) {
+
+        List<RelicExplorePlan> relicExplorePlans = relicExplorePlanRepository.findRelicExplorePlansByKeyPlanId(planId);
+
+        List<DetailData> relicDetails = new ArrayList<>();
+        for (RelicExplorePlan info : relicExplorePlans) {
+            DetailData detailData = detailDataRepository.findByItemId(info.getKey().getRelicId());
+            relicDetails.add(detailData);
+        }
+
+        return relicDetails;
+    }
+
     @Transactional
     public void addRelicInPlan(Long planId, Long relicId, Long memberId) {
 
@@ -62,18 +75,5 @@ public class RelicExplorePlanService {
                 .orElseThrow(() -> new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION));
 
         relicExplorePlanRepository.delete(currentPlan);
-    }
-
-    public List<DetailData> getRelicsInPlan(Long planId) {
-
-        List<RelicExplorePlan> relicExplorePlans = relicExplorePlanRepository.findRelicExplorePlansByKeyPlanId(planId);
-
-        List<DetailData> relicDetails = new ArrayList<>();
-        for (RelicExplorePlan info : relicExplorePlans) {
-            DetailData detailData = detailDataRepository.findByItemId(info.getKey().getRelicId());
-            relicDetails.add(detailData);
-        }
-
-        return relicDetails;
     }
 }

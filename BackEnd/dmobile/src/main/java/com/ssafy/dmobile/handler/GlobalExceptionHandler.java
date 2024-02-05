@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
     // 핸들링 가능한 오류에 대한 Exception
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleCustomException(CustomException e) {
-        log.error("handleCustomException throw Exception : {}", e.getExceptionType());
+        log.error("handleCustomException throw Exception : {}" + e.getMessage(), e.getExceptionType());
         return buildResponseEntity(100, e.getMessage(), e.getStatus());
     }
 

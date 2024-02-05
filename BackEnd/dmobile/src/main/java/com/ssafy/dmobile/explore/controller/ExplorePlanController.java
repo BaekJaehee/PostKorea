@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @RestController
-@RequestMapping("explore-plans")
+@RequestMapping("/explore-plans")
 @RequiredArgsConstructor
 @Tag(name = "Explore Plan", description = "탐방 계획 API Document")
 public class ExplorePlanController {
