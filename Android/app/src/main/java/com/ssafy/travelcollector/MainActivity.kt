@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ssafy.travelcollector.config.BaseActivity
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
-import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 import kotlinx.coroutines.launch
 
@@ -30,8 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private val gpsListener = LocationListener { p0 ->
         mainActivityViewModel.setCurLocation(p0.latitude, p0.longitude)
-//        binding.textLat.text = p0.latitude.toString()
-//        binding.textLng.text = p0.longitude.toString()
+
     }
 
     @SuppressLint("MissingPermission")
@@ -79,8 +77,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_2->{
-                    mainActivityViewModel.removeDetailState(DetailStateEnum.AddToTravel)
-                    navController.navigate(R.id.heritageListFragment)
+
                     true
                 }
                 R.id.navigation_page_3->{
