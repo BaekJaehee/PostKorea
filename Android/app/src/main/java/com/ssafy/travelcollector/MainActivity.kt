@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ssafy.travelcollector.config.BaseActivity
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
+import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 import kotlinx.coroutines.launch
 
@@ -77,7 +78,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_2->{
-
+                    navController.navigate(R.id.heritageListFragment)
+                    mainActivityViewModel.removeDetailState(DetailStateEnum.AddToTravel)
                     true
                 }
                 R.id.navigation_page_3->{
@@ -85,6 +87,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_4->{
+                    navController.navigate(R.id.profileFragment)
                     true
                 }
                 else->false
@@ -95,8 +98,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 //        getProviders()
 
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_action, menu)

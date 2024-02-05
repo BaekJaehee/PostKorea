@@ -30,12 +30,17 @@ import com.ssafy.travelcollector.adapter.ImageSliderAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTravelPostEditBinding
 import com.ssafy.travelcollector.test.TestAdapter
+import com.ssafy.travelcollector.util.GalleryLauncher
 
 private const val TAG = "TravelPostEditFragment"
 class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(FragmentTravelPostEditBinding::bind, R.layout.fragment_travel_post_edit) {
 
     private val imageAdapter: ImageSliderAdapter by lazy{
         ImageSliderAdapter()
+    }
+
+    private val galleryLauncher: GalleryLauncher by lazy{
+        GalleryLauncher(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -49,8 +54,15 @@ class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(Fragm
     private fun initView(){
         binding.heritagePostVp2.offscreenPageLimit = 1
         binding.heritagePostVp2.adapter = imageAdapter
+        galleryLauncher.pictureCallbackListener = object : GalleryLauncher.PictureCallbackListener{
+            override fun onGetData(data: Uri) {
+                val newList = imageAdapter.currentList.toMutableList()
+                newList.add(data.toString())
+                imageAdapter.submitList(newList)
+            }
+        }
         binding.travelPostEditBtnAddPicture.setOnClickListener{
-            requestPermissionLauncher.launch(arrayOf(READ_EXTERNAL_STORAGE))
+            galleryLauncher.launch()
         }
     }
 
@@ -65,29 +77,6 @@ class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(Fragm
         }
     }
 
-    // 갤러리 open
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
-           for(entry in it.entries) {
-               if (!entry.value) {
-                   Log.d(TAG, ": denied")
-                   return@registerForActivityResult
-               }
-           }
-            openGallery()
-        }
-    // 가져온 사진 보여주기
-    private val pickImageLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val data: Intent? = result.data
-                data?.data?.let {
-                    val newList = imageAdapter.currentList.toMutableList()
-                    newList.add(it.toString())
-                    imageAdapter.submitList(newList)
-                }
-            }
-        }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val newList = imageAdapter.currentList.toMutableList()
@@ -96,7 +85,4 @@ class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(Fragm
         return true
     }
 
-    private fun openGallery(){
-        pickImageLauncher.launch(Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI))
-    }
 }
