@@ -35,7 +35,7 @@ class AccountViewModel: ViewModel(){
             loginResponseCode = response.code()
             val token = response.body()?.get("access_token").toString()
             _accessToken.update { token }
-            ACCESS_TOKEN = token
+            ACCESS_TOKEN = "Bearer $token"
         }
     }
 

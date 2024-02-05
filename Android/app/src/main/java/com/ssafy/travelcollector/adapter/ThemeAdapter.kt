@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.ThemeRvItemBinding
 import com.ssafy.travelcollector.dto.TravelTheme
+import com.ssafy.travelcollector.dto.TravelWithHeritageList
 
 private const val TAG = "ThemeAdapter"
 class ThemeAdapter : BaseAdapter<TravelTheme>() {
@@ -26,7 +27,7 @@ class ThemeAdapter : BaseAdapter<TravelTheme>() {
             binding.themeRvItemHeartUnclicked.setOnClickListener{
                 clickListener.onBookMarkClick(layoutPosition)
             }
-            binding.themeRvItemImages.setImages()
+            binding.themeRvItemImages.setImages(arrayListOf())
         }
     }
 

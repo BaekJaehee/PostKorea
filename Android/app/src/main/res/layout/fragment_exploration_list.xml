@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5EBE0"
-    tools:context=".CulturalAssetDetailFragment">
+    android:background="#F5EBE0">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +51,7 @@
                 android:text="기록남기기"
                 android:textSize="15sp"
                 android:gravity="center"
-                android:background="@drawable/btn_bg_round_brown"
+                android:background="@drawable/bg_round_brown"
                 android:textColor="@color/black"
                 android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
@@ -66,7 +65,7 @@
                 android:text="기록 읽기"
                 android:textSize="15sp"
                 android:gravity="center"
-                android:background="@drawable/btn_bg_round_brown"
+                android:background="@drawable/bg_round_brown"
                 android:textColor="@color/black"
                 android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
@@ -80,7 +79,7 @@
                 android:text="네비게이션"
                 android:textSize="15sp"
                 android:gravity="center"
-                android:background="@drawable/btn_bg_round_brown"
+                android:background="@drawable/bg_round_brown"
                 android:textColor="@color/black"
                 android:paddingHorizontal="10dp"
                 android:layout_marginHorizontal="10dp"
@@ -93,7 +92,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="@drawable/btn_bg_round_brown"
+            android:background="@drawable/bg_round_brown"
             android:gravity="center"
             android:paddingHorizontal="10dp"
             android:text="미니게임 실행"
