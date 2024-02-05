@@ -3,6 +3,7 @@ package com.ssafy.travelcollector.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Heritage
+import com.ssafy.travelcollector.dto.TravelPlanResponse
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import com.ssafy.travelcollector.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
@@ -36,22 +37,59 @@ class TravelViewModel: ViewModel() {
 
         viewModelScope.launch{
             RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
-                token = "Bearer ${AccountViewModel.ACCESS_TOKEN}",
+                token = AccountViewModel.ACCESS_TOKEN,
                 travelId = withContext(Dispatchers.IO){
                     RetrofitUtil.TRAVEL_SERVICE.planTravel(
-                        "Bearer ${AccountViewModel.ACCESS_TOKEN}", newTravel
+                        AccountViewModel.ACCESS_TOKEN, newTravel
                     ).body()!!.planId
                 },
                 travelList = heritageIdList
             )
         }
 
-
         _userTravelList.update { it ->
             it.apply{
                 add(newTravel)
                 sortBy { it.startDate }
             }
+        }
+    }
+
+    fun loadUserTravelList(){
+        viewModelScope.launch {
+            val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
+            val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
+            val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
+            val responseList = arrayListOf<TravelPlanResponse>()
+            responseList.apply{
+                addAll(ArrayList(upcoming.body()!!))
+                addAll(ArrayList(ongoing.body()!!))
+                addAll(ArrayList(completed.body()!!))
+            }
+
+            val newTravel = withContext(Dispatchers.IO){
+                val newTravel = arrayListOf<TravelWithHeritageList>()
+                for(res in responseList){
+                    newTravel.add(TravelWithHeritageList(
+                        id = res.planId,
+                        name = res.name,
+                        startDate = res.startDate,
+                        endDate = res.endDate,
+                        condition = res.condition,
+                        heritageList = ArrayList(
+                            withContext(Dispatchers.IO){
+                                RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                                    AccountViewModel.ACCESS_TOKEN, res.planId
+                                ).body()!!
+                            })
+                    ))
+                }
+                newTravel
+            }
+            _userTravelList.update {
+                ArrayList(newTravel.sortedBy { it.startDate })
+            }
+
         }
     }
 

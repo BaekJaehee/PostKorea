@@ -29,7 +29,14 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
             }
             findNavController().navigate(R.id.travelPlanFragment)
         }
+        initView()
         initAdapter()
+    }
+
+    private fun initView(){
+        lifecycleScope.launch {
+            travelViewModel.loadUserTravelList()
+        }
     }
 
     private fun initAdapter(){

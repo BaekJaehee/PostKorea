@@ -7,7 +7,6 @@ data class TravelWithHeritageList(
     @SerializedName("plan_name") var name: String = "",
     @SerializedName("plan_start_date") var startDate: Long = 0,
     @SerializedName("plan_end_date") var endDate: Long = 0,
-    //가기 전 0, 진행 중 1, 끝 2
     @SerializedName("plan_condition") var condition: Boolean = true,
     val heritageList: ArrayList<Heritage> = arrayListOf()
 )
