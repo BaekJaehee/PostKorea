@@ -31,9 +31,9 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(100, e.getMessage(), e.getStatus());
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException(Exception e) {
-        log.error("unhandledException throw Exception : {}", e.getMessage());
-        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.<br>" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleException(Exception e) {
+//        log.error("unhandledException throw Exception : {}", e.getMessage());
+//        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.<br>" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 }

@@ -35,12 +35,11 @@ public class RelicExplorePlanService {
     }
 
     @Transactional
-    public void addRelicInPlan(Long planId, Long relicId, Long memberId) {
+    public void addRelicInPlan(Long planId, Long relicId) {
 
         RelicExplorePlanKey key = new RelicExplorePlanKey();
         key.setPlanId(planId);
         key.setRelicId(relicId);
-        key.setMemberId(memberId);
 
         RelicExplorePlan newPlan = new RelicExplorePlan();
         newPlan.setKey(key);
@@ -49,18 +48,18 @@ public class RelicExplorePlanService {
     }
 
     @Transactional
-    public void addRelicsInPlan(Long planId, List<Long> relicIds, Long memberId) {
+    public void addRelicListInPlan(Long planId, List<Long> relicIds) {
 
         for(Long relicId : relicIds) {
-            addRelicInPlan(planId, relicId, memberId);
+            addRelicInPlan(planId, relicId);
         }
     }
 
     @Transactional
-    public void updateRelicInPlan(Long planId, Long relicId, Long memberId, boolean visited) {
+    public void updateRelicInPlan(Long planId, Long relicId, boolean visited) {
 
         RelicExplorePlan currentPlan = relicExplorePlanRepository
-                .findByKeyPlanIdAndKeyRelicIdAndKeyMemberId(planId, relicId, memberId)
+                .findByKeyPlanIdAndKeyRelicId(planId, relicId)
                 .orElseThrow(() -> new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION));
 
         currentPlan.setVisited(visited);
@@ -68,10 +67,10 @@ public class RelicExplorePlanService {
     }
 
     @Transactional
-    public void deleteRelicInPlan(Long planId, Long relicId, Long memberId) {
+    public void deleteRelicInPlan(Long planId, Long relicId) {
 
         RelicExplorePlan currentPlan = relicExplorePlanRepository
-                .findByKeyPlanIdAndKeyRelicIdAndKeyMemberId(planId, relicId, memberId)
+                .findByKeyPlanIdAndKeyRelicId(planId, relicId)
                 .orElseThrow(() -> new CustomException(ExceptionType.PLAN_NOT_FOUND_EXCEPTION));
 
         relicExplorePlanRepository.delete(currentPlan);

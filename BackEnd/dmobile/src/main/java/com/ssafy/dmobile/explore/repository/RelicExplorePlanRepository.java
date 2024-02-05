@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RelicExplorePlanRepository extends JpaRepository<RelicExplorePlan, RelicExplorePlanKey> {
-    Optional<RelicExplorePlan> findByKeyPlanIdAndKeyRelicIdAndKeyMemberId(Long planId, Long relicId, Long memberId);
-
-    int countByKeyPlanIdAndKeyMemberId(Long planId, Long memberId);
-
+    Optional<RelicExplorePlan> findByKeyPlanIdAndKeyRelicId(Long planId, Long relicId);
     List<RelicExplorePlan> findRelicExplorePlansByKeyPlanId(Long planId);
 }

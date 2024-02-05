@@ -13,6 +13,16 @@ public class RelicExplorePlan {
     @EmbeddedId
     private RelicExplorePlanKey key;
 
-    @Column(name = "visited", nullable = false)
+    @MapsId("planId")
+    @ManyToOne
+    @JoinColumn(name = "plan_id", nullable = false)
+    private ExplorePlan explorePlan;
+
+    @MapsId("relicId")
+    @ManyToOne
+    @JoinColumn(name = "relic_id", nullable = false)
+    private DetailData detailData;
+
+    @Column(name = "relic_visited", nullable = false)
     private boolean visited;
 }
