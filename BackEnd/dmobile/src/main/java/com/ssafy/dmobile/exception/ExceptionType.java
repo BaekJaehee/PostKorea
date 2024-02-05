@@ -27,7 +27,7 @@ public enum ExceptionType {
 
     // 계획관리
     PLAN_NOT_FOUND_EXCEPTION(404, "해당하는 계획을 찾을 수 없습니다."),
-    INVALID_USER_FOR_PLAN_EXCEPTION(401, "해당 계획에 접근할 수 있는 사용자가 아닙니다."),
+    INVALID_MEMBER_FOR_PLAN_EXCEPTION(401, "해당 계획에 접근할 수 있는 사용자가 아닙니다."),
     
     // 문화재 관리
     RELIC_NOT_FOUND_EXCEPTION(404, "해당하는 문화재를 찾을 수 없습니다."),
