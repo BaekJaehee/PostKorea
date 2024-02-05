@@ -3,7 +3,9 @@ package com.ssafy.dmobile.Board.service;
 import com.ssafy.dmobile.Board.Dto.request.BoardRequestDTO;
 import com.ssafy.dmobile.Board.Dto.response.BoardResponseDTO;
 import com.ssafy.dmobile.Board.entity.Board;
+import com.ssafy.dmobile.Board.entity.Image;
 import com.ssafy.dmobile.Board.repository.BoardRepository;
+import com.ssafy.dmobile.Board.repository.ImageRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
@@ -11,14 +13,20 @@ import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.unit.DataSize;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 @Service  // 빈으로 등록
 @Slf4j
@@ -29,6 +37,8 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final AuthTokensGenerator authTokensGenerator;
     private final MemberRepository memberRepository;
+    private final ImageRepository imageRepository;
+    private final S3Service s3Service;
 
     @Override
     @Transactional
@@ -110,5 +120,96 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public Page<Board> findAllBoards(Pageable pageable) {
         return boardRepository.findAll(pageable);
+    }
+
+    // 이미지 기능
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    @Value("${file.max-file-size}")
+    private String maxFileSize;
+
+//    @Override
+//    @Transactional
+//    public String uploadBoardImage(Long boardId, MultipartFile file, Long imageId) throws IOException {
+//        // 게시판이 없는 경우
+//        Board board = boardRepository.findById(boardId)
+//                .orElseThrow(() -> new CustomException(ExceptionType.BOARD_NOT_FOUND));
+//        // 용량 제한에 걸리는 경우
+//        long parsedMaxFileSize = DataSize.parse(maxFileSize).toBytes();
+//        if (file.getSize() > parsedMaxFileSize) {
+//            throw new CustomException(ExceptionType.MAX_FILE_SIZE_EXCEPTION);
+//        }
+//
+//        String fileName = boardId + "_" + imageId + ".PNG";
+//        Path filePath = Paths.get(uploadDir, fileName);
+//        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//
+//        // 이미지 엔티티 생성 및 저장
+//        Image image = new Image(board, fileName, filePath.toString());
+//        imageRepository.save(image);
+//
+//        // 게시판 엔티티에 이미지 추가 (선택적)
+//        board.getImages().add(image);
+//        boardRepository.save(board);
+//
+//        return fileName;
+//    }
+//
+//    // 게시판 수정
+//    @Override
+//    @Transactional
+//    public void updateBoardImage(Long boardId, Long imageId, MultipartFile file) throws IOException {
+//        Image image = imageRepository.findById(imageId)
+//                .orElseThrow(() -> new RuntimeException("Image not found with id: " + imageId));
+//
+//        String originalFileName = file.getOriginalFilename();
+//        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+//        String fileName = boardId + "_" + imageId + fileExtension;
+//        Path filePath = Paths.get(uploadDir, fileName);
+//
+//        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+//
+//        image.setFileName(fileName);
+//        image.setAccessUrl(filePath.toString());
+//        imageRepository.save(image);
+//    }
+//
+//    // 게시판 삭제
+//    @Override
+//    @Transactional
+//    public void deleteBoardImage(Long boardId, Long imageId) {
+//        Image image = imageRepository.findById(imageId)
+//                .orElseThrow(() -> new RuntimeException("Image not found with id: " + imageId));
+//
+//        Path filePath = Paths.get(image.getAccessUrl());
+//        try {
+//            Files.deleteIfExists(filePath);
+//        } catch (IOException e) {
+//            throw new RuntimeException("Failed to delete image file on disk", e);
+//        }
+//
+//        imageRepository.delete(image);
+//    }
+
+    @Override
+    @Transactional
+    public Board createBoardWithImages(Long boardId, List<MultipartFile> images) {
+        Board board = boardRepository.findById(boardId).orElseThrow(() -> new CustomException(ExceptionType.BOARD_NOT_FOUND));
+        long parsedMaxFileSize = DataSize.parse(maxFileSize).toBytes();
+        for (MultipartFile imageFile : images) {
+            // 이미지 파일이 5mb를 넘어가는 경우
+            if(imageFile.getSize() > parsedMaxFileSize) {
+                throw new CustomException(ExceptionType.MAX_FILE_SIZE_EXCEPTION);
+            }
+            String fileName = imageFile.getOriginalFilename();
+            String filePath = s3Service.uploadFile(imageFile); // S3에 이미지 업로드하고 파일 경로 받기
+
+            Image image = new Image(board, fileName, filePath); // Image 엔티티 생성
+            board.getImages().add(image); // Board 엔티티에 Image 추가
+        }
+
+        boardRepository.save(board);
+        return board;
     }
 }

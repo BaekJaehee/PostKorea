@@ -1,5 +1,6 @@
 package com.ssafy.dmobile.Board.Dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.dmobile.Board.entity.Board;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +15,7 @@ import java.time.ZoneId;
 @AllArgsConstructor  // 모든 필드 값을 파라미터로 받는 생성자 추가
 @NoArgsConstructor  // 기본 생성자 추가
 public class BoardRequestDTO {
+//    @JsonProperty("board_id")
     private Long boardId;
     private String title;
     private String content;

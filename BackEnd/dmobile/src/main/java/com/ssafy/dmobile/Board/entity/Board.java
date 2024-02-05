@@ -39,8 +39,6 @@ public class Board {
     @JoinColumn(name = "member_Id")
     private Member member;
 
-    // post_image(이미지 업로드)
-
     private Long createdDate;
 
     // 태그
@@ -51,6 +49,11 @@ public class Board {
     // 댓글
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    // 이미지 기능
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
 
     // 빌더 패턴으로 객체 생성
     @Builder

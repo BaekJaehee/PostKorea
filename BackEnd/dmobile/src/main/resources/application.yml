@@ -63,6 +63,18 @@ oauth:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
 
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAU6GDYJBHU62CFVA7
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+
+app:
+  awsServices:
+    bucketName: ssafyd102
+
 springdoc:
   packages-to-scan: com.ssafy.dmobile
   # consumes: request, produces: response
