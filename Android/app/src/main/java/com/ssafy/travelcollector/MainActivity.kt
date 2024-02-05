@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ssafy.travelcollector.config.BaseActivity
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
+import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 import kotlinx.coroutines.launch
 
@@ -78,6 +79,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_2->{
+                    mainActivityViewModel.removeDetailState(DetailStateEnum.AddToTravel)
                     navController.navigate(R.id.heritageListFragment)
                     true
                 }

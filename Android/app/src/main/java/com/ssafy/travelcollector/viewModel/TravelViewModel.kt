@@ -1,12 +1,19 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
+import com.ssafy.travelcollector.util.RetrofitUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+private const val TAG = "TravelViewModel"
 class TravelViewModel: ViewModel() {
 
     private val _userTravelId = MutableStateFlow(-1)
@@ -26,7 +33,22 @@ class TravelViewModel: ViewModel() {
     val userTravelList = _userTravelList.asStateFlow()
 
     fun addTravel(newTravel: TravelWithHeritageList){
-        // db에 값 넣어주기
+        val heritageIdList = newTravel.heritageList.map { it.id }
+
+        viewModelScope.launch{
+            val newId = withContext(Dispatchers.IO){
+                RetrofitUtil.TRAVEL_SERVICE.planTravel(
+                    "Bearer ${AccountViewModel.ACCESS_TOKEN}", newTravel
+                ).body()!!.id
+            }
+            RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
+                token = AccountViewModel.ACCESS_TOKEN,
+                travelId = newId,
+                travelList = heritageIdList
+            )
+        }
+
+
         _userTravelList.update { it ->
             it.apply{
                 add(newTravel)

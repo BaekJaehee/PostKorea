@@ -56,6 +56,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         curTravel = travelViewModel.userTravel.value
 
         if(curTravel.id == -1){
+//            if(!mainActivityViewModel.detailState.value.contains(DetailStateEnum.AddToTravel))
             binding.travelPlanTvDuration.text = "기간을 선택하세요"
         }else{
             val startDateString = TimeConverter.timeMilliToDateString(curTravel.startDate)
@@ -80,7 +81,6 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                 startDate = selection?.first ?: 0
                 endDate = selection?.second ?: 0
                 binding.travelPlanTvDuration.text = dateRangePicker.headerText
-
             }
         }
 
@@ -91,7 +91,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
 
         binding.travelPlanFabAdd.setOnClickListener{
             mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.AddToTravel))
-            findNavController().navigate(R.id.heritageListFragment)
+            findNavController().navigate(R.id.action_travelPlanFragment_to_heritageListFragment)
         }
 
         binding.travelPlanBtnSave.setOnClickListener {
@@ -105,10 +105,11 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                             startDate = startDate,
                             endDate = endDate,
                             heritageList = travelViewModel.travelPlanHeritageList.value
-                        ).apply {
-                            // 임시
-                            id = travelViewModel.userTravelList.value.count()+1
-                        }
+                        )
+//                            .apply {
+//                            // 임시
+//                            id = travelViewModel.userTravelList.value.count()+1
+//                        }
                     )
                 }else{
                     //임시

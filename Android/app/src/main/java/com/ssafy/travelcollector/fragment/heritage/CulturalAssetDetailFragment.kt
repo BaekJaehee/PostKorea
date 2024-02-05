@@ -3,6 +3,7 @@ package com.ssafy.travelcollector.fragment.heritage
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.BaseFragment
@@ -47,7 +48,7 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
 
         binding.culturalAssetDetailBtnAddToTravel.setOnClickListener {
             travelViewModel.addHeritageToTravelPlan(heritageViewModel.curHeritage.value)
-            parentFragmentManager.popBackStack()
+            findNavController().popBackStack(R.id.travelPlanFragment, false)
         }
 
     }
