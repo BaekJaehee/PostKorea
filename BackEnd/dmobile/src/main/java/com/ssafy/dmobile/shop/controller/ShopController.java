@@ -5,7 +5,6 @@ import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
-//import com.ssafy.dmobile.shop.entity.ShopMemberId;
 import com.ssafy.dmobile.shop.repository.ShopRepository;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.shop.service.ShopMemberService;
@@ -14,13 +13,14 @@ import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/shop")
@@ -39,7 +39,6 @@ public class ShopController {
         List<Shop> shop = shopRepository.findAll();
         return ResponseEntity.ok().body(shop);
     }
-
 
     // swagger에서 로그인 후 동작 검사 필요(application.properties에서 jwt.secret-key는 사용자의 토큰이 아님)
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
@@ -137,5 +136,4 @@ public class ShopController {
         shopMember.setProductDate(shopMemberDto.getProductDate());
         return shopMember;
     }
-
 }

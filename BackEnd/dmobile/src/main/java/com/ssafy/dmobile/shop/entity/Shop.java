@@ -3,8 +3,6 @@ package com.ssafy.dmobile.shop.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 @Table(name = "shop")
