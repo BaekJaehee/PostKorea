@@ -11,6 +11,7 @@ import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.shop.service.ShopMemberService;
 import com.ssafy.dmobile.shop.service.ShopService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,7 @@ public class ShopController {
     // swagger에서 로그인 후 동작 검사 필요(application.properties에서 jwt.secret-key는 사용자의 토큰이 아님)
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
     @GetMapping("/purchase/{productId}")
+    @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행. 같은 물건 중복 구매 방지 기능 필요")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
             @PathVariable Long productId) {
