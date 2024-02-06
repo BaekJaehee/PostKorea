@@ -134,11 +134,11 @@ public class BoardController {
 //    }
 
     @Operation(summary = "게시판에 이미지 등록", description = "이미지들을 게시판에 등록합니다.")
-    @PostMapping(value = "/{boardId}/images", consumes = "multipart/form-data")
+    @PostMapping(value = "/{boardId}/image", consumes = "multipart/form-data")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> uploadBoardImages(@PathVariable Long boardId,
-                                               @RequestParam("files") List<MultipartFile> files) throws IOException {
-        Board board = boardService.createBoardWithImages(boardId, files);
+                                               @RequestPart List<MultipartFile> file) throws IOException {
+        Board board = boardService.createBoardWithImages(boardId, file);
         return ResponseEntity.ok().body("Images uploaded successfully to board with ID: " + boardId);
     }
 }
