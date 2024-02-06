@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface RelicExplorePlanRepository extends JpaRepository<RelicExplorePlan, RelicExplorePlanKey> {
     Optional<RelicExplorePlan> findByKeyPlanIdAndKeyRelicId(Long planId, Long relicId);
     List<RelicExplorePlan> findRelicExplorePlansByKeyPlanId(Long planId);
+    void deleteAllByKeyPlanId(Long planId);
 }

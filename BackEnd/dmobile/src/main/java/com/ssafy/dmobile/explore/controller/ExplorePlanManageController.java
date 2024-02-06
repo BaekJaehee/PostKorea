@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -118,11 +119,12 @@ public class ExplorePlanManageController {
     }
 
     @DeleteMapping("/{planId}/bulk-delete")
-    @Operation(summary = "탐방 계획에서 문화재 일괄 삭제", description = "해당 문화재들을 방문 테이블에서 일괄 삭제합니다.")
+    @Operation(summary = "탐방 계획에서 문화재 일부/일괄 삭제", description = "해당 문화재들을 방문 테이블에서 일괄 삭제합니다." +
+            "<br>비어있는 리스트 혹은 RequestBody 가 입력되지 않는 경우 일괄 삭제를 진행합니다.")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> deleteMultipleRelicsToPlan(
             @PathVariable Long planId,
-            @RequestBody List<Long> relicIds,
+            @RequestBody(required = false) List<Long> relicIds,
             @RequestHeader("Authorization") String token) {
 
         Long memberId = authTokensGenerator.extractMemberId(token);
@@ -131,7 +133,13 @@ public class ExplorePlanManageController {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
-        relicExplorePlanService.deleteRelicListInPlan(planId, relicIds);
+        // Body가 비어있는 경우 일괄 삭제
+        if(relicIds == null || relicIds.isEmpty()) {
+            relicExplorePlanService.deleteAllRelicsInPlan(planId);
+        } else {
+            relicExplorePlanService.deleteRelicListInPlan(planId, relicIds);
+        }
+
         return ResponseEntity.ok().build();
     }
 }

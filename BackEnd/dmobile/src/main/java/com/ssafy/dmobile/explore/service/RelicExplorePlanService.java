@@ -93,7 +93,15 @@ public class RelicExplorePlanService {
     public void deleteRelicListInPlan(Long planId, List<Long> relicIds) {
 
         for (Long relicId : relicIds) {
+
+
             deleteRelicInPlan(planId, relicId);
         }
+    }
+
+    @Transactional
+    public void deleteAllRelicsInPlan(Long planId) {
+
+        relicExplorePlanRepository.deleteAllByKeyPlanId(planId);
     }
 }
