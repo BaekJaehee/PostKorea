@@ -22,7 +22,7 @@ private const val TAG = "MainActivityViewModel"
 enum class DetailStateEnum(private val state: Int) {
     None(0),
     AddToTravel(1),
-    MiniGame(2),
+    MiniGame(2)
 }
 
 class MainActivityViewModel : ViewModel() {
