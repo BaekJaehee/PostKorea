@@ -17,7 +17,7 @@ public class Theme {
     @Column(name = "theme_id")
     private Long themeId;
 
-    private String theme_name;
+    private String themeName;
     private String description;
 
 //    @OneToMany(mappedBy = "themerelicrelation")
