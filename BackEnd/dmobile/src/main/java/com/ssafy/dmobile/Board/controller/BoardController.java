@@ -137,7 +137,7 @@ public class BoardController {
     @PostMapping(value = "/{boardId}/images", consumes = "multipart/form-data")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> uploadBoardImages(@PathVariable Long boardId,
-                                               @RequestParam("files") List<MultipartFile> files) throws IOException {
+                                               @RequestPart("files") List<MultipartFile> files) throws IOException {
         Board board = boardService.createBoardWithImages(boardId, files);
         return ResponseEntity.ok().body("Images uploaded successfully to board with ID: " + boardId);
     }
