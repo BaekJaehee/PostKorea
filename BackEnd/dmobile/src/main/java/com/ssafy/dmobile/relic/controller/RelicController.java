@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//import static com.sun.beans.introspect.PropertyInfo.Name.required;
-
 @RestController // 이건 json이랑 xml 받을때
 // rest api로 통신
 @RequestMapping("/relic")
@@ -22,7 +20,7 @@ public class RelicController {
     // RequiredArgsConstructor 쓸때는 final 필요
     private final DetailDataRepository detailDataRepository;
     private final DetailDataService detailDataService;
-    
+
     @GetMapping("/list")
     public ResponseEntity<?> getRelic() {
         int limit = 10;
@@ -36,15 +34,21 @@ public class RelicController {
             @RequestParam(required = false) String region1,
             @RequestParam(required = false) String region2,
             @RequestParam(required = false) String ccceName,
-            @RequestParam(required = false) String mcodeName) {
+            @RequestParam(required = false) String mcodeName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int limit) {
+        // 임의로 10개씩 나오게 설정
 
         String mappingRegion1 = detailDataService.mappingRegion(region1);
 
-        System.out.println(region1 + mappingRegion1 + region2 + ccceName + mcodeName);
+//        System.out.println(region1 + mappingRegion1 + region2 + ccceName + mcodeName);
+
+        PageRequest pageRequest = PageRequest.of(page, limit);
 
         List<DetailData> result = detailDataRepository.findbyTags(
-            region1, mappingRegion1, region2, ccceName, mcodeName
+            region1, mappingRegion1, region2, ccceName, mcodeName, pageRequest
         );
+        // pageRequest 파라미터에 추가
 
         return ResponseEntity.ok().body(result);
     }
