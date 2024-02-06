@@ -31,6 +31,9 @@ public enum ExceptionType {
     
     // 문화재 관리
     RELIC_NOT_FOUND_EXCEPTION(404, "해당하는 문화재를 찾을 수 없습니다."),
+    
+    // 칭호 관리
+    TITLE_NOT_FOUND_EXCEPTION(404, "해당하는 칭호를 찾을 수 없습니다."),
     ;
 
     // 사용자 정의 enum 을 통해 exception 세분화

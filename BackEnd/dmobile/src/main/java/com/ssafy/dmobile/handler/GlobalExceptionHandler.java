@@ -27,20 +27,13 @@ public class GlobalExceptionHandler {
     // 핸들링 가능한 오류에 대한 Exception
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> handleCustomException(CustomException e) {
-        log.error("handleCustomException throw Exception : {}", e.getExceptionType());
+        log.error("handleCustomException throw Exception : {}" + e.getMessage(), e.getExceptionType());
         return buildResponseEntity(100, e.getMessage(), e.getStatus());
     }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<?> handleIOException(IOException e) {
-        log.error("handleCustomException throw Exception : {}", e.getMessage());
-        return buildResponseEntity(100, e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException(Exception e) {
-        // 로그에 예외 정보 기록
-        log.error("unhandledException throw Exception : {}", e.getMessage());
-        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleException(Exception e) {
+//        log.error("unhandledException throw Exception : {}", e.getMessage());
+//        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.<br>" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 }
