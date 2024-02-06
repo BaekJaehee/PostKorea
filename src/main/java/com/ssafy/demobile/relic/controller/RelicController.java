@@ -1,19 +1,15 @@
 package com.ssafy.dmobile.relic.controller;
 
 import com.ssafy.dmobile.relic.entity.DetailData;
-import com.ssafy.dmobile.relic.entity.ListData;
-import com.ssafy.dmobile.relic.mapping.RegionMapping;
-import com.ssafy.dmobile.relic.mapping.RegionMappings;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
-import com.ssafy.dmobile.relic.repository.ListDataRepository;
+import com.ssafy.dmobile.relic.service.DetailDataService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-//import static com.sun.beans.introspect.PropertyInfo.Name.required;
 
 @RestController // 이건 json이랑 xml 받을때
 // rest api로 통신
@@ -21,14 +17,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RelicController {
 
-    private final ListDataRepository listDataRepository;
+    // RequiredArgsConstructor 쓸때는 final 필요
     private final DetailDataRepository detailDataRepository;
-
+    private final DetailDataService detailDataService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<ListData>> getRelic() {
-        List<ListData> listData = listDataRepository.findAll();
-        return ResponseEntity.ok().body(listData);
+    public ResponseEntity<?> getRelic() {
+        int limit = 10;
+        Pageable pageable = PageRequest.of(0, limit);
+        List<DetailData> detailData = detailDataRepository.findDataByLimit(pageable);
+        return ResponseEntity.ok().body(detailData);
     }
 
     @GetMapping("/search")
@@ -36,25 +34,19 @@ public class RelicController {
             @RequestParam(required = false) String region1,
             @RequestParam(required = false) String region2,
             @RequestParam(required = false) String ccceName,
-            @RequestParam(required = false) String scodeName) {
-        // RegionMappings를 활용하여 입력된 지역 정보와 일치하는 지역명으로 변환
-        String mappedRegion1 = mapRegion(region1);
-        String mappedRegion2 = mapRegion(region2);
+            @RequestParam(required = false) String mcodeName) {
+
+        String mappingRegion1 = detailDataService.mappingRegion(region1);
+
+//        System.out.println(region1 + mappingRegion1 + region2 + ccceName + mcodeName);
 
         List<DetailData> result = detailDataRepository.findbyTags(
-                mappedRegion1, mappedRegion2, ccceName, scodeName
+            region1, mappingRegion1, region2, ccceName, mcodeName
         );
 
         return ResponseEntity.ok().body(result);
     }
-    private String mapRegion(String inputRegion) {
-        for (RegionMapping regionMapping : RegionMappings.regionMappings) {
-            if (regionMapping.getDbValue().equals(inputRegion)) {
-                return regionMapping.getDbValue();
-            }
-        }
-        return inputRegion; // 일치하는 값이 없으면 그대로 반환(기타 전국연합 같은거)
-    }
+
     @GetMapping("/detail/{id}")
     public ResponseEntity<DetailData> getDetail(@PathVariable Long id) {
         DetailData detailData = detailDataRepository.findByItemId(id);
