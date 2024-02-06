@@ -15,6 +15,7 @@ public class Theme {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "theme_id")
+    // 에러남
     private Long themeId;
 
     private String themeName;
