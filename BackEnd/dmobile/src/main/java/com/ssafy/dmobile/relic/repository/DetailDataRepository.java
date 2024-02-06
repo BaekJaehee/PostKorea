@@ -1,6 +1,7 @@
 package com.ssafy.dmobile.relic.repository;
 
 import com.ssafy.dmobile.relic.entity.DetailData;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +24,8 @@ public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
             @Param("mappingRegion1") String mappingRegion1,
             @Param("region2") String region2,
             @Param("ccceName") String ccceName,
-            @Param("mcodeName") String mcodeName
+            @Param("mcodeName") String mcodeName,
+            Pageable pageable
         );
 
     // limit
