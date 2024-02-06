@@ -14,6 +14,7 @@ public class DetailData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "relic_id")
     @Schema(description = "문화재 상세 식별자")
+//    @OneToMany(mappedBy = "themerelicrelation")
     private Long relicId;
 
     @Column(name = "item_id")   // FK
