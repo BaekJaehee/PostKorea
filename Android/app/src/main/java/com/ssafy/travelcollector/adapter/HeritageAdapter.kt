@@ -2,17 +2,19 @@ package com.ssafy.travelcollector.adapter
 
 import android.view.ContextMenu
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.config.ITouchMove
 import com.ssafy.travelcollector.config.ITouchRemove
 import com.ssafy.travelcollector.databinding.HeritageRvItemNoHeartBinding
 import com.ssafy.travelcollector.dto.Heritage
 
-class HeritageAdapter : BaseAdapter<Heritage>(), ITouchMove {
+class HeritageAdapter(val isPlanning: Boolean = false) : BaseAdapter<Heritage>(), ITouchMove {
 
     inner class HeritageHolder(private val binding: HeritageRvItemNoHeartBinding):BaseHolder(binding) , View.OnCreateContextMenuListener,
         ITouchRemove {
@@ -24,16 +26,31 @@ class HeritageAdapter : BaseAdapter<Heritage>(), ITouchMove {
             binding.root.setOnClickListener {
                 eventListener.onClick(layoutPosition)
             }
+            if(isPlanning){
+                binding.touchIcon.setImageResource(R.drawable.drag_handle)
+                binding.touchIcon.setOnTouchListener{ _, event->
+                    if(event.action == MotionEvent.ACTION_DOWN)
+                        eventListener.onStartDrag(this)
+                    false
+                }
+            }
+            binding.root.setOnCreateContextMenuListener(this)
         }
 
         override fun onCreateContextMenu(
-            p0: ContextMenu?,
-            p1: View?,
-            p2: ContextMenu.ContextMenuInfo?
+            menu: ContextMenu,
+            v: View?,
+            menuInfo: ContextMenu.ContextMenuInfo?
         ) {
+            val menuItem = menu.add(0,0,0,"delete")
+            menuItem.setOnMenuItemClickListener {
+                eventListener.delete(layoutPosition)
+                true
+            }
         }
 
         override fun removeItem(position: Int) {
+            eventListener.onRemove(position)
         }
 
     }

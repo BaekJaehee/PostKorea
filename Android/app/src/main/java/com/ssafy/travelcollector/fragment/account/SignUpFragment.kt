@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector.fragment.account
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val TAG = "SignUpFragment"
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
     FragmentSignUpBinding::bind,
     R.layout.fragment_sign_up
@@ -48,6 +50,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
                         findNavController().navigate(R.id.loginFragment)
                         showToast("회원가입 성공")
                     }else{
+                        Log.d(TAG, "initView: $msg")
                         showToast("실패ㅠㅠ")
                     }
                 }

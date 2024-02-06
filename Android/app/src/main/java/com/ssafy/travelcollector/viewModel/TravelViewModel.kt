@@ -55,6 +55,27 @@ class TravelViewModel: ViewModel() {
         }
     }
 
+    fun updateTravel(newTravel: TravelWithHeritageList){
+        val heritageIdList = newTravel.heritageList.map { it.id }
+        viewModelScope.launch {
+            val response = withContext(Dispatchers.IO){
+                RetrofitUtil.TRAVEL_SERVICE.deleteHeritageListToTravelPlan(
+                    token = AccountViewModel.ACCESS_TOKEN,
+                    travelId = userTravelId.value,
+                    travelList = listOf()
+                ).code()
+            }
+            if(response/100 == 2){
+                RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
+                    token = AccountViewModel.ACCESS_TOKEN,
+                    travelId = userTravelId.value,
+                    travelList = heritageIdList
+                )
+            }
+            loadUserTravelList()
+        }
+    }
+
     fun loadUserTravelList(){
         viewModelScope.launch {
             val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }

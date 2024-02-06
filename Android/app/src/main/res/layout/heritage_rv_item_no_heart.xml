@@ -24,14 +24,14 @@
         android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/heart"
+        app:layout_constraintEnd_toStartOf="@+id/touch_icon"
         app:layout_constraintStart_toEndOf="@+id/heritage_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/heart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/touch_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/heart_unclicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

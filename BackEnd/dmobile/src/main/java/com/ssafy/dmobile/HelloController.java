@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/hello2")
     public String hello(Model model) {
-        model.addAttribute("data", "hello!!");
+        model.addAttribute("data", "hello!!!!!!!");
         return "hello";
     }
 }
