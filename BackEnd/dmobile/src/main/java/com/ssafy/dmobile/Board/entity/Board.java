@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 // Getter 로 getId, getTitle, getContent 자동으로 구현해준다.
-@Table(name = "Boards")
+@Table(name = "Board")
 @NoArgsConstructor  // 접근 제어자가 protected인 기본 생성자 별도 코드 없이 생성했다.
 public class Board {
 
@@ -27,11 +27,11 @@ public class Board {
     private Long boardId;
 
     // title(제목)
-    @Column(nullable = false)
+    @Column(name = "board_title", nullable = false)
     private String title;
 
     // post_content(내용)
-    @Column(nullable = false)
+    @Column(name = "baord_content", nullable = false)
     private String content;
 
     // User(유저 ID)
@@ -39,10 +39,12 @@ public class Board {
     @JoinColumn(name = "member_Id")
     private Member member;
 
+    @Column(name = "board_created")
     private Long createdDate;
 
     // 태그
     @OneToMany(mappedBy = "board")
+    @Column(name = "board_tag")
     private Set<Tag> tags = new HashSet<>();
 
 
