@@ -1,11 +1,8 @@
 package com.ssafy.dmobile.member.entity;
 
 import com.ssafy.dmobile.oauth.service.OAuthType;
-import com.ssafy.dmobile.shop.entity.ShopMember;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Entity

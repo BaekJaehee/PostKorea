@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Heritage
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val TAG = "HeritageViewModel"
 class HeritageViewModel: ViewModel() {
 
     private val _curHeritage = MutableStateFlow(Heritage())
@@ -47,4 +49,13 @@ class HeritageViewModel: ViewModel() {
         }
     }
 
+    fun searchHeritageList(region1: String?, region2: String?, ccceName: String?, mcodeName: String?){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, ccceName, mcodeName)
+            }
+            result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+            Log.d(TAG, "searchHeritageList: ${result}")
+        }
+    }
 }

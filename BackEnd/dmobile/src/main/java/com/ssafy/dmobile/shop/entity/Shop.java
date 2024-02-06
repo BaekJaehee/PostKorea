@@ -21,6 +21,7 @@ public class Shop {
     @Column(name = "product_point")
     private Integer productPoint;
 
+    // 무한재귀 막으려면 단방향
 //    @OneToMany(mappedBy = "shop")
 //    private List<ShopMember> shopMember;
 }
