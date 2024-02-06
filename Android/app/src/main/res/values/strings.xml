@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">TravelCollector</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cultural_asset_description_temp"><![CDATA[봉정사(鳳停寺)는 672년(신라 문무왕 12) 능인대사(能仁大師)에 의하여 창건되었다는 전설이 전하는데,<극락전 중수상량문>등 발견된 구체적인 자료를 통해 보면 7세기 후반 능인대사에 의해 창건된 것으로 추정된다.극락전은 원래 대장전이라고 불렀으나 뒤에 이름을 바꾸었다고 한다. 1972년 보수공사때 고려 공민왕 12년(1363)에 지붕을 크게 수리하였다는 기록이 담긴 상량문을 발견하였는데, 우리 전통 목조건물은 신축후 지붕을 크게 수리하기까지 통상적으로 100~150년이 지나야 하므로 건립연대를 1200년대 초로 추정할 수 있어 우리나라에서 가장 오래된 목조 건물로 보고 있다.앞면 3칸·옆면 4칸 크기에, 지붕은 옆면에서 볼 때 사람 인(人)자 모양을 한 맞배지붕으로 꾸몄다. (후략)]]></string>
+</resources>

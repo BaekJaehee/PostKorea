@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5EBE0"
+    tools:context=".fragment.heritage.CulturalAssetDetailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
+
+        <ImageView
+            android:id="@+id/cultural_asset_detail_iv"
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            tools:background="@drawable/cultural_asset_image_temp" />
+
+        <TextView
+            android:id="@+id/cultural_asset_detail_tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="안동 봉정사 극락전"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginVertical="10dp"/>
+
+        <TextView
+            android:id="@+id/cultural_asset_detail_tv_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cultural_asset_description_temp"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            >
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cultural_asset_detail_btn_new_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기록남기기"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:background="@drawable/bg_round_brown"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="10dp"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cultural_asset_detail_btn_read_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기록 읽기"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:background="@drawable/bg_round_brown"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="10dp"
+
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/cultural_asset_detail_btn_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="네비게이션"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:background="@drawable/bg_round_brown"
+                android:textColor="@color/black"
+                android:layout_marginHorizontal="10dp"
+                />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cultural_asset_detail_btn_game"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="미니게임 실행"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cultural_asset_detail_btn_add_to_travel"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:text="여행 목록에 추가"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</ScrollView>

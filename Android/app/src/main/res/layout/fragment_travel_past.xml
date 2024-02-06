@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/background"
+    android:padding="16dp"
+    tools:context=".fragment.travel.TravelPastFragment">
+
+    <TextView
+        android:id="@+id/travel_past_travel_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="탐방 이름"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_margin="24dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/travel_past_day_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="15dp"
+        android:background="@drawable/edittext_drop_shadow_brown1"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/calendar"
+            android:layout_gravity="bottom"
+            />
+        <TextView
+            android:id="@+id/travel_past_tv_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xx월 xx일 - xx월 xx일"
+            android:textSize="20sp"
+            android:layout_marginLeft="5dp"
+            />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/brown4"
+        android:layout_marginVertical="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/travel_past_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="32dp"
+        />
+
+</LinearLayout>
