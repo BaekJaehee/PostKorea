@@ -4,9 +4,11 @@ import com.ssafy.dmobile.shop.entity.ShopMember;
 import com.ssafy.dmobile.shop.repository.ShopMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ShopMemberService {
     private final ShopMemberRepository shopMemberRepository;
 

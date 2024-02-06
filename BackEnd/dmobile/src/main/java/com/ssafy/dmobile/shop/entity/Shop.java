@@ -21,6 +21,6 @@ public class Shop {
     @Column(name = "product_point")
     private Integer productPoint;
 
-    @OneToMany(mappedBy = "shop")
-    private List<ShopMember> shopMember;
+//    @OneToMany(mappedBy = "shop")
+//    private List<ShopMember> shopMember;
 }

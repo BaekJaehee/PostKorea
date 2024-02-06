@@ -19,29 +19,30 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_Id")
+    @Column(name = "comment_id")
     private Long commentId;
 
     // content
-    @Column(nullable = false)
+    @Column(name = "comment_content", nullable = false)
     private String content;
 
     // User
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_Id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     // board_id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boards_Id")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     // createdTime
+    @Column(name = "comment_created")
     private Long createdDate;
 
 //    @Getter

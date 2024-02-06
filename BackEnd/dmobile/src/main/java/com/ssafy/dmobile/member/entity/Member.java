@@ -8,8 +8,8 @@ import lombok.*;
 import java.util.List;
 
 @Getter
-@Setter
 @Entity
+@Setter
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,7 +46,4 @@ public class Member {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "member_oauth_info")
     private OAuthType oAuthType = OAuthType.NONE;
-
-    @OneToMany(mappedBy = "member")
-    private List<ShopMember> shopMember;
 }

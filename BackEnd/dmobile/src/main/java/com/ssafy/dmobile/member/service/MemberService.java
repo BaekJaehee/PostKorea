@@ -7,6 +7,7 @@ import com.ssafy.dmobile.member.entity.request.*;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-//    private final EmailService emailService;
+    private final EmailService emailService;
 
     // 회원가입
     @Transactional
@@ -84,7 +85,7 @@ public class MemberService {
         return member;
     }
 
-    public Map<String, Object> getMemberDetails(Long id) {
+    public Member getMemberDetails(Long id) {
 
         Optional<Member> optionalMember = memberRepository.findById(id);
         // 유저 정보가 없는 경우
@@ -92,18 +93,17 @@ public class MemberService {
             throw new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION);
         }
 
-        Member member = optionalMember.get();
-        Map<String, Object> response = new HashMap<>();
+//        Map<String, Object> response = new HashMap<>();
 
         // 아이디, OAuth 정보 생략
-        response.put("member_email", member.getEmail());
-        response.put("member_name", member.getName());
-        response.put("member_nickname", member.getNickname());
-        response.put("member_age", member.getAge());
-        response.put("member_gender", member.getGender());
-        response.put("member_point", member.getPoint());
+//        response.put("member_email", member.getEmail());
+//        response.put("member_name", member.getName());
+//        response.put("member_nickname", member.getNickname());
+//        response.put("member_age", member.getAge());
+//        response.put("member_gender", member.getGender());
+//        response.put("member_point", member.getPoint());
 
-        return response;
+        return optionalMember.get();
     }
 
     @Transactional
@@ -205,7 +205,7 @@ public class MemberService {
         Member savedMember = memberRepository.save(builder.build());
 
         // 이메일 보내기
-//        emailService.sendTemporaryPassword(savedMember.getEmail(), savedMember.getName(), tempoPassword);
+        emailService.sendTemporaryPassword(savedMember.getEmail(), savedMember.getName(), tempoPassword);
 
         return savedMember;
     }
@@ -222,7 +222,6 @@ public class MemberService {
                 .map(Member::getEmail)
                 .orElseThrow(() -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
     }
-
 //    public boolean existsById(Long id) {
 //        return memberRepository.existsById(id);
 //    }

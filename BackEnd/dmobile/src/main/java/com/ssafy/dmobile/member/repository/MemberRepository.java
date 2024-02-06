@@ -1,6 +1,9 @@
 package com.ssafy.dmobile.member.repository;
 
 import com.ssafy.dmobile.member.entity.Member;
+import com.ssafy.dmobile.shop.dto.ShopMemberDto;
+import com.ssafy.dmobile.shop.entity.Shop;
+import com.ssafy.dmobile.shop.entity.ShopMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

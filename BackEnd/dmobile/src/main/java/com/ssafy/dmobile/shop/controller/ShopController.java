@@ -1,8 +1,11 @@
 package com.ssafy.dmobile.shop.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
+import com.ssafy.dmobile.member.repository.MemberRepository;
+import com.ssafy.dmobile.shop.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
+//import com.ssafy.dmobile.shop.entity.ShopMemberId;
 import com.ssafy.dmobile.shop.repository.ShopRepository;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.shop.service.ShopMemberService;
@@ -18,13 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/shop")
 @RequiredArgsConstructor
 public class ShopController {
 
     private final ShopRepository shopRepository;
+    private final MemberRepository memberRepository;
     private final ShopService shopService;
     private final ShopMemberService shopMemberService;
     private final MemberService memberService;
@@ -67,20 +70,44 @@ public class ShopController {
         boolean purchaseResult = shopService.purchaseProduct(memberId, productId);
 
         try {
+            // 무한재귀 발생 -> dto 생성
             if (purchaseResult) {   // 정상적으로 구매 성공
                 // db에서 물품 삭제는 안함
-                // member_shop 중개테이블에 추가
-                ShopMember shopMember = new ShopMember();
-                Member member = memberService.getMemberById(memberId);
-                shopMember.setMember(member);
-                Shop shop = shopService.getProductById(productId);
-                shopMember.setShop(shop);
-                // shopMember.setProductDate();
-                shopMemberService.saveShopMember(shopMember);
+                // dto에 추가
+                ShopMemberDto shopMemberDto = new ShopMemberDto();
+                shopMemberDto.setMemberId(memberId);
+                shopMemberDto.setProductId(productId);
+                shopMemberDto.setProductDate(null);
 
-                // db에 남은 물품들 가져오기
-                List<Shop> remainProduct = shopRepository.findAll();
-                return ResponseEntity.ok().body(remainProduct);
+                ShopMember shopMember = convertDtoToEntity(shopMemberDto);  // dto 엔터티로 변경
+                shopMemberService.saveShopMember(shopMember);   // 저장
+
+                return ResponseEntity.ok().body(shopMember);
+
+//                return ResponseEntity.ok().body(shopMemberDto);
+
+//                ShopMember shopMember = new ShopMember();
+//                Member member = memberService.getMemberById(memberId);
+//                System.out.println("MEMBER: "+member+"★★★★★★★★★");
+//                shopMember.setMember(member);
+//                Shop shop = shopService.getProductById(productId);
+//                shopMember.setShop(shop);
+                // shopMember.setProductDate();
+
+                // ShopMemberId객체 생성
+//                ShopMemberId shopMemberId = new ShopMemberId(member.getId(), shop.getProductId());
+//
+//                ShopMember shopMember = new ShopMember();
+//                shopMember.setShopMemberId(shopMemberId);
+//                shopMember.setMember(member);
+//                shopMember.setShop(shop);
+//                shopMemberService.saveShopMember(shopMember);
+
+//                return ResponseEntity.ok().body(shopMember);
+//
+//                // db에 남은 물품들 가져오기
+//                List<Shop> remainProduct = shopRepository.findAll();
+//                return ResponseEntity.ok().body(remainProduct);
             } else {
                 List<Shop> product = shopRepository.findAll();
                 return ResponseEntity.ok().body(product);
@@ -90,4 +117,23 @@ public class ShopController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
     }
+
+    private ShopMember convertDtoToEntity(ShopMemberDto shopMemberDto) {
+        ShopMember shopMember = new ShopMember();
+        Member member = memberRepository.findById(shopMemberDto.getMemberId()).orElse(null);
+        if (member == null) {
+            // 회원이 없을 경우 예외 처리
+            throw new IllegalArgumentException("Member not found with ID: " + shopMemberDto.getMemberId());
+        }
+        shopMember.setMember(member);
+        Shop shop = shopRepository.findById(shopMemberDto.getProductId()).orElse(null);
+        if (shop == null) {
+            // 상품이 없을 경우 예외 처리
+            throw new IllegalArgumentException("Shop not found with ID: " + shopMemberDto.getProductId());
+        }
+        shopMember.setShop(shop);
+        shopMember.setProductDate(shopMemberDto.getProductDate());
+        return shopMember;
+    }
+
 }
