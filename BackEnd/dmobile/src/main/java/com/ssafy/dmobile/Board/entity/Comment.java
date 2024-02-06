@@ -19,7 +19,7 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
 
     @Id
@@ -28,7 +28,7 @@ public class Comment {
     private Long commentId;
 
     // content
-    @Column(nullable = false)
+    @Column(name = "comment_content", nullable = false)
     private String content;
 
     // User
@@ -38,10 +38,11 @@ public class Comment {
 
     // board_id
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "boards_Id")
+    @JoinColumn(name = "board_Id")
     private Board board;
 
     // createdTime
+    @Column(name = "comment_created")
     private Long createdDate;
 
 //    @Getter
