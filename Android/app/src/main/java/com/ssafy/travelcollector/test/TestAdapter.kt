@@ -19,7 +19,6 @@ import java.util.Collections
 class TestAdapter: BaseAdapter<TDto>(), ITouchMove{
 
     inner class TestHolder(private val binding: TestBinding): BaseHolder(binding), View.OnCreateContextMenuListener, ITouchRemove{
-
         override fun bindInfo(data: TDto) {
             binding.testing.text = data.a.toString()
             binding.testDrag.setOnTouchListener{ _, event->

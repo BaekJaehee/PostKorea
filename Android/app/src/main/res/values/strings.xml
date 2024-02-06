@@ -1,6 +1,56 @@
 <resources>
     <string name="app_name">TravelCollector</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cultural_asset_description_temp"><![CDATA[봉정사(鳳停寺)는 672년(신라 문무왕 12) 능인대사(能仁大師)에 의하여 창건되었다는 전설이 전하는데,<극락전 중수상량문>등 발견된 구체적인 자료를 통해 보면 7세기 후반 능인대사에 의해 창건된 것으로 추정된다.극락전은 원래 대장전이라고 불렀으나 뒤에 이름을 바꾸었다고 한다. 1972년 보수공사때 고려 공민왕 12년(1363)에 지붕을 크게 수리하였다는 기록이 담긴 상량문을 발견하였는데, 우리 전통 목조건물은 신축후 지붕을 크게 수리하기까지 통상적으로 100~150년이 지나야 하므로 건립연대를 1200년대 초로 추정할 수 있어 우리나라에서 가장 오래된 목조 건물로 보고 있다.앞면 3칸·옆면 4칸 크기에, 지붕은 옆면에서 볼 때 사람 인(人)자 모양을 한 맞배지붕으로 꾸몄다. (후략)]]></string>
+
+    <string-array name="era">
+        <item>가야</item>
+        <item>개화기</item>
+        <item>근대</item>
+        <item>나말여초</item>
+        <item>낙랑</item>
+        <item>남북국</item>
+        <item>대한민국</item>
+        <item>대한제국</item>
+        <item>여말선초</item>
+        <item>마한</item>
+        <item>미상</item>
+        <item>백악기</item>
+        <item>백제</item>
+        <item>삼국</item>
+        <item>삼한</item>
+        <item>신라</item>
+        <item>신생대</item>
+        <item>신석기</item>
+        <item>일제강점기</item>
+        <item>임진왜란</item>
+        <item>정유재란</item>
+        <item>조선</item>
+        <item>탐라</item>
+        <item>통일신라</item>
+        <item>현대</item>
+        <item>후삼국</item>
+    </string-array>
+
+    <string-array name="category">
+        <item>간독류</item>
+        <item>개신교</item>
+        <item>건축</item>
+        <item>건칠조</item>
+        <item>계측교역기술용구</item>
+        <item>공공용시설</item>
+        <item>공양구</item>
+        <item>공예</item>
+        <item>공예기술용구</item>
+        <item>관부문서</item>
+        <item>광업</item>
+        <item>괘불화</item>
+        <item>교육기관</item>
+        <item>교육시설</item>
+        <item>교통</item>
+        <item>구비전승</item>
+    </string-array>
+
+
 </resources>

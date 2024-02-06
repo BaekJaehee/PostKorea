@@ -3,16 +3,17 @@ package com.ssafy.travelcollector.fragment.heritage
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.HeritageAdapter
 import com.ssafy.travelcollector.config.BaseFragment
+import com.ssafy.travelcollector.config.RegionString
 import com.ssafy.travelcollector.databinding.FragmentHeritageListBinding
-import com.ssafy.travelcollector.viewModel.DetailStateEnum
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
+import com.ssafy.travelcollector.util.StringUtil
 import kotlinx.coroutines.launch
 
 private const val TAG = "HeritageListFragment"
@@ -29,9 +30,57 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
         initAdapter()
     }
 
-    private fun initView(){
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         lifecycleScope.launch {
             heritageViewModel.loadHeritageList()
+        }
+    }
+
+    private fun initView(){
+
+        val eraItems = resources.getStringArray(R.array.era)
+        val categoryItems = resources.getStringArray(R.array.category)
+        binding.heritageListAtvEra.setAdapter(ArrayAdapter(
+            requireContext(), R.layout.item_list, eraItems
+        ))
+        binding.heritageListAtvCategory.setAdapter(
+            ArrayAdapter(requireContext(), R.layout.item_list, categoryItems
+        ))
+        binding.heritageListAtvRegion1.setAdapter(
+            ArrayAdapter(requireContext(), R.layout.item_list, RegionString.REGION.map{it.region})
+        )
+        binding.heritageListAtvRegion1.setOnItemClickListener{ adapterView, _, position: Int, _ ->
+            binding.heritageListAtvRegion2.setText("")
+            binding.heritageListAtvRegion2.setAdapter(
+                ArrayAdapter(requireContext(), R.layout.item_list, RegionString.findByName(adapterView.getItemAtPosition(position).toString()))
+            )
+        }
+
+        binding.heritageListSv.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return true
+            }
+        })
+
+        binding.heritageListBtnSearchCondition.setOnClickListener {
+            val era = binding.heritageListAtvEra.text.toString()
+            val category = binding.heritageListAtvCategory.text.toString()
+            val region1 = binding.heritageListAtvRegion1.text.toString()
+            val region2 = binding.heritageListAtvRegion2.text.toString()
+            if(era.isEmpty()&&category.isEmpty()&&region1.isEmpty()&&region2.isEmpty()){
+                showToast("조건을 입력하세요")
+            }else{
+                heritageViewModel.searchHeritageList(
+                    StringUtil.nullableString(region1),
+                    StringUtil.nullableString(region2),
+                    StringUtil.nullableString(era),
+                    StringUtil.nullableString(category))
+            }
         }
     }
 
