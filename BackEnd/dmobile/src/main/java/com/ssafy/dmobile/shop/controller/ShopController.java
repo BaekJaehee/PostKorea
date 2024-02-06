@@ -78,7 +78,9 @@ public class ShopController {
                 ShopMemberDto shopMemberDto = new ShopMemberDto();
                 shopMemberDto.setMemberId(memberId);
                 shopMemberDto.setProductId(productId);
-                shopMemberDto.setProductDate(null);
+                // 현재 날짜를 millisecond 단위로 가져와서 productDate에
+                long currentTimeMillis = System.currentTimeMillis();
+                shopMemberDto.setProductDate(currentTimeMillis);
 
                 ShopMember shopMember = convertDtoToEntity(shopMemberDto);  // dto 엔터티로 변경
                 shopMemberService.saveShopMember(shopMember);   // 저장
