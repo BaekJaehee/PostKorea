@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.account.SignUpFragment"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:gravity="center"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로고"
+        android:textSize="50sp"
+        android:gravity="center"
+        android:layout_margin="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="e-mail"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/sign_up_et_e_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_form"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pw"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/sign_up_et_pw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_form"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="pw 확인"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/sign_up_et_pw2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_form"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/sign_up_et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_form"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="연락처"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/sign_up_et_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/user_info_form"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/sign_up_btn_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/button_brown"
+        android:text="가입하기"
+        android:layout_marginTop="32dp"
+        android:paddingVertical="13dp"
+        android:paddingHorizontal="60dp"
+        />
+
+</LinearLayout>

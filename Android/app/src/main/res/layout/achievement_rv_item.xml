@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/achievement_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:background="@drawable/upper_round"
+        android:backgroundTint="@color/brown2"
+        tools:text="업적1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="start"
+        android:background="@drawable/lower_round"
+        android:backgroundTint="@color/brown3"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/achievement_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            tools:text="업적 설명"/>
+
+        <TextView
+            android:id="@+id/achievement_requirement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="start"
+            tools:text="획득 조건"/>
+
+        <!--tv 필요한 만큼 추가-->
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

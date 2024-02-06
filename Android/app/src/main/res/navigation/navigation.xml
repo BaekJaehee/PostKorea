@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.ssafy.travelcollector.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_travelListFragment"
+            app:destination="@id/travelListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_travelPostEditFragment"
+            app:destination="@id/travelPostEditFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_heritagePostFragment"
+            app:destination="@id/heritagePostFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/travelListFragment"
+        android:name="com.ssafy.travelcollector.fragment.travel.TravelListFragment"
+        android:label="fragment_travel_list"
+        tools:layout="@layout/fragment_travel_list" >
+        <action
+            android:id="@+id/action_travelListFragment_to_travelPlanFragment"
+            app:destination="@id/travelPlanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/travelPlanFragment"
+        android:name="com.ssafy.travelcollector.fragment.travel.TravelPlanFragment"
+        android:label="fragment_travel_plan"
+        tools:layout="@layout/fragment_travel_plan" >
+        <action
+            android:id="@+id/action_travelPlanFragment_to_heritageListFragment"
+            app:destination="@id/heritageListFragment" />
+        <action
+            android:id="@+id/action_travelPlanFragment_to_themeListFragment"
+            app:destination="@id/themeListFragment" />
+        <action
+            android:id="@+id/action_travelPlanFragment_to_culturalAssetDetailFragment"
+            app:destination="@id/culturalAssetDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment2"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+    </fragment>
+    <fragment
+        android:id="@+id/heritageListFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.HeritageListFragment"
+        android:label="fragment_heritage_list"
+        tools:layout="@layout/fragment_heritage_list" >
+        <action
+            android:id="@+id/action_heritageListFragment_to_culturalAssetDetailFragment"
+            app:destination="@id/culturalAssetDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/travelPostEditFragment"
+        android:name="com.ssafy.travelcollector.fragment.travel.TravelPostEditFragment"
+        android:label="fragment_travel_post_edit"
+        tools:layout="@layout/fragment_travel_post_edit" />
+    <fragment
+        android:id="@+id/heritagePostFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.HeritagePostFragment"
+        android:label="fragment_heritage_post"
+        tools:layout="@layout/fragment_heritage_post" />
+    <fragment
+        android:id="@+id/themeListFragment"
+        android:name="com.ssafy.travelcollector.fragment.theme.ThemeListFragment"
+        android:label="fragment_theme_list"
+        tools:layout="@layout/fragment_theme_list" >
+        <action
+            android:id="@+id/action_themeListFragment_to_themeDetailFragment"
+            app:destination="@id/themeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/themeDetailFragment"
+        android:name="com.ssafy.travelcollector.fragment.theme.ThemeDetailFragment"
+        android:label="fragment_theme_detail"
+        tools:layout="@layout/fragment_theme_detail" >
+        <action
+            android:id="@+id/action_themeDetailFragment_to_travelPlanFragment"
+            app:destination="@id/travelPlanFragment" />
+        <action
+            android:id="@+id/action_themeDetailFragment_to_culturalAssetDetailFragment"
+            app:destination="@id/culturalAssetDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/culturalAssetDetailFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.CulturalAssetDetailFragment"
+        android:label="fragment_cultural_asset_detail"
+        tools:layout="@layout/fragment_cultural_asset_detail" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.ssafy.travelcollector.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_changeUserInfoFragment"
+            app:destination="@id/changeUserInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changeUserInfoFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.ChangeUserInfoFragment"
+        android:label="fragment_change_user_info"
+        tools:layout="@layout/fragment_change_user_info" />
+</navigation>
