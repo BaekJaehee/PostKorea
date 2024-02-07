@@ -104,7 +104,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member editMemberInfo(Long id, MemberEditRequestDto memberDto) {
+    public void editMemberInfo(Long id, MemberEditRequestDto memberDto) {
 
         Optional<Member> optionalMember = memberRepository.findById(id);
         // 유저 정보가 없는 경우
@@ -128,11 +128,11 @@ public class MemberService {
             builder.age(memberDto.getMemberAge());
         }
 
-        return memberRepository.save(builder.build());
+        memberRepository.save(builder.build());
     }
 
     @Transactional
-    public Member editMemberPassword(Long id, MemberEditPwdRequestDto pwdDto) {
+    public void editMemberPassword(Long id, MemberEditPwdRequestDto pwdDto) {
 
         Optional<Member> optionalMember = memberRepository.findById(id);
         // 유저 정보가 없는 경우
@@ -156,7 +156,7 @@ public class MemberService {
         String password = passwordEncoder.encode(pwdDto.getNewPwd());
         builder.password(password);
 
-        return memberRepository.save(builder.build());
+        memberRepository.save(builder.build());
     }
 
     @Transactional
@@ -179,7 +179,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member editMemberTempoPassword(MemberFindPwdRequestDto pwdDto) {
+    public void editMemberTempoPassword(MemberFindPwdRequestDto pwdDto) {
 
         Optional<Member> optionalMember = memberRepository.findByEmail(pwdDto.getMemberEmail());
         // 유저 정보가 없는 경우
@@ -204,7 +204,6 @@ public class MemberService {
         // 이메일 보내기
         emailService.sendTemporaryPassword(savedMember.getEmail(), savedMember.getName(), tempoPassword);
 
-        return savedMember;
     }
 
     // Direct JPA Resources -----
@@ -224,6 +223,10 @@ public class MemberService {
 //    }
     public Member getMemberById(Long id) {
         return memberRepository.findById(id).orElse(null);
+    }
+
+    public void updateMemberDirectly(Member member) {
+        memberRepository.save(member);
     }
 
 }
