@@ -26,7 +26,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
     private fun initView(){
         lifecycleScope.launch {
-            boardViewModel.getAllBoards()
+            boardViewModel.loadAllBoards()
         }
     }
 
@@ -40,7 +40,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
         boardAdapter.clickListener = object : BoardAdapter.ClickListener{
             override fun onClick(position: Int) {
-                boardViewModel.getDetailBoard(
+                boardViewModel.loadDetailBoard(
                     boardAdapter.currentList[position].id
                 )
                 findNavController().navigate(R.id.action_boardListFragment_to_heritagePostFragment)

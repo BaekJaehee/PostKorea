@@ -53,6 +53,7 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
                 binding.heritagePostText.text = it.content
                 binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
                 imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
+                boardViewModel.loadComments(it.id)
             }
         }
 
@@ -74,7 +75,6 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
     }
 
     private fun initAdapter(){
-        commentRecyclerView.adapter = commentAdapter
         imageAdapter.imageBinder = object :ImageSliderAdapter.ImageBinder{
             override fun imageBind(url: String, imageView: ImageView) {
                 Glide.with(requireContext())
@@ -82,12 +82,32 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
                     .into(imageView)
             }
         }
+
+        lifecycleScope.launch {
+            boardViewModel.comments.collect{
+                commentAdapter.submitList(it)
+            }
+        }
+
+        commentAdapter.eventListener = object : CommentAdapter.EventListener{
+            override fun delete(position: Int) {
+                val comment = commentAdapter.currentList[position]
+                boardViewModel.deleteComment(
+                    comment.boardId, comment.id
+                )
+            }
+
+        }
+        commentRecyclerView.adapter = commentAdapter
     }
 
     private fun addComment(){
-        var newList = commentAdapter.currentList.toMutableList()
-        newList.add(Comment(content = binding.heritagePostEtComment.text.toString()))
-        commentAdapter.submitList(newList)
+        lifecycleScope.launch {
+            boardViewModel.addComment(
+                boardViewModel.boardDetail.value.id,
+                Comment(content = binding.heritagePostEtComment.text.toString())
+            )
+        }
         binding.heritagePostEtComment.setText("")
     }
 
