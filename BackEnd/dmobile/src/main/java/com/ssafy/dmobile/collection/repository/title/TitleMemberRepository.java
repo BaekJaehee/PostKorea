@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.collection.repository;
+package com.ssafy.dmobile.collection.repository.title;
 
 import com.ssafy.dmobile.collection.entity.title.TitleMember;
 import com.ssafy.dmobile.collection.entity.title.TitleMemberKey;

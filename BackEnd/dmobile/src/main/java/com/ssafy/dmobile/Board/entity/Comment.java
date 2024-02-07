@@ -49,11 +49,12 @@ public class Comment {
 //    private Board board;
 
     @Builder
-    public Comment(Long commentId, Board board, String content, Member member) {
+    public Comment(Long commentId, Board board, String content, Member member, Long createdDate) {
         this.commentId = commentId;
         this.board = board;
         this.content = content;
         this.member = member;
+        this.createdDate = createdDate;
     }
 
     public void update(String content) {

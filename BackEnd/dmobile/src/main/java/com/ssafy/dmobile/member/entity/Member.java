@@ -38,7 +38,7 @@ public class Member {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "member_role")
-    private MemberRoleType memberRoleType = MemberRoleType.MEMBER;
+    private MemberRoleType role = MemberRoleType.MEMBER;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "member_oauth_info")
