@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
     </fragment>
     <fragment
         android:id="@+id/travelListFragment"
@@ -132,4 +135,9 @@
         android:name="com.ssafy.travelcollector.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" />
+    <fragment
+        android:id="@+id/boardListFragment"
+        android:name="com.ssafy.travelcollector.fragment.board.BoardListFragment"
+        android:label="fragment_board_list"
+        tools:layout="@layout/fragment_board_list" />
 </navigation>
