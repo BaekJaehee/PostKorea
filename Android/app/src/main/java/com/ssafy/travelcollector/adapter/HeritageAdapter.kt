@@ -42,7 +42,7 @@ class HeritageAdapter(val isPlanning: Boolean = false) : BaseAdapter<Heritage>()
             v: View?,
             menuInfo: ContextMenu.ContextMenuInfo?
         ) {
-            val menuItem = menu.add(0,0,0,"delete")
+            val menuItem = menu.add(0,0,0,"삭제하기")
             menuItem.setOnMenuItemClickListener {
                 eventListener.delete(layoutPosition)
                 true

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Board
+import com.ssafy.travelcollector.dto.Comment
 import com.ssafy.travelcollector.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,9 @@ class BoardViewModel: ViewModel() {
     private val _boardDetail = MutableStateFlow(Board())
     val boardDetail = _boardDetail.asStateFlow()
 
+    private val _comments = MutableStateFlow(arrayListOf<Comment>())
+    val comments = _comments.asStateFlow()
+
     fun postBoard(title: String, content: String, images: ArrayList<MultipartBody.Part>){
         viewModelScope.launch {
             RetrofitUtil.BOARD_SERVICE.uploadProfileImage(
@@ -35,7 +39,7 @@ class BoardViewModel: ViewModel() {
         }
     }
 
-    fun getAllBoards(){
+    fun loadAllBoards(){
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO){
                 RetrofitUtil.BOARD_SERVICE.getAllBoards()
@@ -48,7 +52,7 @@ class BoardViewModel: ViewModel() {
         _boardList.update { list }
     }
 
-    fun getDetailBoard(id: Int){
+    fun loadDetailBoard(id: Int){
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO){
                 RetrofitUtil.BOARD_SERVICE.getBoardDetail(id)
@@ -59,6 +63,45 @@ class BoardViewModel: ViewModel() {
 
     fun setCurDetailBoard(board: Board){
         _boardDetail.update { board }
+    }
+
+    fun addComment(boardId: Int, comment: Comment){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.BOARD_SERVICE.postComment(
+                    AccountViewModel.ACCESS_TOKEN, boardId, comment
+                )
+            }
+            if(res.code()/100 == 2){
+                loadComments(boardId)
+            }
+        }
+    }
+
+    fun deleteComment(boardId: Int, commentId: Int){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.BOARD_SERVICE.deleteComment(
+                    AccountViewModel.ACCESS_TOKEN, boardId, commentId
+                )
+            }
+            if(res.code()/100 == 2){
+                loadComments(boardId)
+            }
+        }
+    }
+
+    fun loadComments(boardId: Int){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.BOARD_SERVICE.getComments(boardId)
+            }
+            setComments(ArrayList(res.body()!!))
+        }
+    }
+
+    fun setComments(list: ArrayList<Comment>){
+        _comments.update { list }
     }
 
 
