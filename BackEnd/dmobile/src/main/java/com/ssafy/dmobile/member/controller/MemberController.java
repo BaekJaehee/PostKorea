@@ -91,6 +91,28 @@ public class MemberController {
         return ResponseEntity.ok(response); // 200
     }
 
+    @GetMapping("/{memberId}")
+    @Operation(summary = "회원정보 조회", description = "회원 정보 조회를 진행합니다. memberId를 기준으로 조회하며 한정된 정보만 받아옵니다.")
+    public ResponseEntity<?> getSpecificMemberDetail(
+            @PathVariable Long memberId) {
+
+        Member member = memberService.getMemberDetails(memberId);
+
+        MemberResponseDto response = MemberResponseDto.builder()
+                .memberEmail(member.getEmail())
+                .memberName(member.getName())
+                .memberNickname(member.getNickname())
+                .memberProfileUrl(member.getProfileUrl())
+                .memberAge(member.getAge())
+//                .memberPoint(member.getPoint())
+                .memberGender(member.getGender())
+//                .memberAuth(member.getOAuthType())
+//                .memberRole(member.getRole())
+                .build();
+
+        return ResponseEntity.ok(response); // 200
+    }
+
 
 
     @PutMapping("/edit")
