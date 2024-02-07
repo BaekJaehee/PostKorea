@@ -10,6 +10,6 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 public class VisitKey implements Serializable {
-    private Long MemberId;
-    private Long RelicId;
+    private Long memberId;
+    private Long relicId;
 }

@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class MemberDto {
+public class MemberRequestDto {
 
     @JsonProperty("member_email")
     @Schema(description = "사용자의 고유 식별자")

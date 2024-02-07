@@ -32,7 +32,7 @@ public class VisitService {
     public void visitSpecificSpot(Long memberId, Long relicId) {
 
         // 해당 문화재 방문처리 (현재 시간 기준)
-        Visit visitInfo = saveVisit(memberId, relicId);
+        Visit visitInfo = saveVisitInfo(memberId, relicId);
 
         // 시도코드
         String sidoCode = visitInfo.getDetailData().getCcbaCtcd();
@@ -47,7 +47,7 @@ public class VisitService {
     }
 
     // member_id의 방문 목록에 relic_id를 지닌 문화재를 추가
-    private Visit saveVisit(Long memberId, Long relicId) {
+    private Visit saveVisitInfo(Long memberId, Long relicId) {
 
         VisitKey visitKey = new VisitKey();
         visitKey.setMemberId(memberId);

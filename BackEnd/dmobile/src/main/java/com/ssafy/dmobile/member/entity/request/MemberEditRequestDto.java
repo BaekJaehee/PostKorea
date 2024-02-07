@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberEditDto {
+public class MemberEditRequestDto {
 
     @JsonProperty("member_nickname")
     private String memberNickname;
