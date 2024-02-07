@@ -15,4 +15,8 @@ public class ShopMemberService {
     public void saveShopMember(ShopMember shopMember) {
         shopMemberRepository.save(shopMember);
     }
+
+    public boolean existsByMemberIdAndProductId(Long memberId, Long productId) {
+        return shopMemberRepository.existsByShopMemberIdMemberIdAndShopMemberIdProductId(memberId, productId);
+    }
 }

@@ -49,9 +49,9 @@ public class ShopService {
             return false;
         }
 
-//    public Shop getProductById(Long productId) {
-//            return shopRepository.getById(productId);
-//    }
+    public Shop getProductById(Long productId) {
+            return shopRepository.getById(productId);
+    }
     // 상품 구매 로직
 //        Optional<Member> optionalMember = memberRepository.findById(memberId);
 //        Optional<Shop> optionalShop = shopRepository.findById(productId);
