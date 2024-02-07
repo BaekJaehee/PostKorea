@@ -9,6 +9,7 @@ import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.visit.entity.MemberRelic;
 import com.ssafy.dmobile.visit.entity.MemberRelicKey;
+import com.ssafy.dmobile.visit.entity.RelicTypeMappingInfo;
 import com.ssafy.dmobile.visit.entity.SidoAchieveMappingInfo;
 import com.ssafy.dmobile.visit.repository.MemberRelicRepository;
 import lombok.RequiredArgsConstructor;
@@ -88,15 +89,14 @@ public class MemberRelicService {
     private void checkAndAssignAchieveInMember(Long memberId, String sidoCode, int currentSidoCount, String relicTypeCode, int currentRelicTypeCount) {
 
         // 시도 코드에 매핑된 업적 ID를 조회
-        SidoAchieveMappingInfo mapping = SidoAchieveMappingInfo.findBySidoCode(sidoCode);
-
-        Long[] achieveIds = new Long[4];
+        SidoAchieveMappingInfo sidoMapping = SidoAchieveMappingInfo.findBySidoCode(sidoCode);
+        Long[] achieveSidoIds = new Long[4];
         for (int i = 0; i < 4; i++) {
-            achieveIds[i] = (long) mapping.getAchieveIds()[i];
+            achieveSidoIds[i] = (long) sidoMapping.getAchieveIds()[i];
         }
 
         // 방문 횟수에 따른 업적 인덱스 매핑
-        Map<Integer, Integer> countToIndexMap = Map.of(
+        Map<Integer, Integer> countToSidoIndexMap = Map.of(
                 1, 0,
                 10, 1,
                 30, 2,
@@ -104,16 +104,30 @@ public class MemberRelicService {
         );
 
         // 현재 방문 횟수에 해당하는 업적 인덱스 찾기
-        Integer idx = countToIndexMap.get(currentSidoCount);
-        if (idx != null) {
-            achieveMemberService.addAchieveInMember(memberId, achieveIds[idx]);
+        Integer sidoIdx = countToSidoIndexMap.get(currentSidoCount);
+        if (sidoIdx != null) {
+            achieveMemberService.addAchieveInMember(memberId, achieveSidoIds[sidoIdx]);
+        }
+        
+        // 문화재 유형 (기존 종목코드 활용)에 매핑된 업적 ID를 조회
+        RelicTypeMappingInfo relicTypeMapping = RelicTypeMappingInfo.findByRelicTypeCode(relicTypeCode);
+        Long[] achieveRelicTypeIds = new Long[4];
+        for (int i = 0; i < 4; i++) {
+            achieveRelicTypeIds[i] = (long) relicTypeMapping.getAchieveIds()[i];
+        }
+
+        Map<Integer, Integer> countToRelicTypeIndexMap = Map.of(
+                1, 0,
+                10, 1,
+                30, 2,
+                50, 3
+        );
+
+        Integer relicTypeIdx = countToRelicTypeIndexMap.get(currentRelicTypeCount);
+        if (relicTypeIdx != null) {
+            achieveMemberService.addAchieveInMember(memberId, achieveRelicTypeIds[relicTypeIdx]);
         }
     }
-
-//    // TODO: 칭호 달성 조건 검사 및 칭호 할당 로직 구현
-//    private void checkAndAssignTitles(Long memberId, long visitCount) {
-//
-//    }
 }
 
 
