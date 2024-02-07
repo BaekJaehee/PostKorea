@@ -11,8 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-//@Builder
-//@AllArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "theme")
 public class Theme {
 
@@ -26,14 +26,20 @@ public class Theme {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "theme")
+    @OneToMany(mappedBy = "theme", fetch = FetchType.LAZY)
     private Set<ThemeRelic> themeRelics = new HashSet<>();
 
-    @Builder
-    public Theme(Long themeId, String themeName, String description, Set<ThemeRelic> themeRelics) {
-        this.themeId = themeId;
+//    @Builder
+//    public Theme(Long themeId, String themeName, String description, Set<ThemeRelic> themeRelics) {
+//        this.themeId = themeId;
+//        this.themeName = themeName;
+//        this.description = description;
+//        this.themeRelics = themeRelics;
+//    }
+
+    public void update(String themeName, String description) {
         this.themeName = themeName;
         this.description = description;
-        this.themeRelics = themeRelics;
     }
+
 }

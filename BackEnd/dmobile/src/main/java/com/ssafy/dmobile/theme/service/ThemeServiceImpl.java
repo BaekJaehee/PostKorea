@@ -4,6 +4,7 @@ import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
+import com.ssafy.dmobile.theme.dto.RelicDetailDTO;
 import com.ssafy.dmobile.theme.dto.request.ThemeRequestDTO;
 import com.ssafy.dmobile.theme.dto.response.ThemeResponseDTO;
 import com.ssafy.dmobile.theme.entity.Theme;
@@ -15,7 +16,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,24 +31,72 @@ public class ThemeServiceImpl implements ThemeService{
 
     @Override
     public List<ThemeResponseDTO> findAllThemes() {
-        return themeRepository.findAll().stream()
-                .map(theme -> new ThemeResponseDTO(theme.getThemeId(), theme.getThemeName(), theme.getDescription()))
-                .collect(Collectors.toList());
+        List<Theme> themes = themeRepository.findAll();
+        List<ThemeResponseDTO> themeResponseDTOS = new ArrayList<>();
+
+        for (Theme theme : themes) {
+            themeResponseDTOS.add(new ThemeResponseDTO(theme));
+        }
+        return themeResponseDTOS;
     }
+
+    @Override
+    public ThemeResponseDTO getThemeById(Long themeId) {
+        Theme theme = themeRepository.findById(themeId)
+                .orElseThrow(() -> new CustomException(ExceptionType.THEME_NOT_FOUND_EXCEPTION));
+        ThemeResponseDTO responseDTO = new ThemeResponseDTO(theme);
+
+        // Relic 상세 정보 조회 및 설정
+        Set<RelicDetailDTO> relicDetails = theme.getThemeRelics().stream()
+                .map(ThemeRelic::getDetailData)
+                .map(detailData -> new RelicDetailDTO(
+                        detailData.getRelicId(),
+                        detailData.getItemId(),
+                        detailData.getCcmaName(),
+                        detailData.getCcbaMnm1(),
+                        detailData.getCcbaMnm2(),
+                        detailData.getCcbaKdcd(),
+                        detailData.getCcbaCtcd(),
+                        detailData.getCcbaAsno(),
+                        detailData.getCcbaCpno(),
+                        detailData.getLongitude(),
+                        detailData.getLatitude(),
+                        detailData.getGcodeName(),
+                        detailData.getBcodeName(),
+                        detailData.getMcodeName(),
+                        detailData.getScodeName(),
+                        detailData.getCcbaQuan(),
+                        detailData.getCcbaAsdt(),
+                        detailData.getCcbaLcad(),
+                        detailData.getCcceName(),
+                        detailData.getCcbaPoss(),
+                        detailData.getCcbaAdmin(),
+                        detailData.getImageUrl(),
+                        detailData.getContent(),
+                        detailData.getRegion1(),
+                        detailData.getRegion2()
+                ))
+                .collect(Collectors.toSet());
+
+        responseDTO.setRelicDetails(relicDetails); // ThemeResponseDTO에 Relic 상세 정보 설정
+
+        return responseDTO;
+    }
+
 
     @Override
     @Transactional
     public ThemeResponseDTO addRelicToTheme(Long themeId, Long relicId) {
         Theme theme = themeRepository.findById(themeId)
-                .orElseThrow(() -> new RuntimeException("Theme not found"));
+                .orElseThrow(() -> new CustomException(ExceptionType.THEME_NOT_FOUND_EXCEPTION));
         DetailData detailData = detailDataRepository.findById(relicId)
-                .orElseThrow(() -> new RuntimeException("Relic not found"));
+                .orElseThrow(() -> new CustomException(ExceptionType.RELIC_NOT_FOUND_EXCEPTION));
 
         ThemeRelic themeRelic = new ThemeRelic(new ThemeRelicKey(themeId, relicId), theme, detailData);
         theme.getThemeRelics().add(themeRelic);
         themeRepository.save(theme);
 
-        return new ThemeResponseDTO(theme.getThemeId(), theme.getThemeName(), theme.getDescription());
+        return new ThemeResponseDTO(theme);
     }
 
     @Override
@@ -58,27 +110,29 @@ public class ThemeServiceImpl implements ThemeService{
                 new CustomException(ExceptionType.RELIC_NOT_FOUND_EXCEPTION)
         );
 
-        // 테마와 문화재의 연관 관계를 끊음
+        // 테마와 문화재의 연관 관계 찾아서 제거
         ThemeRelicKey themeRelicKey = new ThemeRelicKey(themeId, relicId);
-        ThemeRelic themeRelic = themeRelicRepository.findById(themeRelicKey).orElse(null);
-        if (themeRelic != null) {
-            theme.getThemeRelics().remove(themeRelic);
-            themeRelicRepository.delete(themeRelic);
-        }
-
-        // 업데이트된 테마 엔티티를 DTO로 변환하여 반환
+        themeRelicRepository.findById(themeRelicKey).ifPresent(ThemeRelic -> {
+            theme.getThemeRelics().remove(ThemeRelic);
+            themeRelicRepository.delete(ThemeRelic);
+        });
         Theme updatedTheme = themeRepository.save(theme);
-        return new ThemeResponseDTO(updatedTheme.getThemeId(), updatedTheme.getThemeName(), updatedTheme.getDescription());
+
+        return new ThemeResponseDTO(updatedTheme);
     }
 
+    // 빈 테마 생성(이름이랑 설명은 들어감)
     @Override
     @Transactional
     public ThemeResponseDTO createEmptyTheme(ThemeRequestDTO dto) {
         Theme theme = dto.dtoToEntity(dto);
+        theme.setThemeName(theme.getThemeName());
+        theme.setDescription(theme.getDescription());
         Theme save = themeRepository.save(theme);
         return new ThemeResponseDTO(save);
     }
 
+    // 테마 삭제
     @Override
     @Transactional
     public void deleteTheme(Long themeId) {
@@ -86,25 +140,23 @@ public class ThemeServiceImpl implements ThemeService{
     }
 
     // 단건 조회
-    @Override
-    @Transactional(readOnly = true)
-    public ThemeResponseDTO getThemeById(Long themeId) {
-        Theme theme = themeRepository.findById(themeId)
-                .orElseThrow(() -> new CustomException(ExceptionType.THEME_NOT_FOUND_EXCEPTION));
-        return new ThemeResponseDTO(theme.getThemeId(), theme.getThemeName(), theme.getDescription());
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public ThemeResponseDTO getThemeById(Long themeId) {
+//        Theme theme = themeRepository.findById(themeId)
+//                .orElseThrow(() -> new CustomException(ExceptionType.THEME_NOT_FOUND_EXCEPTION));
+//        return new ThemeResponseDTO(theme);
+//    }
 
+    // 테마 이름이랑 Description 업데이트
     @Override
     @Transactional
-    public ThemeResponseDTO updateTheme(Long themeId, String themeName, String description) {
+    public ThemeResponseDTO updateTheme(Long themeId, ThemeResponseDTO dto) {
         Theme theme = themeRepository.findById(themeId)
                 .orElseThrow(() -> new CustomException(ExceptionType.THEME_NOT_FOUND_EXCEPTION));
-
-        theme.setThemeName(themeName);
-        theme.setDescription(description);
-        Theme updatedTheme = themeRepository.save(theme);
-
-        return new ThemeResponseDTO(updatedTheme.getThemeId(), updatedTheme.getThemeName(), updatedTheme.getDescription());
+        theme.update(dto.getThemeName(), dto.getDescription());
+        Theme save = themeRepository.save(theme);
+        return new ThemeResponseDTO(save);
     }
 
     @Override
@@ -120,23 +172,21 @@ public class ThemeServiceImpl implements ThemeService{
 
         // 테마와 문화재의 연관 관계를 추가 또는 제거
         ThemeRelicKey themeRelicKey = new ThemeRelicKey(themeId, relicId);
-        ThemeRelic themeRelic = themeRelicRepository.findById(themeRelicKey).orElse(null);
+        Optional<ThemeRelic> optionalThemeRelic = themeRelicRepository.findById(themeRelicKey);
 
         if (addRelic) {
-            if (themeRelic == null) {
-                themeRelic = new ThemeRelic(new ThemeRelicKey(themeId, relicId), theme, relic);
+            if (!optionalThemeRelic.isPresent()) {
+                ThemeRelic themeRelic = new ThemeRelic(themeRelicKey, theme, relic);
                 theme.getThemeRelics().add(themeRelic);
                 themeRelicRepository.save(themeRelic);
             }
         } else {
-            if (themeRelic != null) {
+            optionalThemeRelic.ifPresent(themeRelic -> {
                 theme.getThemeRelics().remove(themeRelic);
                 themeRelicRepository.delete(themeRelic);
-            }
+            });
         }
-
-        // 업데이트된 테마 엔티티를 DTO로 변환하여 반환
         Theme updatedTheme = themeRepository.save(theme);
-        return new ThemeResponseDTO(updatedTheme.getThemeId(), updatedTheme.getThemeName(), updatedTheme.getDescription());
+        return new ThemeResponseDTO(updatedTheme);
     }
 }
