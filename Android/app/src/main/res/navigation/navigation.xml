@@ -139,5 +139,9 @@
         android:id="@+id/boardListFragment"
         android:name="com.ssafy.travelcollector.fragment.board.BoardListFragment"
         android:label="fragment_board_list"
-        tools:layout="@layout/fragment_board_list" />
+        tools:layout="@layout/fragment_board_list" >
+        <action
+            android:id="@+id/action_boardListFragment_to_heritagePostFragment"
+            app:destination="@id/heritagePostFragment" />
+    </fragment>
 </navigation>
