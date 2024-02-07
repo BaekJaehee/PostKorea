@@ -17,6 +17,7 @@ import com.kakao.sdk.common.util.Utility
 import com.navercorp.nid.NaverIdLoginSDK
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,9 +31,15 @@ class ApplicationClass : Application() {
 
     val gson: Gson = GsonBuilder().setLenient().create()
 
+    val loggingInterceptor = HttpLoggingInterceptor().apply{
+        level = HttpLoggingInterceptor.Level.BODY
+    }
+
+
     val okHttpClient = OkHttpClient.Builder()
         .readTimeout(5000, TimeUnit.MILLISECONDS)
         .connectTimeout(5000, TimeUnit.MILLISECONDS)
+        .addInterceptor(loggingInterceptor)
         .build()
 
     override fun onCreate() {

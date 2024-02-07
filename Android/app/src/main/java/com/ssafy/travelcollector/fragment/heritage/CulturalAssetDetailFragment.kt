@@ -22,7 +22,6 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
     private fun initView(){
 
         lifecycleScope.launch{
-
             launch {
                heritageViewModel.curHeritage.collect{
                     binding.culturalAssetDetailTvName.text = it.name
@@ -49,6 +48,13 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
         binding.culturalAssetDetailBtnAddToTravel.setOnClickListener {
             travelViewModel.addHeritageToTravelPlan(heritageViewModel.curHeritage.value)
             findNavController().popBackStack(R.id.travelPlanFragment, false)
+        }
+
+        binding.culturalAssetDetailBtnNewRecord.setOnClickListener {
+
+            //태그 기능 백엔드에 적용되면 태그 추가 필요
+
+            findNavController().navigate(R.id.travelPostEditFragment)
         }
 
     }
