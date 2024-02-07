@@ -39,7 +39,7 @@
             android:id="@+id/game_tv_question_upper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="지금 있는 장소의 사진을"
+            android:text="현재 장소와 관련된 사진을"
             android:textStyle="bold"
             android:textSize="30sp"
             android:gravity="center"/>
