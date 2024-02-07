@@ -70,6 +70,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
             findNavController().navigate(R.id.signUpFragment)
         }
 
+        binding.loginTvLogo.setOnClickListener {
+            findNavController().navigate(R.id.gameFragment)
+        }
+
     }
 
     private fun setLoginCallBack(){

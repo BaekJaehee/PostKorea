@@ -15,6 +15,7 @@ import com.ssafy.travelcollector.viewModel.AccountViewModel
 import com.ssafy.travelcollector.viewModel.BoardViewModel
 import com.ssafy.travelcollector.viewModel.HeritageViewModel
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
+import com.ssafy.travelcollector.viewModel.StoreViewModel
 import com.ssafy.travelcollector.viewModel.TravelViewModel
 
 // Fragment의 기본을 작성, 뷰 바인딩 활용
@@ -31,6 +32,7 @@ abstract class BaseFragment<B : ViewBinding>(
     protected val travelViewModel: TravelViewModel by activityViewModels()
     protected val heritageViewModel: HeritageViewModel by activityViewModels()
     protected val boardViewModel: BoardViewModel by activityViewModels()
+    protected val storeViewModel: StoreViewModel by activityViewModels()
 
     protected lateinit var mainActivity: MainActivity
 
