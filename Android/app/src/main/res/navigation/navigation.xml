@@ -17,11 +17,11 @@
             android:id="@+id/action_mainFragment_to_travelPostEditFragment"
             app:destination="@id/travelPostEditFragment" />
         <action
+            android:id="@+id/action_mainFragment_to_heritagePostFragment"
+            app:destination="@id/heritagePostFragment" />
+        <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
-        <action
-            android:id="@+id/action_mainFragment_to_boardListFragment"
-            app:destination="@id/boardListFragment" />
     </fragment>
     <fragment
         android:id="@+id/travelListFragment"
@@ -58,6 +58,9 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment2"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -81,7 +84,7 @@
         tools:layout="@layout/fragment_travel_post_edit" />
     <fragment
         android:id="@+id/heritagePostFragment"
-        android:name="com.ssafy.travelcollector.fragment.board.BoardPostFragment"
+        android:name="com.ssafy.travelcollector.fragment.heritage.HeritagePostFragment"
         android:label="fragment_heritage_post"
         tools:layout="@layout/fragment_heritage_post" />
     <fragment
@@ -125,12 +128,8 @@
         android:label="fragment_change_user_info"
         tools:layout="@layout/fragment_change_user_info" />
     <fragment
-        android:id="@+id/boardListFragment"
-        android:name="com.ssafy.travelcollector.fragment.board.BoardListFragment"
-        android:label="fragment_board_list"
-        tools:layout="@layout/fragment_board_list" >
-        <action
-            android:id="@+id/action_boardListFragment_to_heritagePostFragment"
-            app:destination="@id/heritagePostFragment" />
-    </fragment>
+        android:id="@+id/gameFragment"
+        android:name="com.ssafy.travelcollector.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" />
 </navigation>

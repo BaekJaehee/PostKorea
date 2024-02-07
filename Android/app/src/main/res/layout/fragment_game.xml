@@ -121,6 +121,7 @@
             android:textColor="#7A8089"
             android:textSize="40sp"
             android:text="X"
+            android:visibility="gone"
             />
 
         <TextView
@@ -131,10 +132,10 @@
             android:layout_margin="10dp"
             android:background="@drawable/bg_round_brown"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="14dp"
             android:textColor="#7A8089"
             android:textSize="40sp"
-            android:text="다음"
+            tools:text="시작"
             />
 
         <TextView
@@ -149,6 +150,7 @@
             android:textColor="#7A8089"
             android:textSize="40sp"
             android:text="O"
+            android:visibility="gone"
             />
 
     </LinearLayout>
