@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/member")
-@Tag(name = "Member", description = "회원관리 API Document")
+@Tag(name = "Member", description = "회원 입장에서 이용가능한 Member API Document")
 public class MemberController {
 
     private final MemberService memberService;
@@ -90,30 +90,6 @@ public class MemberController {
 
         return ResponseEntity.ok(response); // 200
     }
-
-    @GetMapping("/{memberId}")
-    @Operation(summary = "회원정보 조회", description = "회원 정보 조회를 진행합니다. memberId를 기준으로 조회하며 한정된 정보만 받아옵니다.")
-    public ResponseEntity<?> getSpecificMemberDetail(
-            @PathVariable Long memberId) {
-
-        Member member = memberService.getMemberDetails(memberId);
-
-        MemberResponseDto response = MemberResponseDto.builder()
-                .memberEmail(member.getEmail())
-                .memberName(member.getName())
-                .memberNickname(member.getNickname())
-                .memberProfileUrl(member.getProfileUrl())
-                .memberAge(member.getAge())
-//                .memberPoint(member.getPoint())
-                .memberGender(member.getGender())
-//                .memberAuth(member.getOAuthType())
-//                .memberRole(member.getRole())
-                .build();
-
-        return ResponseEntity.ok(response); // 200
-    }
-
-
 
     @PutMapping("/edit")
     @Operation(summary = "회원정보 수정", description = "회원 정보 수정을 진행합니다. 인가 과정에서 Token이 사용됩니다.")
