@@ -1,18 +1,26 @@
-package com.ssafy.travelcollector.fragment.heritage
+package com.ssafy.travelcollector.fragment.board
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.CommentAdapter
+import com.ssafy.travelcollector.adapter.ImageSliderAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentHeritagePostBinding
 import com.ssafy.travelcollector.dto.Comment
+import com.ssafy.travelcollector.util.TimeConverter
+import kotlinx.coroutines.launch
+import retrofit2.http.Url
 
-class HeritagePostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeritagePostBinding::bind,
+class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeritagePostBinding::bind,
     R.layout.fragment_heritage_post
 ){
 
@@ -20,6 +28,9 @@ class HeritagePostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentH
     private val bottomSheet by lazy{ binding.root.findViewById<LinearLayout>(R.id.bottom_sheet)}
     private val commentRecyclerView by lazy{binding.root.findViewById<RecyclerView>(R.id.bottom_sheet_rv)}
 
+    private val imageAdapter: ImageSliderAdapter by lazy{
+        ImageSliderAdapter()
+    }
 
     private val commentAdapter: CommentAdapter by lazy {
         CommentAdapter()
@@ -27,11 +38,24 @@ class HeritagePostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentH
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         initAdapter()
+        initView()
+
     }
 
     private fun initView(){
+        binding.heritagePostVp2Images.offscreenPageLimit = 1
+        binding.heritagePostVp2Images.adapter = imageAdapter
+
+        lifecycleScope.launch{
+            boardViewModel.boardDetail.collect{
+                binding.heritagePostTvTitle.text = it.title
+                binding.heritagePostText.text = it.content
+                binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
+                imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
+            }
+        }
+
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -51,7 +75,13 @@ class HeritagePostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentH
 
     private fun initAdapter(){
         commentRecyclerView.adapter = commentAdapter
-//        binding.heritagePostRvComment.adapter = commentAdapter
+        imageAdapter.imageBinder = object :ImageSliderAdapter.ImageBinder{
+            override fun imageBind(url: String, imageView: ImageView) {
+                Glide.with(requireContext())
+                    .load(url)
+                    .into(imageView)
+            }
+        }
     }
 
     private fun addComment(){
