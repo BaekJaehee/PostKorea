@@ -16,6 +16,10 @@ public class Shop {
     private String productName;
     @Column(name = "product_image")
     private String productImage;
-    @Column(name = "product_price")
-    private Integer productPrice;
+    @Column(name = "product_point")
+    private Integer productPoint;
+
+    // 무한재귀 막으려면 단방향
+//    @OneToMany(mappedBy = "shop")
+//    private List<ShopMember> shopMember;
 }

@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.R
@@ -31,6 +32,10 @@ import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTravelPostEditBinding
 import com.ssafy.travelcollector.test.TestAdapter
 import com.ssafy.travelcollector.util.GalleryLauncher
+import com.ssafy.travelcollector.util.UriPartConverter
+import com.ssafy.travelcollector.viewModel.BoardViewModel
+import okhttp3.MultipartBody
+import retrofit2.http.Multipart
 
 private const val TAG = "TravelPostEditFragment"
 class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(FragmentTravelPostEditBinding::bind, R.layout.fragment_travel_post_edit) {
@@ -57,7 +62,7 @@ class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(Fragm
         galleryLauncher.pictureCallbackListener = object : GalleryLauncher.PictureCallbackListener{
             override fun onGetData(data: Uri) {
                 val newList = imageAdapter.currentList.toMutableList()
-                newList.add(data.toString())
+                newList.add(data)
                 imageAdapter.submitList(newList)
             }
         }
@@ -75,8 +80,25 @@ class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(Fragm
                 binding.heritagePostVp2.setCurrentItem(imageAdapter.itemCount-1, true)
             }
         }
-    }
 
+        binding.travelPlanBtnSave.setOnClickListener {
+            if(binding.travelPostEditEtTitle.text.isEmpty() || binding.travelPostEditEtContent.text.isEmpty()){
+                showToast("내용을 입력해주세요")
+            }else{
+                val images = arrayListOf<MultipartBody.Part>()
+                for(img in imageAdapter.currentList){
+                    images.add(UriPartConverter.convertedPart(img, requireContext()))
+                }
+                boardViewModel.postBoard(
+                    binding.travelPostEditEtTitle.text.toString(),
+                    binding.travelPostEditEtContent.text.toString(),
+                    images
+                )
+                findNavController().popBackStack()
+            }
+        }
+
+    }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
         val newList = imageAdapter.currentList.toMutableList()

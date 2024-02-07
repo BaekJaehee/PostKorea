@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import com.ssafy.travelcollector.MainActivity
 import com.ssafy.travelcollector.viewModel.AccountViewModel
+import com.ssafy.travelcollector.viewModel.BoardViewModel
 import com.ssafy.travelcollector.viewModel.HeritageViewModel
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 import com.ssafy.travelcollector.viewModel.TravelViewModel
@@ -29,6 +30,7 @@ abstract class BaseFragment<B : ViewBinding>(
     protected val accountViewModel: AccountViewModel by activityViewModels()
     protected val travelViewModel: TravelViewModel by activityViewModels()
     protected val heritageViewModel: HeritageViewModel by activityViewModels()
+    protected val boardViewModel: BoardViewModel by activityViewModels()
 
     protected lateinit var mainActivity: MainActivity
 

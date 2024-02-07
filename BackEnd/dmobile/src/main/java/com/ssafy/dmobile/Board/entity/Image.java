@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "images")
+@Table(name = "image")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,7 +26,7 @@ public class Image {
     private String accessUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_Id")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     // lombok 사용하면 아래 코드(생성자) 생략할 수 있는데 그게 더 어려워서 일단 적어놓음.

@@ -32,7 +32,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
 ) {
 
     private val heritageAdapter: HeritageAdapter by lazy{
-        HeritageAdapter()
+        HeritageAdapter(true)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,12 +72,6 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                 .setTitleText("기간 선택").build()
             dateRangePicker.show(childFragmentManager, "date_picker")
             dateRangePicker.addOnPositiveButtonClickListener { selection ->
-//                val calendar = getInstance()
-//                calendar.timeInMillis = selection?.first ?: 0
-//                val startDate = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(calendar.time).toString()
-//                calendar.timeInMillis = selection?.second ?: 0
-//                val endDate = SimpleDateFormat("yyyyMMdd", Locale.KOREAN).format(calendar.time).toString()
-//                Log.d(TAG, "initView: $startDate $endDate")
                 startDate = selection?.first ?: 0
                 endDate = selection?.second ?: 0
                 binding.travelPlanTvDuration.text = dateRangePicker.headerText
@@ -98,35 +92,17 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
             if(startDate==0L||endDate==0L){
                 showToast("날짜를 입력하세요")
             }else{
+                val newTravel = TravelWithHeritageList(
+                    name = binding.travelPlanEtName.text.toString(),
+                    startDate = startDate,
+                    endDate = endDate,
+                    heritageList = ArrayList(heritageAdapter.currentList)
+                )
+
                 if(curTravel.id == -1){
-                    travelViewModel.addTravel(
-                        TravelWithHeritageList(
-                            name = binding.travelPlanEtName.text.toString(),
-                            startDate = startDate,
-                            endDate = endDate,
-                            heritageList = ArrayList(heritageAdapter.currentList)
-                        )
-                    )
+                    travelViewModel.addTravel(newTravel)
                 }else{
-                    //임시
-                    //db에 저장한 후 다시 불러 오는 과정으로 대체해야 함
-                    //현재는 로컬에 저장 후 강제로 필터링해서 찾음
-
-                    
-
-                    val newList = travelViewModel.userTravelList.value.toMutableList()
-                    for( (idx,item) in newList.withIndex()){
-                        if(item.id == curTravel.id){
-                            newList[idx] = TravelWithHeritageList(
-                                name = binding.travelPlanEtName.text.toString(),
-                                startDate = startDate,
-                                endDate = endDate,
-                                heritageList = ArrayList(heritageAdapter.currentList)
-                            )
-                            break
-                        }
-                    }
-                    travelViewModel.setUserTravelList(newList as ArrayList)
+                    travelViewModel.updateTravel(newTravel)
                 }
                 findNavController().popBackStack()
             }
@@ -156,9 +132,9 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
             }
 
             override fun delete(position: Int) {
-                val newList = travelViewModel.travelPlanHeritageList.value
+                val newList = travelViewModel.travelPlanHeritageList.value.toMutableList()
                 newList.removeAt(position)
-                travelViewModel.setTravelPlanHeritageList(newList)
+                travelViewModel.setTravelPlanHeritageList(ArrayList(newList))
             }
 
             override fun onRemove(position: Int) {
@@ -174,7 +150,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
             }
 
             override fun onClick(position: Int) {
-                heritageViewModel.setCurHeritage(heritageViewModel.curHeritageList.value[position])
+                heritageViewModel.setCurHeritage(travelViewModel.travelPlanHeritageList.value[position])
                 findNavController().navigate(R.id.culturalAssetDetailFragment)
             }
         }

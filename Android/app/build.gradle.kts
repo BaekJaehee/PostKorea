@@ -77,4 +77,7 @@ dependencies {
 
     implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")
 
+    implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
+
+
 }

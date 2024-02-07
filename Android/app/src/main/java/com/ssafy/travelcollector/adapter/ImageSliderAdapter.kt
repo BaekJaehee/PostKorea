@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.adapter
 
+import android.net.Uri
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,11 @@ import android.widget.ImageView
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.PostVp2SliderItemBinding
 
-class ImageSliderAdapter:BaseAdapter<String>() {
+class ImageSliderAdapter:BaseAdapter<Uri>() {
 
     inner class ImageHolder(private val binding: PostVp2SliderItemBinding): BaseHolder(binding), OnCreateContextMenuListener {
-        override fun bindInfo(url: String) {
-            imageBinder.imageBind(url, binding.imageSlider)
+        override fun bindInfo(url: Uri) {
+            imageBinder.imageBind(url.toString(), binding.imageSlider)
             binding.imageSlider.setOnCreateContextMenuListener(this)
         }
 
