@@ -1,11 +1,17 @@
 package com.ssafy.dmobile.relic.service;
 
+import com.ssafy.dmobile.relic.entity.DetailData;
+import com.ssafy.dmobile.relic.repository.DetailDataRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class DetailDataService {
+    private final DetailDataRepository detailDataRepository;
     public String mappingRegion(String region) {
         if (region == null) {
             return null;
@@ -48,5 +54,14 @@ public class DetailDataService {
 
             default -> region;
         };
+    }
+
+    public Optional<DetailData> findById(Long relicId) {
+        return detailDataRepository.findById(relicId);
+    }
+
+    public List<DetailData> getDataByCategory(String mcodeName, Long relicId) {
+        return detailDataRepository.findByMcodeNameAndRelicIdNot(mcodeName, relicId);
+//        return detailDataRepository.getDataByCategory(mcodeName, relicId);
     }
 }
