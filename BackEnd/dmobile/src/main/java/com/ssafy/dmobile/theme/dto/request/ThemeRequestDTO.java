@@ -15,7 +15,7 @@ public class ThemeRequestDTO {
     private String themeName;
     private String description;
 
-    public Theme dtotoEntity(ThemeRequestDTO dto) {
+    public Theme dtoToEntity(ThemeRequestDTO dto) {
         return Theme.builder()
                 .themeName(dto.getThemeName())
                 .description(dto.getDescription())

@@ -74,7 +74,7 @@ public class ThemeServiceImpl implements ThemeService{
     @Override
     @Transactional
     public ThemeResponseDTO createEmptyTheme(ThemeRequestDTO dto) {
-        Theme theme = dto.dtotoEntity(dto);
+        Theme theme = dto.dtoToEntity(dto);
         Theme save = themeRepository.save(theme);
         return new ThemeResponseDTO(save);
     }
