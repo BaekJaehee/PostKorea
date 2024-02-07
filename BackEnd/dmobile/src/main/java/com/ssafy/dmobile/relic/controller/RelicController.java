@@ -39,7 +39,7 @@ public class RelicController {
     }
 
     @GetMapping("/search")
-    @Operation(summary = "", description = "")
+    @Operation(summary = "조건 검색", description = "시/도, 시/군/구, 시대, 분류를 파라미터로 검색해 해당하는 행 반환")
     public ResponseEntity<List<DetailData>> searchData(
             @RequestParam(required = false) String region1,
             @RequestParam(required = false) String region2,
@@ -64,6 +64,7 @@ public class RelicController {
     }
 
     @GetMapping("/detail/{id}")
+    @Operation(summary = "상세보기", description = "문화재 이미지, 내용 등 상세보기")
     public ResponseEntity<DetailData> getDetail(@PathVariable Long id) {
         DetailData detailData = detailDataRepository.findByItemId(id);
         return ResponseEntity.ok().body(detailData);
