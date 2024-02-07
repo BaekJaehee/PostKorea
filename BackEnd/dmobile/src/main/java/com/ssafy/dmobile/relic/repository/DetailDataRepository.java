@@ -31,4 +31,7 @@ public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
     // limit
     @Query("SELECT d FROM DetailData d")
     List<DetailData> findDataByLimit(Pageable pageable);
+
+    @Query("SELECT d FROM DetailData d WHERE d.ccbaMnm1 LIKE CONCAT('%', :ccbaMnm1, '%') ")
+    List<DetailData> findByName(String ccbaMnm1);
 }
