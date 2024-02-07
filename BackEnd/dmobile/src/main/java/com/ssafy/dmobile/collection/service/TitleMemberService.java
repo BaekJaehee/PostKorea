@@ -2,8 +2,8 @@ package com.ssafy.dmobile.collection.service;
 
 import com.ssafy.dmobile.collection.entity.title.TitleMember;
 import com.ssafy.dmobile.collection.entity.title.Title;
-import com.ssafy.dmobile.collection.repository.TitleMemberRepository;
-import com.ssafy.dmobile.collection.repository.TitleRepository;
+import com.ssafy.dmobile.collection.repository.title.TitleMemberRepository;
+import com.ssafy.dmobile.collection.repository.title.TitleRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import lombok.RequiredArgsConstructor;

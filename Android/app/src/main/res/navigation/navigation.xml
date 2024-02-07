@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_boardListFragment"
+            app:destination="@id/boardListFragment" />
     </fragment>
     <fragment
         android:id="@+id/travelListFragment"
@@ -58,6 +61,9 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment2"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -124,4 +130,23 @@
         android:name="com.ssafy.travelcollector.fragment.account.ChangeUserInfoFragment"
         android:label="fragment_change_user_info"
         tools:layout="@layout/fragment_change_user_info" />
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.ssafy.travelcollector.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" />
+    <fragment
+        android:id="@+id/boardListFragment"
+        android:name="com.ssafy.travelcollector.fragment.board.BoardListFragment"
+        android:label="fragment_board_list"
+        tools:layout="@layout/fragment_board_list" >
+        <action
+            android:id="@+id/action_boardListFragment_to_heritagePostFragment"
+            app:destination="@id/heritagePostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.ssafy.travelcollector.StoreFragment"
+        android:label="fragment_store"
+        tools:layout="@layout/fragment_store" />
 </navigation>

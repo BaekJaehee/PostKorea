@@ -7,13 +7,10 @@ import com.ssafy.dmobile.member.entity.request.*;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -27,37 +24,37 @@ public class MemberService {
 
     // 회원가입
     @Transactional
-    public Member registerMember(MemberDto memberDto) {
+    public Member registerMember(MemberRequestDto memberRequestDTO) {
         
         // 이메일 중복 체크
-        if(memberRepository.existsByEmail(memberDto.getMemberEmail())) {
+        if(memberRepository.existsByEmail(memberRequestDTO.getMemberEmail())) {
             throw new CustomException(ExceptionType.DUPLICATE_EMAIL_EXCEPTION);
         }
 
         // 닉네임 중복 체크
-        if (memberRepository.existsByNickname(memberDto.getMemberNickname())) {
+        if (memberRepository.existsByNickname(memberRequestDTO.getMemberNickname())) {
             throw new CustomException(ExceptionType.DUPLICATE_NICKNAME_EXCEPTION);
         }
 
         // 비밀번호가 생성 규칙 체크 (예. 4자리 미만)
-        if (memberDto.getMemberPwd().length() < 4) {
+        if (memberRequestDTO.getMemberPwd().length() < 4) {
             throw new CustomException(ExceptionType.INVALID_PASSWORD_FORMAT_EXCEPTION);
         }
         
         // Spring Security 를 통한 비밀번호 암호화
-        String pwd = passwordEncoder.encode(memberDto.getMemberPwd());
+        String pwd = passwordEncoder.encode(memberRequestDTO.getMemberPwd());
 
         // DTO 기반 Member 엔티티 생성
         Member newMember = Member.builder()
-                .email(memberDto.getMemberEmail())
+                .email(memberRequestDTO.getMemberEmail())
                 .password(pwd)
-                .name(memberDto.getMemberName())
-                .nickname(memberDto.getMemberNickname())
-                .age(memberDto.getMemberAge())
-                .gender(memberDto.getMemberGender())
+                .name(memberRequestDTO.getMemberName())
+                .nickname(memberRequestDTO.getMemberNickname())
+                .age(memberRequestDTO.getMemberAge())
+                .gender(memberRequestDTO.getMemberGender())
                 // 프로필 이미지의 경우 추가적인 작업 필요
-                .oAuthType(memberDto.getMemberAuth())
-                .memberRoleType(memberDto.getMemberRole())
+                .oAuthType(memberRequestDTO.getMemberAuth())
+                .role(memberRequestDTO.getMemberRole())
                 .point(0)
                 .build();
         
@@ -65,7 +62,7 @@ public class MemberService {
     }
 
     // 로그인
-    public Member loginMember(MemberLoginDto memberDto) {
+    public Member loginMember(MemberLoginRequestDto memberDto) {
 
         String email = memberDto.getMemberEmail();
         String password = memberDto.getMemberPwd();
@@ -107,7 +104,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member editMemberInfo(Long id, MemberEditDto memberDto) {
+    public void editMemberInfo(Long id, MemberEditRequestDto memberDto) {
 
         Optional<Member> optionalMember = memberRepository.findById(id);
         // 유저 정보가 없는 경우
@@ -131,11 +128,11 @@ public class MemberService {
             builder.age(memberDto.getMemberAge());
         }
 
-        return memberRepository.save(builder.build());
+        memberRepository.save(builder.build());
     }
 
     @Transactional
-    public Member editMemberPassword(Long id, MemberEditPwdDto pwdDto) {
+    public void editMemberPassword(Long id, MemberEditPwdRequestDto pwdDto) {
 
         Optional<Member> optionalMember = memberRepository.findById(id);
         // 유저 정보가 없는 경우
@@ -159,7 +156,7 @@ public class MemberService {
         String password = passwordEncoder.encode(pwdDto.getNewPwd());
         builder.password(password);
 
-        return memberRepository.save(builder.build());
+        memberRepository.save(builder.build());
     }
 
     @Transactional
@@ -182,7 +179,7 @@ public class MemberService {
     }
 
     @Transactional
-    public Member editMemberTempoPassword(MemberFindPwdDto pwdDto) {
+    public void editMemberTempoPassword(MemberFindPwdRequestDto pwdDto) {
 
         Optional<Member> optionalMember = memberRepository.findByEmail(pwdDto.getMemberEmail());
         // 유저 정보가 없는 경우
@@ -207,7 +204,6 @@ public class MemberService {
         // 이메일 보내기
         emailService.sendTemporaryPassword(savedMember.getEmail(), savedMember.getName(), tempoPassword);
 
-        return savedMember;
     }
 
     // Direct JPA Resources -----
@@ -227,6 +223,10 @@ public class MemberService {
 //    }
     public Member getMemberById(Long id) {
         return memberRepository.findById(id).orElse(null);
+    }
+
+    public void updateMemberDirectly(Member member) {
+        memberRepository.save(member);
     }
 
 }

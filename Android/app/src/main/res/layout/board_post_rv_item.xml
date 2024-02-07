@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -14,7 +15,7 @@
         >
 
         <TextView
-            android:id="@+id/main_posting_title"
+            android:id="@+id/board_post_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
@@ -22,6 +23,7 @@
             />
 
         <TextView
+            android:id="@+id/board_post_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="xxxx년 xx월 xx일"
@@ -38,6 +40,7 @@
 
     <com.ssafy.travelcollector.customView.OverlapImages
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:size="70"/>
 
 </LinearLayout>
