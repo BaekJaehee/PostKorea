@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = dto.dtoToEntity(dto);
         comment.setBoard(board);  // 게시물 설정
         comment.setMember(member);  // 작성자 설정
+        comment.setCreatedDate(new Date().getTime());
         Comment saveComment = commentRepository.save(comment);
         return new CommentResponseDTO(saveComment);
     }
