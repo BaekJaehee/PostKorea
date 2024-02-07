@@ -20,7 +20,7 @@ interface UserService {
     suspend fun login(@Body body: User): Response<HashMap<String, Any>>
 
     @GET("member")
-    suspend fun getUserInfo(@Header("Authorization") token: String): Response<HashMap<String, Any>>
+    suspend fun getUserInfo(@Header("Authorization") token: String): Response<User>
 
     @PUT("member/edit-password")
     suspend fun checkPwd(@Header("Authorization") token: String, @Body check: RequestPassword): Response<Any>

@@ -133,4 +133,9 @@
             android:id="@+id/action_boardListFragment_to_heritagePostFragment"
             app:destination="@id/heritagePostFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.ssafy.travelcollector.StoreFragment"
+        android:label="fragment_store"
+        tools:layout="@layout/fragment_store" />
 </navigation>
