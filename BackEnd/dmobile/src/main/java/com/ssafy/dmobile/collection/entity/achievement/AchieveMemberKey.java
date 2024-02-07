@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Embeddable
 @Data
 @NoArgsConstructor
-public class MemberAchieveKey implements Serializable {
+public class AchieveMemberKey implements Serializable {
 
     private Long memberId;
     private Long achieveId;

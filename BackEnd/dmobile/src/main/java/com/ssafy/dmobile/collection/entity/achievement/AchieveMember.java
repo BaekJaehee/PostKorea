@@ -2,23 +2,25 @@ package com.ssafy.dmobile.collection.entity.achievement;
 
 import com.ssafy.dmobile.member.entity.Member;
 import jakarta.persistence.*;
-import org.checkerframework.checker.units.qual.C;
+import lombok.Data;
 
 @Entity
-public class MemberAchieve {
+@Data
+@Table(name = "achieve_member")
+public class AchieveMember {
 
     @EmbeddedId
-    private MemberAchieveKey key;
-
-    @MapsId("memberId")
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    private AchieveMemberKey key;
 
     @MapsId("achieveId")
     @ManyToOne
     @JoinColumn(name = "achieve_id")
     private Achieve achieve;
+
+    @MapsId("memberId")
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(name = "achieve_date")
     private Long achieveDate;
