@@ -22,5 +22,6 @@ data class User(
     @SerializedName("member_age") var userAge: Int = 0,
     @SerializedName("member_gender") var userGender: String = "MALE",
     @SerializedName("member_auth") var userAuth: String = "NONE",
-    @SerializedName("profileUrl") var profileUrl: String = ""
+    @SerializedName("member_profile_url") var profileUrl: String = "",
+    @SerializedName("member_point") var point: Int = 0
 )

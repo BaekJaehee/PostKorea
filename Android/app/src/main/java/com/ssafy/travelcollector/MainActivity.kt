@@ -14,6 +14,7 @@ import android.view.WindowManager
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ssafy.travelcollector.config.BaseActivity
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
@@ -63,6 +64,20 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
         navController = (supportFragmentManager.findFragmentById(binding.mainFrameLayout.id) as NavHostFragment).navController
         setSupportActionBar(binding.toolbar)
+
+        binding.hamburgerView.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_store->{
+                    navController.navigate(R.id.storeFragment)
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                    false
+                }
+                else->{
+                    false
+                }
+            }
+        }
+
 
         if(supportActionBar!=null){
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -118,7 +133,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 binding.drawerLayout.openDrawer(GravityCompat.START)
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
     }
 
