@@ -44,7 +44,7 @@ public class ShopController {
     // swagger에서 로그인 후 동작 검사 필요(application.properties에서 jwt.secret-key는 사용자의 토큰이 아님)
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
     @PostMapping("/purchase/{productId}")
-    @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행. 같은 물건 중복 구매 방지 기능 필요")
+    @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
             @PathVariable Long productId) {
@@ -116,22 +116,5 @@ public class ShopController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
     }
-
-//    private ShopMember convertDtoToEntity(ShopMemberDto shopMemberDto) {
-//        ShopMember shopMember = new ShopMember();
-//        Member member = memberRepository.findById(shopMemberDto.getMemberId()).orElse(null);
-//        if (member == null) {
-//            // 회원이 없을 경우 예외 처리
-//            throw new IllegalArgumentException("Member not found with ID: " + shopMemberDto.getMemberId());
-//        }
-//        shopMember.setMember(member);
-//        Shop shop = shopRepository.findById(shopMemberDto.getProductId()).orElse(null);
-//        if (shop == null) {
-//            // 상품이 없을 경우 예외 처리
-//            throw new IllegalArgumentException("Shop not found with ID: " + shopMemberDto.getProductId());
-//        }
-//        shopMember.setShop(shop);
-//        shopMember.setProductDate(shopMemberDto.getProductDate());
-//        return shopMember;
-//    }
+    
 }
