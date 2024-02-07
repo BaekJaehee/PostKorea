@@ -1,10 +1,13 @@
 package com.ssafy.dmobile.relic.entity;
 
+import com.ssafy.dmobile.theme.entity.ThemeRelic;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,6 +18,9 @@ public class DetailData {
     @Column(name = "relic_id")
     @Schema(description = "문화재 상세 식별자")
     private Long relicId;
+
+    @OneToMany(mappedBy = "detailData")
+    private Set<ThemeRelic> themeRelics = new HashSet<>();
 
     @Column(name = "item_id")   // FK
     @Schema(description = "아이템 고유 식별자")
