@@ -29,6 +29,12 @@ public class RelicController {
         return ResponseEntity.ok().body(detailData);
     }
 
+    @GetMapping("/find")    // 포함되는 이름이 있으면 반환
+    public ResponseEntity<List<DetailData>> findData(@RequestParam String ccbaMnm1) {
+        List<DetailData> result = detailDataRepository.findByName(ccbaMnm1);
+        return ResponseEntity.ok().body(result);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<DetailData>> searchData(
             @RequestParam(required = false) String region1,
