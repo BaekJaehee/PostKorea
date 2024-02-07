@@ -8,10 +8,10 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name = "visit")
-public class Visit {
+public class MemberRelic {
 
     @EmbeddedId
-    private VisitKey key;
+    private MemberRelicKey key;
 
     @ManyToOne
     @MapsId("memberId")

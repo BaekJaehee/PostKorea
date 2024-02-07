@@ -1,9 +1,6 @@
 package com.ssafy.dmobile.explore.entity;
 
-import com.ssafy.dmobile.collection.entity.title.Title;
-import com.ssafy.dmobile.collection.entity.title.TitleMemberKey;
 import com.ssafy.dmobile.member.entity.Member;
-import com.ssafy.dmobile.relic.entity.DetailData;
 import jakarta.persistence.*;
 import lombok.Data;
 

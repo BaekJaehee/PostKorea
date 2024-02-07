@@ -1,20 +1,24 @@
 package com.ssafy.dmobile.visit.repository;
 
-import com.ssafy.dmobile.visit.entity.Visit;
-import com.ssafy.dmobile.visit.entity.VisitKey;
+import com.ssafy.dmobile.visit.entity.MemberRelic;
+import com.ssafy.dmobile.visit.entity.MemberRelicKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface VisitRepository extends JpaRepository<Visit, VisitKey> {
+import java.util.List;
 
-    @Query("select count(v) from Visit v " +
+public interface MemberRelicRepository extends JpaRepository<MemberRelic, MemberRelicKey> {
+
+    @Query("select count(v) from MemberRelic v " +
             "where v.member.id = :memberId " +
             "and v.detailData.ccbaCtcd = :ccbaCtcd")
     int countVisitedCtcd(@Param("memberId") Long memberId, @Param("ccbaCtcd") String ccbaCtcd);
 
-    @Query("select count(v) from Visit v " +
+    @Query("select count(v) from MemberRelic v " +
             "where v.member.id = :memberId " +
             "and v.detailData.ccbaKdcd = :ccbaKdcd")
     int countVisitedKdcd(@Param("memberId") Long memberId, @Param("ccbaKdcd") String ccbaKdcd);
+
+    List<MemberRelic> findByMemberId(Long memberId);
 }
