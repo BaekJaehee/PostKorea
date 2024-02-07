@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
 @Getter
-public class MemberEditPwdDto {
+public class MemberEditPwdRequestDto {
 
     @JsonProperty("current_pwd")
     private String currentPwd;

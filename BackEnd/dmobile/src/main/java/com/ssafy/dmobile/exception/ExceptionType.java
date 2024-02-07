@@ -36,7 +36,11 @@ public enum ExceptionType {
     TITLE_NOT_FOUND_EXCEPTION(404, "해당하는 칭호를 찾을 수 없습니다."),
 
     // 테마 관리
-    THEME_NOT_FOUND_EXCEPTION(404, "해당하는 테마를 찾을 수 없습니다.")
+    THEME_NOT_FOUND_EXCEPTION(404, "해당하는 테마를 찾을 수 없습니다."),
+
+    // 업적 관리
+    ACHIEVE_NOT_FOUND_EXCEPTION(404, "해당하는 업적을 찾을 수 없습니다."),
+
     ;
 
     // 사용자 정의 enum 을 통해 exception 세분화

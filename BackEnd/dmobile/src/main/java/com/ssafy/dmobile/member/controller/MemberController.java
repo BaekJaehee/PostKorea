@@ -2,6 +2,7 @@ package com.ssafy.dmobile.member.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.entity.request.*;
+import com.ssafy.dmobile.member.entity.response.MemberResponseDto;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.utils.AuthTokens;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
@@ -33,9 +34,9 @@ public class MemberController {
             "&nbsp;&nbsp;&nbsp;member_auth  : NONE, KAKAO, NAVER, GOOGLE<br>" +
             "&nbsp;&nbsp;&nbsp;member_role  : MEMBER, ADMIN")
     public ResponseEntity<?> registerMember(
-            @RequestBody MemberDto memberDto) {
+            @RequestBody MemberRequestDto memberRequestDTO) {
 
-        Member registeredMember = memberService.registerMember(memberDto);
+        Member registeredMember = memberService.registerMember(memberRequestDTO);
 
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
@@ -48,7 +49,7 @@ public class MemberController {
     @PostMapping("/login")
     @Operation(summary = "로그인", description = "회원 로그인 절차를 진행하며, 반환값으로 토큰이 주어집니다.")
     public ResponseEntity<?> loginMember(
-            @RequestBody MemberLoginDto memberDto) {
+            @RequestBody MemberLoginRequestDto memberDto) {
         Member loginMember = memberService.loginMember(memberDto);
 
         Long memberId = loginMember.getId();
@@ -73,19 +74,53 @@ public class MemberController {
 
         // 토큰을 통해 memberId 추출 후 Member 객체 생성
         Long memberId = authTokensGenerator.extractMemberId(token);
-        Member response = memberService.getMemberDetails(memberId);
-//        response.put("code", 0);
-//        response.put("msg", "succeed");
+        Member member = memberService.getMemberDetails(memberId);
+
+        MemberResponseDto response = MemberResponseDto.builder()
+                .memberEmail(member.getEmail())
+                .memberName(member.getName())
+                .memberNickname(member.getNickname())
+                .memberProfileUrl(member.getProfileUrl())
+                .memberAge(member.getAge())
+                .memberPoint(member.getPoint())
+                .memberGender(member.getGender())
+                .memberAuth(member.getOAuthType())
+                .memberRole(member.getRole())
+                .build();
 
         return ResponseEntity.ok(response); // 200
     }
+
+    @GetMapping("/{memberId}")
+    @Operation(summary = "회원정보 조회", description = "회원 정보 조회를 진행합니다. memberId를 기준으로 조회하며 한정된 정보만 받아옵니다.")
+    public ResponseEntity<?> getSpecificMemberDetail(
+            @PathVariable Long memberId) {
+
+        Member member = memberService.getMemberDetails(memberId);
+
+        MemberResponseDto response = MemberResponseDto.builder()
+                .memberEmail(member.getEmail())
+                .memberName(member.getName())
+                .memberNickname(member.getNickname())
+                .memberProfileUrl(member.getProfileUrl())
+                .memberAge(member.getAge())
+//                .memberPoint(member.getPoint())
+                .memberGender(member.getGender())
+//                .memberAuth(member.getOAuthType())
+//                .memberRole(member.getRole())
+                .build();
+
+        return ResponseEntity.ok(response); // 200
+    }
+
+
 
     @PutMapping("/edit")
     @Operation(summary = "회원정보 수정", description = "회원 정보 수정을 진행합니다. 인가 과정에서 Token이 사용됩니다.")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> editMemberInfo(
             @RequestHeader("Authorization") String token,
-            @RequestBody MemberEditDto memberDto) {
+            @RequestBody MemberEditRequestDto memberDto) {
         // 토큰을 통해 memberId 추출 후 Member 객체 생성
         Long memberId = authTokensGenerator.extractMemberId(token);
         memberService.editMemberInfo(memberId, memberDto);
@@ -104,7 +139,7 @@ public class MemberController {
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> editMemberPassword(
             @RequestHeader("Authorization") String token,
-            @RequestBody MemberEditPwdDto pwdDto) {
+            @RequestBody MemberEditPwdRequestDto pwdDto) {
         // 토큰을 통해 memberId 추출 후 Member 객체 생성
         Long memberId = authTokensGenerator.extractMemberId(token);
         memberService.editMemberPassword(memberId, pwdDto);
@@ -137,7 +172,7 @@ public class MemberController {
     @PostMapping("/find-password")
     @Operation(summary = "비밀번호 찾기", description = "이름과 이메일 정보를 받아 임시 비밀번호를 발급합니다. 발급한 임시 비밀번호는 사용자 이메일로 전송됩니다.")
     public ResponseEntity<?> findMemberPassword(
-            @RequestBody MemberFindPwdDto memberDto) {
+            @RequestBody MemberFindPwdRequestDto memberDto) {
 
         memberService.editMemberTempoPassword(memberDto);
 
