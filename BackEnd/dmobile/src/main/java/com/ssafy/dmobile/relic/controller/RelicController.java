@@ -3,6 +3,7 @@ package com.ssafy.dmobile.relic.controller;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.relic.service.DetailDataService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +23,7 @@ public class RelicController {
     private final DetailDataService detailDataService;
 
     @GetMapping("/list")
+    @Operation(summary = "목록 보기", description = "전체 목록 보기")
     public ResponseEntity<?> getRelic() {
         int limit = 10;
         Pageable pageable = PageRequest.of(0, limit);
@@ -29,12 +31,20 @@ public class RelicController {
         return ResponseEntity.ok().body(detailData);
     }
 
+    @GetMapping("/find")    // 포함되는 이름이 있으면 반환
+    @Operation(summary = "이름 검색", description = "이름으로 검색해서 포함되는 문자가 있는 행 반환")
+    public ResponseEntity<List<DetailData>> findData(@RequestParam String name) {
+        List<DetailData> result = detailDataRepository.findByName(name);
+        return ResponseEntity.ok().body(result);
+    }
+
     @GetMapping("/search")
+    @Operation(summary = "", description = "")
     public ResponseEntity<List<DetailData>> searchData(
             @RequestParam(required = false) String region1,
             @RequestParam(required = false) String region2,
-            @RequestParam(required = false) String ccceName,
-            @RequestParam(required = false) String mcodeName,
+            @RequestParam(required = false) String era,
+            @RequestParam(required = false) String category,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit) {
         // 임의로 10개씩 나오게 설정
@@ -46,7 +56,7 @@ public class RelicController {
         PageRequest pageRequest = PageRequest.of(page, limit);
 
         List<DetailData> result = detailDataRepository.findbyTags(
-            region1, mappingRegion1, region2, ccceName, mcodeName, pageRequest
+            region1, mappingRegion1, region2, era, category, pageRequest
         );
         // pageRequest 파라미터에 추가
 

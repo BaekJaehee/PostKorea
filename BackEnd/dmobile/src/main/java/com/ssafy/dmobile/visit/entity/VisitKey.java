@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.collection.entity.achievement;
+package com.ssafy.dmobile.visit.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.Data;
@@ -6,11 +6,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Embeddable
 @Data
+@Embeddable
 @NoArgsConstructor
-public class MemberAchieveKey implements Serializable {
-
+public class VisitKey implements Serializable {
     private Long memberId;
-    private Long achieveId;
+    private Long relicId;
 }

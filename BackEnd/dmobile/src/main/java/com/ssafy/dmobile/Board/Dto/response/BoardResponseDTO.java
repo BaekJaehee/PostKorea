@@ -1,17 +1,11 @@
 package com.ssafy.dmobile.Board.Dto.response;
 
 import com.ssafy.dmobile.Board.entity.Board;
-import com.ssafy.dmobile.Board.entity.Comment;
-import com.ssafy.dmobile.Board.entity.Image;
-import com.ssafy.dmobile.member.entity.Member;
-import com.ssafy.dmobile.member.entity.request.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 

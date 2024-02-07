@@ -8,6 +8,7 @@ import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 
 @Getter
@@ -18,7 +19,8 @@ import java.time.ZoneId;
 public class CommentRequestDTO {
     private Long commentId;
     private String content;
-    private Long createdDate = LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+    private Long createdDate = new Date().getTime();
+//    LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     private Long memberId;
     private Long boardId;
 
