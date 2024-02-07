@@ -5,6 +5,7 @@ import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
+import com.ssafy.dmobile.shop.entity.ShopMemberId;
 import com.ssafy.dmobile.shop.repository.ShopRepository;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.shop.service.ShopMemberService;
@@ -42,7 +43,7 @@ public class ShopController {
 
     // swagger에서 로그인 후 동작 검사 필요(application.properties에서 jwt.secret-key는 사용자의 토큰이 아님)
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
-    @GetMapping("/purchase/{productId}")
+    @PostMapping("/purchase/{productId}")
     @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행. 같은 물건 중복 구매 방지 기능 필요")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
@@ -75,42 +76,29 @@ public class ShopController {
             if (purchaseResult) {   // 정상적으로 구매 성공
                 // db에서 물품 삭제는 안함
                 // dto에 추가
-                ShopMemberDto shopMemberDto = new ShopMemberDto();
-                shopMemberDto.setMemberId(memberId);
-                shopMemberDto.setProductId(productId);
-                // 현재 날짜를 millisecond 단위로 가져와서 productDate에
+                // 단방향으로 바꾸니까 dto 안써도됨
+
+                ShopMember shopMember = new ShopMember();
+                Member member = memberService.getMemberById(memberId);
+                Shop shop = shopService.getProductById(productId);
+
+                // ShopMemberId 객체 생성
+                ShopMemberId shopMemberId = new ShopMemberId();
+                shopMemberId.setMemberId(memberId);
+                shopMemberId.setProductId(productId);
+
+                shopMember.setShopMemberId(shopMemberId);
+                shopMember.setMember(member);
+                shopMember.setShop(shop);
+
+                // 현재 시간을 millisecond 단위로 가져와서 productDate로 설정
                 long currentTimeMillis = System.currentTimeMillis();
-                shopMemberDto.setProductDate(currentTimeMillis);
+                shopMember.setProductDate(currentTimeMillis);
 
-                ShopMember shopMember = convertDtoToEntity(shopMemberDto);  // dto 엔터티로 변경
-                shopMemberService.saveShopMember(shopMember);   // 저장
+                shopMemberService.saveShopMember(shopMember);
 
-                return ResponseEntity.ok().body(shopMember);
+                return ResponseEntity.ok().body(String.format("%s Purchased Successfully", productId));
 
-//                return ResponseEntity.ok().body(shopMemberDto);
-
-//                ShopMember shopMember = new ShopMember();
-//                Member member = memberService.getMemberById(memberId);
-//                System.out.println("MEMBER: "+member+"★★★★★★★★★");
-//                shopMember.setMember(member);
-//                Shop shop = shopService.getProductById(productId);
-//                shopMember.setShop(shop);
-                // shopMember.setProductDate();
-
-                // ShopMemberId객체 생성
-//                ShopMemberId shopMemberId = new ShopMemberId(member.getId(), shop.getProductId());
-//
-//                ShopMember shopMember = new ShopMember();
-//                shopMember.setShopMemberId(shopMemberId);
-//                shopMember.setMember(member);
-//                shopMember.setShop(shop);
-//                shopMemberService.saveShopMember(shopMember);
-
-//                return ResponseEntity.ok().body(shopMember);
-//
-//                // db에 남은 물품들 가져오기
-//                List<Shop> remainProduct = shopRepository.findAll();
-//                return ResponseEntity.ok().body(remainProduct);
             } else {
                 List<Shop> product = shopRepository.findAll();
                 return ResponseEntity.ok().body(product);
