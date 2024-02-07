@@ -1,9 +1,11 @@
 package com.ssafy.travelcollector.dto
 
+import com.google.gson.annotations.SerializedName
+
 data class Comment(
-    var id: Int = 0,
-    var date: Long = 0,
-    var content: String = "",
-    var writerName: String = "",
-    var writerProfile: String = ""
+    @SerializedName("commentId") var id: Int = 0,
+    @SerializedName("createdDate") var date: Long = 0,
+    @SerializedName("content") var content: String = "",
+    @SerializedName("memberId") var writerName: Int = 0,
+    @SerializedName("boardId") var boardId: Int = 0
 )
