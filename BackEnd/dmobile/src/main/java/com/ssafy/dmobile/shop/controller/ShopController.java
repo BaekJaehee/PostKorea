@@ -2,7 +2,7 @@ package com.ssafy.dmobile.shop.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
-import com.ssafy.dmobile.shop.dto.ShopMemberDto;
+//import com.ssafy.dmobile.shop.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
 import com.ssafy.dmobile.shop.entity.ShopMemberId;
@@ -68,6 +68,14 @@ public class ShopController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
+
+        // 중복 구매 확인
+        boolean isDuplicatePurchase = shopMemberService.existsByMemberIdAndProductId(memberId, productId);
+
+        if (isDuplicatePurchase) {
+            // 중복 구매인 경우
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Duplicate purchase is not allowed");
+        }
         // 구매 True False (member_id, product_id)
         boolean purchaseResult = shopService.purchaseProduct(memberId, productId);
 
@@ -109,21 +117,21 @@ public class ShopController {
         }
     }
 
-    private ShopMember convertDtoToEntity(ShopMemberDto shopMemberDto) {
-        ShopMember shopMember = new ShopMember();
-        Member member = memberRepository.findById(shopMemberDto.getMemberId()).orElse(null);
-        if (member == null) {
-            // 회원이 없을 경우 예외 처리
-            throw new IllegalArgumentException("Member not found with ID: " + shopMemberDto.getMemberId());
-        }
-        shopMember.setMember(member);
-        Shop shop = shopRepository.findById(shopMemberDto.getProductId()).orElse(null);
-        if (shop == null) {
-            // 상품이 없을 경우 예외 처리
-            throw new IllegalArgumentException("Shop not found with ID: " + shopMemberDto.getProductId());
-        }
-        shopMember.setShop(shop);
-        shopMember.setProductDate(shopMemberDto.getProductDate());
-        return shopMember;
-    }
+//    private ShopMember convertDtoToEntity(ShopMemberDto shopMemberDto) {
+//        ShopMember shopMember = new ShopMember();
+//        Member member = memberRepository.findById(shopMemberDto.getMemberId()).orElse(null);
+//        if (member == null) {
+//            // 회원이 없을 경우 예외 처리
+//            throw new IllegalArgumentException("Member not found with ID: " + shopMemberDto.getMemberId());
+//        }
+//        shopMember.setMember(member);
+//        Shop shop = shopRepository.findById(shopMemberDto.getProductId()).orElse(null);
+//        if (shop == null) {
+//            // 상품이 없을 경우 예외 처리
+//            throw new IllegalArgumentException("Shop not found with ID: " + shopMemberDto.getProductId());
+//        }
+//        shopMember.setShop(shop);
+//        shopMember.setProductDate(shopMemberDto.getProductDate());
+//        return shopMember;
+//    }
 }
