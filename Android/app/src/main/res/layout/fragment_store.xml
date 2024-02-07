@@ -11,27 +11,21 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/store_rv_product"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="16dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        />
-
-    <TextView
-        android:id="@+id/resultText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_weight="1"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/store_btn_pts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/upper_round"
-        android:backgroundTint="@color/brown2"
+        app:background="@drawable/upper_round"
+        app:backgroundTint="@color/brown2"
+        android:textColor="@color/white"
         android:text="보유 pts : 0000"
-        />
+        android:enabled="false"/>
 
 </LinearLayout>
 

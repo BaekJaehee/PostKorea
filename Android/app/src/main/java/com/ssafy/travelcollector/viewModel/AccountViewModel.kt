@@ -40,7 +40,7 @@ class AccountViewModel: ViewModel(){
             }
             loginResponseCode = response.code()
             val token = response.body()?.get("access_token").toString()
-            _accessToken.update { token }
+            _accessToken.update { "Bearer $token" }
             ACCESS_TOKEN = "Bearer $token"
         }
     }
@@ -48,14 +48,10 @@ class AccountViewModel: ViewModel(){
     fun getInfo(token: String){
         viewModelScope.launch {
             val response = withContext(Dispatchers.IO){
-                RetrofitUtil.USER_SERVICE.getUserInfo("Bearer $token")
+                RetrofitUtil.USER_SERVICE.getUserInfo(token)
             }
             _user.update {
-                it.copy(
-                    memberEmail = response.body()!!["email"].toString(),
-                    userNickname = response.body()!!["nickname"].toString(),
-                    profileUrl = response.body()!!["profileUrl"].toString()
-                )
+                response.body()!!
             }
         }
     }

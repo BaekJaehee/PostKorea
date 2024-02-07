@@ -4,11 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2284e34e-5504-4554-88e6-d743076911e9" name="Changes" comment="fix: @Query import 추가" />
+    <list default="true" id="2284e34e-5504-4554-88e6-d743076911e9" name="Changes" comment="fix: @Query import 추가">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/controller/ShopController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/controller/ShopController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/repository/ShopMemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/repository/ShopMemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/service/ShopMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/service/ShopMemberService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -37,7 +59,7 @@
     "Gradle.C:/Users/SSAFY/Desktop/develop to push/BackEnd/dmobile/build.gradle.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/backend/relic__view",
+    "git-widget-placeholder": "feature/backend/shop",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -71,6 +93,7 @@
       <workItem from="1706862566334" duration="1742000" />
       <workItem from="1707108419361" duration="132000" />
       <workItem from="1707118450186" duration="201000" />
+      <workItem from="1707293882564" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="fix: import 추가">
       <option name="closed" value="true" />
