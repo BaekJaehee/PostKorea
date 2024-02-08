@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,8 +20,8 @@ public class DetailData {
     @Schema(description = "문화재 상세 식별자")
     private Long relicId;
 
-    @OneToMany(mappedBy = "detailData")
-    private Set<ThemeRelic> themeRelics = new HashSet<>();
+//    @OneToMany(mappedBy = "detailData")
+//    private Set<ThemeRelic> themeRelics = new HashSet<>();
 
     @Column(name = "item_id")   // FK
     @Schema(description = "아이템 고유 식별자")
@@ -95,4 +96,10 @@ public class DetailData {
     @Column(name = "region2")
     @Schema(description = "시/군/구")
     private String region2;
+    @Column(name = "numeric_longitude")
+    @Schema(description = "String 타입 BigDecimal로 변환")
+    private BigDecimal numericLongitude;
+    @Column(name = "numeric_latitude")
+    @Schema(description = "String 타입 BigDecimal로 변환")
+    private BigDecimal numericLatitude;
 }

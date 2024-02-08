@@ -22,4 +22,17 @@ interface HeritageService {
         @Query("category") category: String?
     ): Response<List<Heritage>>
 
+    @GET("relic/random")
+    suspend fun searchHeritageRandom(
+        @Query("region1") region1: String?,
+        @Query("region2") region2: String?,
+        @Query("era") era: String?,
+        @Query("category") category: String?
+    ): Response<List<Heritage>>
+
+    @GET("relic/find")
+    suspend fun searchHeritageByName(
+        @Query("name") name: String?,
+    ): Response<List<Heritage>>
+
 }

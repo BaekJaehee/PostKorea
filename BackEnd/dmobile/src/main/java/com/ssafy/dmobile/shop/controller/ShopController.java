@@ -2,10 +2,12 @@ package com.ssafy.dmobile.shop.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
-//import com.ssafy.dmobile.shop.dto.ShopMemberDto;
+import com.ssafy.dmobile.shop.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
 import com.ssafy.dmobile.shop.entity.ShopMemberId;
+//import com.ssafy.dmobile.shop.mapper.ShopMemberMapper;
+import com.ssafy.dmobile.shop.repository.ShopMemberRepository;
 import com.ssafy.dmobile.shop.repository.ShopRepository;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.shop.service.ShopMemberService;
@@ -18,9 +20,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -32,6 +36,8 @@ public class ShopController {
     private final MemberRepository memberRepository;
     private final ShopService shopService;
     private final ShopMemberService shopMemberService;
+    private final ShopMemberRepository shopMemberRepository;
+//    private final ShopMemberMapper shopMemberMapper;
     private final MemberService memberService;
     private final AuthTokensGenerator authTokensGenerator;
 
@@ -116,5 +122,55 @@ public class ShopController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
     }
-    
+
+    @GetMapping("/collect")
+    @Operation(summary = "구매 물건 확인", description = "특정 유저가 구입한 물건과 구입하지 않은 물건을 모아서 확인")
+    public ResponseEntity<?> bought(@RequestHeader("Authorization") String token) {
+        // 토큰에서 memberId 추출
+        Long memberId= authTokensGenerator.extractMemberId(token);
+        // 현재 로그인한 유저 정보 가져오기
+        Member loggedInMember = memberService.getMemberById(memberId);
+
+        // 로그인이 되어있지 않은 경우 또는 유저 정보가 존재하지 않는 경우
+        if (loggedInMember == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 1);
+            response.put("msg", "unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // 특정 유저가 구입한 물건 조회
+        List<ShopMember> purchasedItems = shopMemberService.getPurchasedItemsByMemberId(memberId);
+
+        // 모든 상품 조회
+        List<Shop> allItems = shopService.getAllProducts();
+
+        // 유저가 구입하지 않은 상품 Shop에서 가져옴
+        List<Shop> nonPurchasedItems = allItems.stream()
+                .filter(item -> purchasedItems.stream()
+                        .noneMatch(purchasedItem -> purchasedItem.getShop().getProductId().equals(item.getProductId())))
+                .collect(Collectors.toList());
+
+        // Shop 객체를 ShopMemberDto로
+        List<ShopMemberDto> purchasedDtoList = purchasedItems.stream()
+                .map(shopMember -> ShopMemberDto.mapFromShopMember(shopMember))
+                .collect(Collectors.toList());
+        List<ShopMemberDto> nonPurchasedDtoList = nonPurchasedItems.stream()
+                .map(ShopMemberDto::mapFromShop)
+                .collect(Collectors.toList());
+
+        // 구입한 상품과 구입하지 않은 상품을 합쳐서 반환
+        List<ShopMemberDto> mergedDtoList = new ArrayList<>();
+        mergedDtoList.addAll(purchasedDtoList);
+        mergedDtoList.addAll(nonPurchasedDtoList);
+
+        return ResponseEntity.ok().body(mergedDtoList);
+
+        // 특정 유저가 구입한 물건 조회
+//        List<ShopMember> purchasedItems = shopMemberService.getPurchasedItemsByMemberId(memberId);
+//        List<ShopMemberDto> dtoList = purchasedItems.stream()
+//                .map(ShopMemberDto::from)
+//                .collect(Collectors.toList());
+//        return ResponseEntity.ok().body(dtoList);
+    }
 }

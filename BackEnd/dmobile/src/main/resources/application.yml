@@ -42,6 +42,8 @@ spring:
 
 logging.level:
   org.hibernate.SQL: debug
+  level:
+    root: INFO
 #  org.hibernate.type: trace
 
 jwt:
