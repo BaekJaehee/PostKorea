@@ -1,16 +1,11 @@
 package com.ssafy.dmobile.member.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
-import com.ssafy.dmobile.member.entity.request.*;
 import com.ssafy.dmobile.member.entity.response.MemberResponseDto;
 import com.ssafy.dmobile.member.service.MemberService;
-import com.ssafy.dmobile.utils.AuthTokens;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
