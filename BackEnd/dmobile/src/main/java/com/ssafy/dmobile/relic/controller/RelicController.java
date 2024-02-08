@@ -101,7 +101,7 @@ public class RelicController {
 
             // 임의의 이미지 개수
             int images = 4;
-            // 나머지 랜덤한 이미지 URL을 count만큼 추가하여 반환
+            // 나머지 랜덤한 이미지 URL을 개수만큼 추가하여 반환
             selectedImageUrls.addAll(randomImageUrls.subList(0, Math.min(randomImageUrls.size(), images)));
             return selectedImageUrls;
         } else {
@@ -114,7 +114,7 @@ public class RelicController {
     private List<String> getRandomImageUrls(List<DetailData> data, String selectedImageUrl) {
         List<String> imageUrls = data.stream()
                 .map(DetailData::getImageUrl)
-                .filter(url -> url != null && !url.equals(selectedImageUrl)) // null 체크 추가
+                .filter(url -> url != null && !url.equals(selectedImageUrl)) // null 체크
                 .collect(Collectors.toList());
         Collections.shuffle(imageUrls); // 이미지 URL 리스트를 랜덤하게 섞음
         return imageUrls;
