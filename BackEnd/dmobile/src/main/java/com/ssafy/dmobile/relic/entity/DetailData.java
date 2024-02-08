@@ -97,9 +97,9 @@ public class DetailData {
     @Schema(description = "시/군/구")
     private String region2;
     @Column(name = "numeric_longitude")
-    @Schema(description = "String 타입 Double로 변환")
+    @Schema(description = "String 타입 BigDecimal로 변환")
     private BigDecimal numericLongitude;
     @Column(name = "numeric_latitude")
-    @Schema(description = "String 타입 Double로 변환")
+    @Schema(description = "String 타입 BigDecimal로 변환")
     private BigDecimal numericLatitude;
 }
