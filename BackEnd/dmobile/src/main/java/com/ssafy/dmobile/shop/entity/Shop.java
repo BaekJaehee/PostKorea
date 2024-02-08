@@ -18,6 +18,8 @@ public class Shop {
     private String productImage;
     @Column(name = "product_point")
     private Integer productPoint;
+    @Column(name = "product_explanation")
+    private String productExplanation;
 
     // 무한재귀 막으려면 단방향
 //    @OneToMany(mappedBy = "shop")
