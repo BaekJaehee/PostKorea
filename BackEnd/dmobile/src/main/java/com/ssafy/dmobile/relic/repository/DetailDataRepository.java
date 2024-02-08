@@ -32,8 +32,9 @@ public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
     @Query("SELECT d FROM DetailData d")
     List<DetailData> findDataByLimit(Pageable pageable);
 
-    @Query("SELECT d FROM DetailData d WHERE d.ccbaMnm1 LIKE CONCAT('%', :name, '%') ")
-    List<DetailData> findByName(String name);
+    @Query("SELECT d FROM DetailData d WHERE d.ccbaMnm1 LIKE CONCAT('%', :name, '%')")
+//    List<DetailData> findByName(String name);
+    List<DetailData> findByName(@Param("name") String name);
 
 //    @Query("SELECT d.imageUrl FROM DetailData d WHERE d.mcodeName = :category AND d.relicId != :id")
 //    List<DetailData> getDataByCategory(String category, Long id);

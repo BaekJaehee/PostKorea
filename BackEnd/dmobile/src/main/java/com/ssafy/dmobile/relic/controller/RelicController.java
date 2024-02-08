@@ -39,6 +39,12 @@ public class RelicController {
         List<DetailData> result = detailDataRepository.findByName(name);
         return ResponseEntity.ok().body(result);
     }
+//    @GetMapping("/find")    // 포함되는 이름이 있으면 반환
+//    @Operation(summary = "이름 검색", description = "이름으로 검색해서 포함되는 문자가 있는 행 반환")
+//    public ResponseEntity<List<DetailData>> findData(@RequestParam String name) {
+//        List<DetailData> result = detailDataRepository.findByName(name);
+//        return ResponseEntity.ok().body(result);
+//    }
 
     @GetMapping("/search")
     @Operation(summary = "조건 검색", description = "시/도, 시/군/구, 시대, 분류를 파라미터로 검색해 해당하는 행 반환")
