@@ -49,13 +49,40 @@ class HeritageViewModel: ViewModel() {
         }
     }
 
-    fun searchHeritageList(region1: String?, region2: String?, ccceName: String?, mcodeName: String?){
+    fun searchHeritageList(region1: String?, region2: String?, era: String?, category: String?){
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO){
-                RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, ccceName, mcodeName)
+                RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, era, category)
             }
             result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
             Log.d(TAG, "searchHeritageList: ${result}")
+        }
+    }
+
+    fun searchHeritageListRandom(region1: String?, region2: String?, era: String?, category: String?){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                RetrofitUtil.HERITAGE_SERVICE.searchHeritageRandom(region1, region2, era, category)
+            }
+            result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+            Log.d(TAG, "searchHeritageListRandom: ${result}")
+        }
+    }
+
+
+    private var _HeritageListByName = MutableStateFlow(arrayListOf<Heritage>())
+    val HeritageListByName = _HeritageListByName.asStateFlow()
+
+    fun setHeritageListByName(list: ArrayList<Heritage>){
+        _HeritageListByName.update { list }
+    }
+    fun searchHeritageByName(name: String){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                RetrofitUtil.HERITAGE_SERVICE.searchHeritageByName(name)
+            }
+            result.body()?.let { ArrayList(it) }?.let { setHeritageListByName(it) }
+            Log.d(TAG, "searchHeritageListRandom: ${result}")
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentGameBinding
@@ -8,17 +9,14 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
-import com.ssafy.travelcollector.adapter.HeritageAdapter
 import com.ssafy.travelcollector.dto.Heritage
-import com.ssafy.travelcollector.util.StringUtil
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
+private const val TAG = "GameFragment"
 
 class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind, R.layout.fragment_game), View.OnClickListener {
-
-    private val heritageAdapter: HeritageAdapter by lazy{
-        HeritageAdapter()
-    }
 
     private val imageList = Constants.getImage()
     private var currentStage : Int = 0
@@ -26,8 +24,9 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
     private var selectedOption : TextView? = null
     private var correctAnswers : Int = 0
     private var isSubmit : Boolean = false
-    private var heritageList : List<Heritage>? = null
-    private var lastHeritageList = mutableListOf<Heritage>()
+    private var heritageList : MutableList<Heritage> = ArrayList(10)
+    private var heritageName : MutableList<Heritage> = ArrayList(5)
+    private var heritageCategory : MutableList<Heritage> = ArrayList(5)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,23 +41,26 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            heritageViewModel.loadHeritageList()
-        }
-
-        val category = "불교"
-        heritageViewModel.searchHeritageList(
-            null, null, null,
-            StringUtil.nullableString(category))
-
-        lifecycleScope.launch {
-            heritageViewModel.curHeritageList.collect{
-                heritageList = it.map { it.copy() }
+            launch {
+                val name = "부석사"
+                heritageViewModel.searchHeritageByName(name)
+                heritageViewModel.HeritageListByName.collect{
+                    it.shuffle()
+                    heritageName = it.toMutableList()
+                }
             }
+
+            launch{
+                val category = "불교"
+                heritageViewModel.searchHeritageListRandom(
+                    null, null, null, category
+                )
+                heritageViewModel.curHeritageList.collect{
+                    heritageCategory = it.toMutableList()
+                }
+            }
+
         }
-
-
-
-
     }
 
 
@@ -73,6 +75,12 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvCorrect.visibility = View.VISIBLE
         binding.gameTvWrong.visibility = View.VISIBLE
         binding.gameIvHeritage.visibility = View.VISIBLE
+
+        Log.d(TAG, "onCreate: ${heritageName} ${heritageCategory}")
+        heritageList.addAll(heritageName)
+        heritageList.addAll(heritageCategory)
+        heritageList.shuffle()
+
         setImage()
     }
 
@@ -80,7 +88,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         isSubmit = false
         defaultView()
         Glide.with(this)
-            .load(heritageList?.get(currentStage-1)?.imageUrl) // 불러올 이미지 url
+            .load(heritageList!![currentStage-1].imageUrl) // 불러올 이미지 url
             .into(binding.gameIvHeritage) // 이미지를 넣을 뷰
 //        val heritageImage : HeritageImage = imageList[currentStage - 1]
 //        binding.gameIvHeritage.setImageResource(heritageImage.image)
