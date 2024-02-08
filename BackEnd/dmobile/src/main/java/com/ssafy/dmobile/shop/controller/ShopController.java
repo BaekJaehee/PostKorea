@@ -145,7 +145,7 @@ public class ShopController {
         // 모든 상품 조회
         List<Shop> allItems = shopService.getAllProducts();
 
-        // 유저가 구입하지 않은 상품 SHop에서 가져옴
+        // 유저가 구입하지 않은 상품 Shop에서 가져옴
         List<Shop> nonPurchasedItems = allItems.stream()
                 .filter(item -> purchasedItems.stream()
                         .noneMatch(purchasedItem -> purchasedItem.getShop().getProductId().equals(item.getProductId())))
