@@ -25,6 +25,8 @@ public class MemberResponseDto {
     private Integer memberAge;
     @JsonProperty("member_point")
     private Integer memberPoint;
+    @JsonProperty("member_achieve")
+    private String memberAchieve;
 
     @JsonProperty("member_gender")
     private MemberGenderType memberGender;

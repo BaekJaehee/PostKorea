@@ -1,5 +1,8 @@
 package com.ssafy.dmobile.member.service;
 
+import com.ssafy.dmobile.achieve.entity.Achieve;
+import com.ssafy.dmobile.achieve.repository.AchieveMemberRepository;
+import com.ssafy.dmobile.achieve.repository.AchieveRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
@@ -11,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
@@ -19,6 +24,9 @@ import java.util.Random;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final AchieveRepository achieveRepository;
+    private final AchieveMemberRepository achieveMemberRepository;
+
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
@@ -181,17 +189,11 @@ public class MemberService {
     @Transactional
     public void editMemberTempoPassword(MemberFindPwdRequestDto pwdDto) {
 
-        Optional<Member> optionalMember = memberRepository.findByEmail(pwdDto.getMemberEmail());
-        // 유저 정보가 없는 경우
-        if (optionalMember.isEmpty()) {
-            throw new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION);
-        }
-
-        Member member = optionalMember.get();
+        Member member = memberRepository.findByEmail(pwdDto.getMemberEmail())
+                .orElseThrow(() -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
 
         // 임시 비밀번호 생성
         String tempoPassword = generateTempoPassword(8);
-
         Member.MemberBuilder builder = member.toBuilder();
 
         // Spring Security 를 통한 비밀번호 암호화
@@ -203,7 +205,26 @@ public class MemberService {
 
         // 이메일 보내기
         emailService.sendTemporaryPassword(savedMember.getEmail(), savedMember.getName(), tempoPassword);
+    }
 
+    @Transactional
+    public void editMemberTitleAchieve(Long memberId, Long achieveId) {
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
+
+        List<Achieve> deniedAchieves = achieveMemberRepository.findByAchievesNotOwnedByMember(memberId);
+        for (Achieve achieve : deniedAchieves) {
+
+            if(Objects.equals(achieve.getAchieveId(), achieveId)) {
+                throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_ACHIEVE_EXCEPTION);
+            }
+        }
+
+        Member.MemberBuilder builder = member.toBuilder();
+        builder.achieve(achieveRepository.getReferenceById(achieveId).getAchieveName());
+
+        memberRepository.save(builder.build());
     }
 
     // Direct JPA Resources -----

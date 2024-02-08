@@ -9,8 +9,8 @@ import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.visit.entity.MemberRelic;
 import com.ssafy.dmobile.visit.entity.MemberRelicKey;
-import com.ssafy.dmobile.visit.entity.RelicTypeMappingInfo;
-import com.ssafy.dmobile.visit.entity.SidoAchieveMappingInfo;
+import com.ssafy.dmobile.visit.entity.mapper.RelicTypeMappingInfo;
+import com.ssafy.dmobile.visit.entity.mapper.SidoAchieveMappingInfo;
 import com.ssafy.dmobile.visit.repository.MemberRelicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,8 +30,6 @@ public class MemberRelicService {
 
     // Achieve 관련 파트는 Achieve-Service-Logic 처리
     private final AchieveMemberService achieveMemberService;
-//    private final AchieveRepository achieveRepository;
-//    private final AchieveMemberRepository achieveMemberRepository;
 
     public List<MemberRelic> getVisitedRelicsInMember(Long memberId) {
         return memberRelicRepository.findByMemberId(memberId);

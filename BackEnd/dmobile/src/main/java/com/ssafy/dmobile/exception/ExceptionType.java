@@ -31,9 +31,6 @@ public enum ExceptionType {
     
     // 문화재 관리
     RELIC_NOT_FOUND_EXCEPTION(404, "해당하는 문화재를 찾을 수 없습니다."),
-    
-    // 칭호 관리
-    TITLE_NOT_FOUND_EXCEPTION(404, "해당하는 칭호를 찾을 수 없습니다."),
 
     // 테마 관리
     THEME_NOT_FOUND_EXCEPTION(404, "해당하는 테마를 찾을 수 없습니다."),
@@ -41,6 +38,7 @@ public enum ExceptionType {
     // 업적 관리
     ACHIEVE_NOT_FOUND_EXCEPTION(404, "해당하는 업적을 찾을 수 없습니다."),
     MAPPING_INFO_NOT_FOUND_EXCEPTION(404, "해당하는 매핑 정보를 찾을 수 없습니다."),
+    INVALID_MEMBER_FOR_ACHIEVE_EXCEPTION(401, "해당 업적에 접근할 수 있는 사용자가 아닙니다."),
     ;
 
     // 사용자 정의 enum 을 통해 exception 세분화
