@@ -120,4 +120,33 @@ public class RelicController {
         return imageUrls;
     }
 
+    @GetMapping("/random")
+    @Operation(summary = "조건 검색 랜덤 반환", description = "시/도, 시/군/구, 시대, 분류를 파라미터로 검색해 해당하는 행 셔플해서 반환")
+    public ResponseEntity<List<DetailData>> searchRandomly(
+            @RequestParam(required = false) String region1,
+            @RequestParam(required = false) String region2,
+            @RequestParam(required = false) String era,
+            @RequestParam(required = false) String category) {
+
+        String mappingRegion1 = detailDataService.mappingRegion(region1);
+        
+        List<DetailData> result = detailDataRepository.findRandomly(
+                region1, mappingRegion1, region2, era, category
+        );
+
+        // 결과를 무작위로 섞기
+        Collections.shuffle(result);
+
+        // 임의의 개수 설정
+        int resultNum = 10;
+
+        // 임의의 개수만큼 결과 선택
+        List<DetailData> randomResult = new ArrayList<>();
+        int count = Math.min(resultNum, result.size()); // 결과보다 더 큰 수 X
+        for (int i = 0; i < count; i++) {
+            randomResult.add(result.get(i));
+        }
+
+        return ResponseEntity.ok().body(randomResult);
+    }
 }
