@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.Geofence
 import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.Posting
 import com.ssafy.travelcollector.dto.TravelTheme
@@ -26,6 +27,45 @@ enum class DetailStateEnum(private val state: Int) {
 }
 
 class MainActivityViewModel : ViewModel() {
+
+    private val _geofenceList = MutableStateFlow(mutableListOf<Geofence>())
+    val geofenceList = _geofenceList.asStateFlow()
+
+    private val _gameEnableList = MutableStateFlow(mutableListOf<Int>())
+    val gameEnableList = _gameEnableList.asStateFlow()
+
+    fun addGameEnableHeritage(id: Int){
+        val newList = _gameEnableList.value.toMutableList()
+        newList.add(id)
+        _gameEnableList.update { newList }
+    }
+
+    fun removeGameEnableHeritage(id: Int){
+        val newList = _gameEnableList.value.toMutableList()
+        newList.remove(id)
+        _gameEnableList.update { newList }
+    }
+
+    fun createGeofenceList(list: ArrayList<Heritage>){
+        val newList = mutableListOf<Geofence>()
+        for(heritage in list){
+            val geofence = Geofence.Builder()
+                .setRequestId(heritage.id.toString())
+                .setCircularRegion(heritage.lat.toDouble(), heritage.lng.toDouble(), 20f)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setLoiteringDelay(10000)
+                .setTransitionTypes(
+                    Geofence.GEOFENCE_TRANSITION_ENTER
+                            or Geofence.GEOFENCE_TRANSITION_EXIT
+                            or Geofence.GEOFENCE_TRANSITION_DWELL
+                )
+                .build()
+            newList.add(geofence)
+        }
+        _geofenceList.update { newList }
+    }
+
+
 
     private val _curLocation = MutableStateFlow(Pair(0.0, 0.0))
     val curLocation = _curLocation.asStateFlow()

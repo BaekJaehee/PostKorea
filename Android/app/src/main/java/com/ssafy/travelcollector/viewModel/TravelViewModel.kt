@@ -1,7 +1,9 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.Geofence
 import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.TravelPlanResponse
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
@@ -110,8 +112,35 @@ class TravelViewModel: ViewModel() {
             _userTravelList.update {
                 ArrayList(newTravel.sortedBy { it.startDate })
             }
+        }
+    }
+
+    private val _onGoingTravel = MutableStateFlow(TravelWithHeritageList())
+    val onGoingTravel = _onGoingTravel.asStateFlow()
+
+    fun loadOnGoingTravel(){
+        viewModelScope.launch {
+            val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
+            if(ongoing.body()!!.isNotEmpty()){
+                val res = ongoing.body()!![0]
+                val travel = TravelWithHeritageList(
+                    id = res.planId,
+                    name = res.name,
+                    startDate = res.startDate,
+                    endDate = res.endDate,
+                    condition = res.condition,
+                    heritageList = ArrayList(
+                        withContext(Dispatchers.IO){
+                            RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                                AccountViewModel.ACCESS_TOKEN, res.planId
+                            ).body()!!
+                        })
+                )
+                _onGoingTravel.update { travel }
+            }
 
         }
+
     }
 
     fun setUserTravelList(newList: ArrayList<TravelWithHeritageList>){
@@ -121,12 +150,10 @@ class TravelViewModel: ViewModel() {
     //계획 중인 여행 목록의 원본. 저장 시 해당 리스트로 저장.
     private val _travelPlanHeritageList = MutableStateFlow(arrayListOf<Heritage>())
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
-    fun loadTravelPlanHeritageList(){
-        //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
-    }
 
-    fun setTravelPlanHeritageList(list: ArrayList<Heritage>){
-        _travelPlanHeritageList.update { list }
+    fun setTravelPlanHeritageList(list: List<Heritage>){
+        Log.d(TAG, "initAdapter travel: $list")
+        _travelPlanHeritageList.update { ArrayList(list) }
     }
 
     fun addHeritageToTravelPlan(heritage: Heritage){
@@ -135,4 +162,15 @@ class TravelViewModel: ViewModel() {
             it
         }
     }
+
+    fun updateMiniGameEnable(list:List<Int>){
+        val newList = _travelPlanHeritageList.value.toMutableList()
+        for((idx, it) in newList.withIndex()){
+            if(list.contains(it.id)){
+                newList[idx] = it.copy(gameEnable = true)
+            }
+        }
+        setTravelPlanHeritageList(newList)
+    }
+
 }

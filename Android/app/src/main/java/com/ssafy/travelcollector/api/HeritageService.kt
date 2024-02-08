@@ -18,8 +18,8 @@ interface HeritageService {
     suspend fun searchHeritage(
         @Query("region1") region1: String?,
         @Query("region2") region2: String?,
-        @Query("ccceName") era: String?,
-        @Query("mcodeName") category: String?
+        @Query("era") era: String?,
+        @Query("category") category: String?
     ): Response<List<Heritage>>
 
 }

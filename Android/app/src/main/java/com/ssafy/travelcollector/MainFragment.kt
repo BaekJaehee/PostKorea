@@ -42,6 +42,20 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
     }
 
     private fun initView(){
+        lifecycleScope.launch {
+            launch {
+                travelViewModel.loadOnGoingTravel()
+
+                travelViewModel.onGoingTravel.collect{
+                    if(it.id!=-1){
+                        mainActivityViewModel.createGeofenceList(
+                            it.heritageList
+                        )
+                    }
+                }
+            }
+        }
+
         binding.mainTvBtnBoardShowAll.setOnClickListener {
             findNavController().navigate(R.id.heritagePostFragment)
         }

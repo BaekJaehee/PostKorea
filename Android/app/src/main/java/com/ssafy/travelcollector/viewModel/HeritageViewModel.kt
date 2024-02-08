@@ -55,7 +55,7 @@ class HeritageViewModel: ViewModel() {
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, ccceName, mcodeName)
             }
             result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
-            Log.d(TAG, "searchHeritageList: ${result}")
         }
     }
+
 }
