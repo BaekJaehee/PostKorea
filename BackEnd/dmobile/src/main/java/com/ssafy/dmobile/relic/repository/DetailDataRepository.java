@@ -54,4 +54,5 @@ public interface DetailDataRepository extends JpaRepository<DetailData, Long> {
             @Param("era") String era,
             @Param("category") String category
     );
+
 }

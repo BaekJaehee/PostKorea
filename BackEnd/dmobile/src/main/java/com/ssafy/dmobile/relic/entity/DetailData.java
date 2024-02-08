@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -95,4 +96,10 @@ public class DetailData {
     @Column(name = "region2")
     @Schema(description = "시/군/구")
     private String region2;
+    @Column(name = "numeric_longitude")
+    @Schema(description = "String 타입 Double로 변환")
+    private BigDecimal numericLongitude;
+    @Column(name = "numeric_latitude")
+    @Schema(description = "String 타입 Double로 변환")
+    private BigDecimal numericLatitude;
 }
