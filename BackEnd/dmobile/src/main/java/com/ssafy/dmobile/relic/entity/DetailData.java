@@ -20,8 +20,8 @@ public class DetailData {
     @Schema(description = "문화재 상세 식별자")
     private Long relicId;
 
-    @OneToMany(mappedBy = "detailData")
-    private Set<ThemeRelic> themeRelics = new HashSet<>();
+//    @OneToMany(mappedBy = "detailData")
+//    private Set<ThemeRelic> themeRelics = new HashSet<>();
 
     @Column(name = "item_id")   // FK
     @Schema(description = "아이템 고유 식별자")
