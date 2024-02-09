@@ -15,6 +15,7 @@
         android:textStyle="bold"
         android:textSize="24sp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="12dp"
         />
 
     <LinearLayout
@@ -38,19 +39,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="진행 중인 탐방이 없습니다"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textAlignment="center"
-                android:visibility="gone"
-                />
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
+                android:id="@+id/travel_list_view_ongoing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
                 <com.ssafy.travelcollector.customView.OverlapImages
+                    android:id="@+id/travel_list_oli_ongoing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:size="60"/>

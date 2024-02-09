@@ -49,7 +49,8 @@ class BoardViewModel: ViewModel() {
     }
 
     fun setCurBoardList(list:ArrayList<Board>){
-        _boardList.update { list }
+        val newList = list.sortedByDescending { it.date }
+        _boardList.update { ArrayList(newList) }
     }
 
     fun loadDetailBoard(id: Int){

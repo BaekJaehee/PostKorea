@@ -55,7 +55,6 @@ class HeritageViewModel: ViewModel() {
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, era, category)
             }
             result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
-            Log.d(TAG, "searchHeritageList: ${result}")
         }
     }
 
@@ -65,7 +64,6 @@ class HeritageViewModel: ViewModel() {
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritageRandom(region1, region2, era, category)
             }
             result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
-            Log.d(TAG, "searchHeritageListRandom: ${result}")
         }
     }
 

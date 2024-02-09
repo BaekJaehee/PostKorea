@@ -33,7 +33,6 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
     private fun initAdapter(){
         lifecycleScope.launch{
             boardViewModel.boardList.collect{
-                Log.d(TAG, "initView: $it")
                 boardAdapter.submitList(it)
             }
         }

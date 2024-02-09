@@ -1,16 +1,11 @@
 package com.ssafy.travelcollector.viewModel
 
-import android.util.Log
 import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.LocationCallback
 import com.ssafy.travelcollector.dto.Heritage
-import com.ssafy.travelcollector.dto.Posting
 import com.ssafy.travelcollector.dto.TravelTheme
-import com.ssafy.travelcollector.dto.TravelWithHeritageList
-import com.ssafy.travelcollector.dto.User
 import com.ssafy.travelcollector.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -82,10 +77,6 @@ class MainActivityViewModel : ViewModel() {
             it
         }
     }
-
-
-    private val _posting = MutableStateFlow(arrayListOf<Posting>())
-    val posting = _posting.asStateFlow()
 
     private val _recommendedTheme = MutableStateFlow(arrayListOf<TravelTheme>())
     val recommendedTheme = _recommendedTheme.asStateFlow()

@@ -12,6 +12,7 @@ import com.ssafy.travelcollector.adapter.TitleAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTitleBinding
 import com.ssafy.travelcollector.util.RetrofitUtil
+import com.ssafy.travelcollector.util.TimeConverter
 import com.ssafy.travelcollector.viewModel.AccountViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -79,12 +80,13 @@ class TitleFragment: BaseFragment<FragmentTitleBinding>(FragmentTitleBinding::bi
     private fun initAdapter(){
 
         titleAdapter.eventListener = object: TitleAdapter.EventListener{
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onClick(title: String, desc: String, position: Int) {
+            @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
+            override fun onClick(title: String, desc: String, date: Long, position: Int) {
                 binding.titleBtnHowAcquisitionProgress.text = desc
+                val dateString = if(ownState) TimeConverter.timeMilliToDateString(date) else "-"
+                binding.titleAcquisitionDate.text = "획득날짜 : $dateString"
                 titleAdapter.setSelectIdx(position)
                 titleAdapter.notifyDataSetChanged()
-
                 selectedTitle = if(ownState) achievementViewModel.ownAchievement.value[position].id else achievementViewModel.notOwnAchievement.value[position].id
             }
 

@@ -19,7 +19,7 @@ class TitleAdapter: BaseAdapter<Achievement>() {
         override fun bindInfo(data: Achievement) {
             binding.titleTvTitle.text = data.name
             binding.root.setOnClickListener {
-                eventListener.onClick(data.name, data.description, layoutPosition)
+                eventListener.onClick(data.name, data.description, data.date, layoutPosition)
             }
             binding.titleTvTitle.setTextColor(binding.root.resources.getColor(
                 if(selectedIdx==layoutPosition) R.color.gold else R.color.black)
@@ -35,7 +35,7 @@ class TitleAdapter: BaseAdapter<Achievement>() {
     }
 
     interface EventListener{
-        fun onClick(title: String, desc: String, position: Int)
+        fun onClick(title: String, desc: String, date: Long, position: Int)
     }
 
     lateinit var eventListener: EventListener
