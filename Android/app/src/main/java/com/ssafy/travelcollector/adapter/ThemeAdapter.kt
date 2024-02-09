@@ -27,7 +27,7 @@ class ThemeAdapter : BaseAdapter<TravelTheme>() {
             binding.themeRvItemHeartUnclicked.setOnClickListener{
                 clickListener.onBookMarkClick(layoutPosition)
             }
-            binding.themeRvItemImages.setImages(arrayListOf())
+            binding.themeRvItemImages.setImages(ArrayList(data.heritageDetailList.map{it.imageUrl}))
         }
     }
 

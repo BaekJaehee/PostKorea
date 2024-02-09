@@ -114,7 +114,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         lifecycleScope.launch {
             launch {
                 mainActivityViewModel.gameEnableList.collect{
-                    travelViewModel.updateMiniGameEnable(it)
+                    travelViewModel.updateMiniGameEnable(ArrayList(it))
                 }
             }
 

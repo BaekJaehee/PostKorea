@@ -70,11 +70,11 @@ class HeritageViewModel: ViewModel() {
     }
 
 
-    private var _HeritageListByName = MutableStateFlow(arrayListOf<Heritage>())
-    val HeritageListByName = _HeritageListByName.asStateFlow()
+    private var _heritageListByName = MutableStateFlow(arrayListOf<Heritage>())
+    val heritageListByName = _heritageListByName.asStateFlow()
 
     fun setHeritageListByName(list: ArrayList<Heritage>){
-        _HeritageListByName.update { list }
+        _heritageListByName.update { list }
     }
     fun searchHeritageByName(name: String){
         viewModelScope.launch {

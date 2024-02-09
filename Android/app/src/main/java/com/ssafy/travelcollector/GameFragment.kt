@@ -10,9 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.dto.Heritage
-import kotlinx.coroutines.Dispatchers
+import com.ssafy.travelcollector.util.Constants
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 private const val TAG = "GameFragment"
 
@@ -44,7 +43,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
             launch {
                 val name = "부석사"
                 heritageViewModel.searchHeritageByName(name)
-                heritageViewModel.HeritageListByName.collect{
+                heritageViewModel.heritageListByName.collect{
                     it.shuffle()
                     heritageName = it.toMutableList()
                 }

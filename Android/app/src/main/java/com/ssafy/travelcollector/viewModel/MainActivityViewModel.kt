@@ -31,19 +31,19 @@ class MainActivityViewModel : ViewModel() {
     private val _geofenceList = MutableStateFlow(mutableListOf<Geofence>())
     val geofenceList = _geofenceList.asStateFlow()
 
-    private val _gameEnableList = MutableStateFlow(mutableListOf<Int>())
+    private val _gameEnableList = MutableStateFlow(mutableSetOf<Int>())
     val gameEnableList = _gameEnableList.asStateFlow()
 
     fun addGameEnableHeritage(id: Int){
         val newList = _gameEnableList.value.toMutableList()
         newList.add(id)
-        _gameEnableList.update { newList }
+        _gameEnableList.update { newList.toMutableSet() }
     }
 
     fun removeGameEnableHeritage(id: Int){
         val newList = _gameEnableList.value.toMutableList()
         newList.remove(id)
-        _gameEnableList.update { newList }
+        _gameEnableList.update { newList.toMutableSet() }
     }
 
     fun createGeofenceList(list: ArrayList<Heritage>){
@@ -65,14 +65,6 @@ class MainActivityViewModel : ViewModel() {
         _geofenceList.update { newList }
     }
 
-
-
-    private val _curLocation = MutableStateFlow(Pair(0.0, 0.0))
-    val curLocation = _curLocation.asStateFlow()
-    fun setCurLocation(lat: Double, lng: Double){
-        _curLocation.update { Pair(lat, lng) }
-    }
-
     private val _detailState = MutableStateFlow(arraySetOf(DetailStateEnum.None))
     val detailState = _detailState.asStateFlow()
 
@@ -90,25 +82,23 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-    private val _selectedPostingId = MutableStateFlow(0)
-    val selectedPostingId = _selectedPostingId.asStateFlow()
-    fun setSelectedPostingId(id: Int){
-        _selectedPostingId.value = id
-    }
-
 
     private val _posting = MutableStateFlow(arrayListOf<Posting>())
     val posting = _posting.asStateFlow()
 
-    private var _recommendedTheme = MutableStateFlow(arrayListOf(
-        TravelTheme(title = "1", isBookMarked = false),
-        TravelTheme(title = "2", isBookMarked = true),
-        TravelTheme(title = "3", isBookMarked = false)
-    ))
+    private val _recommendedTheme = MutableStateFlow(arrayListOf<TravelTheme>())
     val recommendedTheme = _recommendedTheme.asStateFlow()
+
+    private val _curTheme = MutableStateFlow(TravelTheme())
+    val curTheme = _curTheme.asStateFlow()
+
     fun setRecommendedTheme(list: ArrayList<TravelTheme>){
         _recommendedTheme.update{ ArrayList(list) }
         saveRecommendedTheme()
+    }
+
+    fun setCurTheme(theme: TravelTheme){
+        _curTheme.update { theme }
     }
 
     private fun saveRecommendedTheme(){
@@ -116,7 +106,22 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun loadRecommendedTheme(){
-        //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.THEME_SERVICE.getThemes()
+            }
+            if(res.code()/2 == 100){
+                val newThemes = res.body()!!
+                for(theme in newThemes){
+                    theme.heritageDetailList = withContext(Dispatchers.IO){
+                        RetrofitUtil.THEME_SERVICE.getThemeDetail(theme.id)
+                    }.body()!!.heritageDetailList
+                }
+                setRecommendedTheme(ArrayList(newThemes))
+            }
+        }
     }
+
+
 
 }

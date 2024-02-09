@@ -157,10 +157,9 @@ class TravelViewModel: ViewModel() {
     }
 
     fun addHeritageToTravelPlan(heritage: Heritage){
-        _travelPlanHeritageList.update {
-            it.add(heritage)
-            it
-        }
+        val newList = _travelPlanHeritageList.value.toMutableSet()
+        newList.add(heritage)
+        _travelPlanHeritageList.update { ArrayList(newList) }
     }
 
     fun updateMiniGameEnable(list:List<Int>){
