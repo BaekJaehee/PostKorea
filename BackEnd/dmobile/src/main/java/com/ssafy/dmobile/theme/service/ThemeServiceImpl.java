@@ -148,7 +148,6 @@ public class ThemeServiceImpl implements ThemeService{
 //        return new ThemeResponseDTO(theme);
 //    }
 
-    // 테마 이름이랑 Description 업데이트
     @Override
     @Transactional
     public ThemeResponseDTO updateTheme(Long themeId, ThemeResponseDTO dto) {
