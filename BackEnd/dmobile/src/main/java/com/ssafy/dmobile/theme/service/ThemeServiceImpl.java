@@ -4,6 +4,7 @@ import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
+import com.ssafy.dmobile.theme.dto.RelicDetailDTO;
 import com.ssafy.dmobile.theme.dto.request.ThemeRequestDTO;
 import com.ssafy.dmobile.theme.dto.response.ThemeResponseDTO;
 import com.ssafy.dmobile.theme.entity.Theme;
@@ -43,19 +44,43 @@ public class ThemeServiceImpl implements ThemeService{
     public ThemeResponseDTO getThemeById(Long themeId) {
         Theme theme = themeRepository.findById(themeId)
                 .orElseThrow(() -> new CustomException(ExceptionType.THEME_NOT_FOUND_EXCEPTION));
-//
-//        // ThemeResponseDTO를 생성하고, 필요한 정보를 설정합니다.
-//        // 여기서는 Theme과 연결된 모든 relic_id들을 ThemeResponseDTO에 추가하는 방법을 보여줍니다.
-//        dto.setThemeId(theme.getThemeId());
-//        dto.setThemeName(theme.getThemeName());
-//        dto.setDescription(theme.getDescription());
-//
-//        // ThemeRelic 엔티티들에서 relic_id들을 추출하여 dto에 추가
-//        Set<Long> relicIds = theme.getThemeRelics().stream()
-//                .map(themeRelic -> themeRelic.getDetailData().getRelicId())
-//                .collect(Collectors.toSet());
-//        dto.setRelicIds(relicIds);
-        return new ThemeResponseDTO(theme);
+        ThemeResponseDTO responseDTO = new ThemeResponseDTO(theme);
+
+        // Relic 상세 정보 조회 및 설정
+        Set<RelicDetailDTO> relicDetails = theme.getThemeRelics().stream()
+                .map(ThemeRelic::getDetailData)
+                .map(detailData -> new RelicDetailDTO(
+                        detailData.getRelicId(),
+                        detailData.getItemId(),
+                        detailData.getCcmaName(),
+                        detailData.getCcbaMnm1(),
+                        detailData.getCcbaMnm2(),
+                        detailData.getCcbaKdcd(),
+                        detailData.getCcbaCtcd(),
+                        detailData.getCcbaAsno(),
+                        detailData.getCcbaCpno(),
+                        detailData.getLongitude(),
+                        detailData.getLatitude(),
+                        detailData.getGcodeName(),
+                        detailData.getBcodeName(),
+                        detailData.getMcodeName(),
+                        detailData.getScodeName(),
+                        detailData.getCcbaQuan(),
+                        detailData.getCcbaAsdt(),
+                        detailData.getCcbaLcad(),
+                        detailData.getCcceName(),
+                        detailData.getCcbaPoss(),
+                        detailData.getCcbaAdmin(),
+                        detailData.getImageUrl(),
+                        detailData.getContent(),
+                        detailData.getRegion1(),
+                        detailData.getRegion2()
+                ))
+                .collect(Collectors.toSet());
+
+        responseDTO.setRelicDetails(relicDetails); // ThemeResponseDTO에 Relic 상세 정보 설정
+
+        return responseDTO;
     }
 
 
@@ -123,7 +148,6 @@ public class ThemeServiceImpl implements ThemeService{
 //        return new ThemeResponseDTO(theme);
 //    }
 
-    // 테마 이름이랑 Description 업데이트
     @Override
     @Transactional
     public ThemeResponseDTO updateTheme(Long themeId, ThemeResponseDTO dto) {
