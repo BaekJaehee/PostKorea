@@ -1,19 +1,17 @@
-package com.ssafy.dmobile.achieve.repository;
+package com.ssafy.dmobile.achievements.repository;
 
-import com.ssafy.dmobile.achieve.entity.Achieve;
-import com.ssafy.dmobile.achieve.entity.AchieveMember;
-import com.ssafy.dmobile.achieve.entity.AchieveMemberKey;
-import com.ssafy.dmobile.visit.entity.MemberRelic;
+import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
+import com.ssafy.dmobile.achievements.entity.achieve.AchieveMember;
+import com.ssafy.dmobile.achievements.entity.achieve.AchieveMemberKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
 public interface AchieveMemberRepository extends JpaRepository<AchieveMember, AchieveMemberKey> {
 
-//    List<AchieveMember> findByMemberId(Long memberId);
+    List<AchieveMember> findByMemberId(Long memberId);
 
     @Query("select am.achieve from AchieveMember am where am.member.id = :memberId")
     List<Achieve> findByAchievesOwnedByMember(@Param("memberId") Long memberId);

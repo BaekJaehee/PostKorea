@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.achieve.entity;
+package com.ssafy.dmobile.achievements.entity.achieve;
 
 import com.ssafy.dmobile.member.entity.Member;
 import jakarta.persistence.*;
@@ -24,4 +24,7 @@ public class AchieveMember {
 
     @Column(name = "achieve_date")
     private Long achieveDate;
+
+    @Column(name = "achieve_relic_id")
+    private Long relicId;
 }

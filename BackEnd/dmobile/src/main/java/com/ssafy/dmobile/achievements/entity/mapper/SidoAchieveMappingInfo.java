@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.visit.entity.mapper;
+package com.ssafy.dmobile.achievements.entity.mapper;
 
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;

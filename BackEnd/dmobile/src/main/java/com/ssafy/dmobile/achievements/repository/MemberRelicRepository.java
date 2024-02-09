@@ -1,7 +1,7 @@
-package com.ssafy.dmobile.visit.repository;
+package com.ssafy.dmobile.achievements.repository;
 
-import com.ssafy.dmobile.visit.entity.MemberRelic;
-import com.ssafy.dmobile.visit.entity.MemberRelicKey;
+import com.ssafy.dmobile.achievements.entity.visit.MemberRelic;
+import com.ssafy.dmobile.achievements.entity.visit.MemberRelicKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

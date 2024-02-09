@@ -1,12 +1,8 @@
-package com.ssafy.dmobile.visit.entity.dto;
+package com.ssafy.dmobile.achievements.entity.visit.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
