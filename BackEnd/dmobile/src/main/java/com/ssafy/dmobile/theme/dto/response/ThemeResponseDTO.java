@@ -1,5 +1,6 @@
 package com.ssafy.dmobile.theme.dto.response;
 
+import com.ssafy.dmobile.theme.dto.RelicDetailDTO;
 import com.ssafy.dmobile.theme.entity.Theme;
 import com.ssafy.dmobile.theme.entity.ThemeRelic;
 import lombok.*;
@@ -18,6 +19,7 @@ public class ThemeResponseDTO {
     private String themeName;
     private String description;
     private Set<Long> relicIds;
+    private Set<RelicDetailDTO> relicDetails;
 
     public ThemeResponseDTO(Theme theme) {
         this.themeId = theme.getThemeId();
