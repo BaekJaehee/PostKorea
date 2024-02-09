@@ -6,6 +6,7 @@ import com.ssafy.travelcollector.api.StoreService
 import com.ssafy.travelcollector.api.ThemeService
 import com.ssafy.travelcollector.api.TravelService
 import com.ssafy.travelcollector.api.UserService
+import com.ssafy.travelcollector.api.VisitService
 import com.ssafy.travelcollector.config.ApplicationClass
 import retrofit2.create
 
@@ -17,5 +18,6 @@ class RetrofitUtil {
         val BOARD_SERVICE: BoardService = ApplicationClass.retrofit.create(BoardService::class.java)
         val STORE_SERVICE: StoreService = ApplicationClass.retrofit.create(StoreService::class.java)
         val THEME_SERVICE: ThemeService = ApplicationClass.retrofit.create(ThemeService::class.java)
+        val VISIT_SERVICE: VisitService = ApplicationClass.retrofit.create(VisitService::class.java)
     }
 }

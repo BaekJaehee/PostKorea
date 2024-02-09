@@ -47,13 +47,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initGeofence(){
         GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
             override fun onEnter(id: String) {
-                Log.d(TAG, "onEnter: $id")
+                showToast("onEnter $id")
                 mainActivityViewModel.addGameEnableHeritage(id.toInt())
             }
 
-            override fun onDwell(id: String) {}
+            override fun onDwell(id: String) {
+                showToast("onDwell $id")
+                mainActivityViewModel.addVisitedHeritage(id.toInt()){
+                    achievementViewModel.loadAchievement()
+                }
+            }
 
             override fun onExit(id: String) {
+                showToast("onExit $id")
                 mainActivityViewModel.removeGameEnableHeritage(id.toInt())
             }
         }

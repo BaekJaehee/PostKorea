@@ -68,6 +68,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.profileChangePersonalInfo.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_changeUserInfoFragment)
         }
+
+        binding.profileAchievement.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_titleFragment)
+        }
+
     }
 
 

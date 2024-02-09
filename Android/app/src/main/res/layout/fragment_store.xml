@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".StoreFragment">
+    tools:context=".fragment.others.StoreFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/store_rv_product"

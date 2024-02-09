@@ -1,24 +1,24 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.fragment.others
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.StoreAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentStoreBinding
 import com.ssafy.travelcollector.databinding.StoreDialogBinding
 import com.ssafy.travelcollector.dto.Product
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-
-private const val TAG = "StoreFragment"
-class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::bind, R.layout.fragment_store) {
+class StoreFragment : BaseFragment<FragmentStoreBinding>(
+    FragmentStoreBinding::bind,
+    R.layout.fragment_store
+) {
 
     private val storeAdapter: StoreAdapter by lazy{
         StoreAdapter()
@@ -47,7 +47,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::b
                 storeAdapter.submitList(it)
             }
         }
-        storeAdapter.eventListener = object : StoreAdapter.EventListener{
+        storeAdapter.eventListener = object : StoreAdapter.EventListener {
             override fun onClick(position: Int) {
                 openPurchaseDialog(storeAdapter.currentList[position])
             }

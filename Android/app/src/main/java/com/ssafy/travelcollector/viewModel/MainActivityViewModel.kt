@@ -5,6 +5,7 @@ import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.LocationCallback
 import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.Posting
 import com.ssafy.travelcollector.dto.TravelTheme
@@ -122,6 +123,14 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-
-
+    fun addVisitedHeritage(id: Int, callback: ()->Unit){
+        viewModelScope.launch {
+            val res = RetrofitUtil.VISIT_SERVICE.addVisitedHeritage(
+                AccountViewModel.ACCESS_TOKEN, id
+            )
+            if(res.code()/100 == 2){
+                callback()
+            }
+        }
+    }
 }
