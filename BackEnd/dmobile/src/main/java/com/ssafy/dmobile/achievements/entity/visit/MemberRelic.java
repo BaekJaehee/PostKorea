@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.visit.entity;
+package com.ssafy.dmobile.achievements.entity.visit;
 
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.relic.entity.DetailData;

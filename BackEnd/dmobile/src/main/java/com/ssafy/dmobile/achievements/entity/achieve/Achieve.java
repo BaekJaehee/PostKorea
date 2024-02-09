@@ -1,4 +1,4 @@
-package com.ssafy.dmobile.achieve.entity;
+package com.ssafy.dmobile.achievements.entity.achieve;
 
 import jakarta.persistence.*;
 import lombok.Data;

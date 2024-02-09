@@ -1,16 +1,14 @@
-package com.ssafy.dmobile.achieve.service;
+package com.ssafy.dmobile.achievements.service;
 
-import com.ssafy.dmobile.achieve.entity.Achieve;
-import com.ssafy.dmobile.achieve.entity.AchieveMember;
-import com.ssafy.dmobile.achieve.entity.AchieveMemberKey;
-import com.ssafy.dmobile.achieve.repository.AchieveMemberRepository;
-import com.ssafy.dmobile.achieve.repository.AchieveRepository;
+import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
+import com.ssafy.dmobile.achievements.entity.achieve.AchieveMember;
+import com.ssafy.dmobile.achievements.entity.achieve.AchieveMemberKey;
+import com.ssafy.dmobile.achievements.repository.AchieveMemberRepository;
+import com.ssafy.dmobile.achievements.repository.AchieveRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.repository.MemberRepository;
-import com.ssafy.dmobile.visit.entity.MemberRelic;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,7 +23,7 @@ public class AchieveMemberService {
     public final AchieveMemberRepository achieveMemberRepository;
 
     // 플래아어에게 업적 추가
-    public void addAchieveInMember(Long memberId, Long achieveId) {
+    public void addAchieveInMember(Long memberId, Long achieveId, Long relicId) {
 
         AchieveMemberKey key = new AchieveMemberKey();
         key.setMemberId(memberId);
@@ -36,6 +34,7 @@ public class AchieveMemberService {
         achieveMember.setAchieve(achieveRepository.getReferenceById(achieveId));
         achieveMember.setMember(memberRepository.getReferenceById(memberId));
         achieveMember.setAchieveDate(new Date().getTime());
+        achieveMember.setRelicId(relicId);
 
         achieveMemberRepository.save(achieveMember);
     }
@@ -48,8 +47,11 @@ public class AchieveMemberService {
     }
 
     // 플레이어가 보유한 업적 조회
-    public List<Achieve> getAchievesInMember(Long memberId) {
-        return achieveMemberRepository.findByAchievesOwnedByMember(memberId);
+//    public List<Achieve> getAchievesInMember(Long memberId) {
+//        return achieveMemberRepository.findByAchievesOwnedByMember(memberId);
+//    }
+    public List<AchieveMember> getAchieveMembers(Long memberId) {
+        return achieveMemberRepository.findByMemberId(memberId);
     }
 
     // 플레이어가 보유하지 않은 업적 조회

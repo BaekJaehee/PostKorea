@@ -1,14 +1,15 @@
-package com.ssafy.dmobile.visit.controller;
+package com.ssafy.dmobile.achievements.controller;
 
-import com.ssafy.dmobile.achieve.entity.Achieve;
-import com.ssafy.dmobile.achieve.entity.AchieveMember;
-import com.ssafy.dmobile.achieve.service.AchieveMemberService;
+import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
+import com.ssafy.dmobile.achievements.entity.achieve.AchieveMember;
+import com.ssafy.dmobile.achievements.service.AchieveMemberService;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
-import com.ssafy.dmobile.visit.entity.MemberRelic;
-import com.ssafy.dmobile.visit.entity.dto.MemberRelicResponseDto;
-import com.ssafy.dmobile.visit.service.MemberRelicService;
+import com.ssafy.dmobile.achievements.entity.visit.MemberRelic;
+import com.ssafy.dmobile.achievements.entity.visit.dto.MemberAchieveResponseDto;
+import com.ssafy.dmobile.achievements.entity.visit.dto.MemberRelicResponseDto;
+import com.ssafy.dmobile.achievements.service.MemberRelicService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/visit")
 @Tag(name = "Visit And Achievements", description = "문화재 방문처리 및 업적 조회 API Document")
-public class VisitingController {
+public class AchievementsController {
 
     private final AuthTokensGenerator authTokensGenerator;
     private final MemberRelicService memberRelicService;
@@ -106,14 +107,30 @@ public class VisitingController {
             @RequestParam(required = false, defaultValue = "true") boolean owned) {
 
         Long memberId = authTokensGenerator.extractMemberId(token);
-        List<Achieve> achieves;
-        if (owned) {
-            achieves = achieveMemberService.getAchievesInMember(memberId);
-        } else {
-            achieves = achieveMemberService.getAchievesNotInMember(memberId);
-        }
+        List<MemberAchieveResponseDto> response = new ArrayList<>();
 
-        return ResponseEntity.ok(achieves);
+        if (owned) {
+            for(AchieveMember am : achieveMemberService.getAchieveMembers(memberId) ){
+                MemberAchieveResponseDto dto = MemberAchieveResponseDto.builder()
+                        .achieveId(am.getAchieve().getAchieveId())
+                        .achieveName(am.getAchieve().getAchieveName())
+                        .achieveDesc(am.getAchieve().getAchieveDesc())
+                        .achieveDate(am.getAchieveDate())
+                        .achieveRelicId(am.getRelicId()).build();
+
+                response.add(dto);
+            }
+        } else {
+            for(Achieve achieve : achieveMemberService.getAchievesNotInMember(memberId) ){
+                MemberAchieveResponseDto dto = MemberAchieveResponseDto.builder()
+                        .achieveId(achieve.getAchieveId())
+                        .achieveName(achieve.getAchieveName())
+                        .achieveDesc(achieve.getAchieveDesc()).build();
+
+                response.add(dto);
+            }
+        }
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/achieve-info/{achieveId}")
