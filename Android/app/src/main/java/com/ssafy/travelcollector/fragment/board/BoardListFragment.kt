@@ -43,7 +43,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
                 boardViewModel.loadDetailBoard(
                     boardAdapter.currentList[position].id
                 )
-                findNavController().navigate(R.id.action_boardListFragment_to_heritagePostFragment)
+                findNavController().navigate(R.id.action_boardListFragment_to_boardPostFragment)
             }
 
         }

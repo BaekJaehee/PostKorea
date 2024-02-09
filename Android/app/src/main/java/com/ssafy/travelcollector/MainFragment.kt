@@ -57,7 +57,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
         }
 
         binding.mainTvBtnBoardShowAll.setOnClickListener {
-            findNavController().navigate(R.id.heritagePostFragment)
+            findNavController().navigate(R.id.boardPostFragment)
         }
         binding.mainTvBtnBoardShowAll.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_boardListFragment)
