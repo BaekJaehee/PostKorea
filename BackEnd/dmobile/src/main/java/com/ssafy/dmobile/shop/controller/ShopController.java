@@ -2,7 +2,7 @@ package com.ssafy.dmobile.shop.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
-import com.ssafy.dmobile.shop.dto.ShopMemberDto;
+import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
 import com.ssafy.dmobile.shop.entity.ShopMemberId;
@@ -14,6 +14,7 @@ import com.ssafy.dmobile.shop.service.ShopMemberService;
 import com.ssafy.dmobile.shop.service.ShopService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -51,6 +52,7 @@ public class ShopController {
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
     @PostMapping("/purchase/{productId}")
     @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행")
+    @SecurityRequirement(name="Authorization")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
             @PathVariable Long productId) {
@@ -125,6 +127,7 @@ public class ShopController {
 
     @GetMapping("/collect")
     @Operation(summary = "구매 물건 확인", description = "특정 유저가 구입한 물건과 구입하지 않은 물건을 모아서 확인")
+    @SecurityRequirement(name="Authorization")
     public ResponseEntity<?> bought(@RequestHeader("Authorization") String token) {
         // 토큰에서 memberId 추출
         Long memberId= authTokensGenerator.extractMemberId(token);

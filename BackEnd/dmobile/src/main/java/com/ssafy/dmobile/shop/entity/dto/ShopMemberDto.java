@@ -1,12 +1,9 @@
-package com.ssafy.dmobile.shop.dto;
+package com.ssafy.dmobile.shop.entity.dto;
 
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.function.Function;
 
 @Getter
 @Setter
