@@ -12,6 +12,8 @@ import java.util.function.Function;
 @Setter
 public class ShopMemberDto {
     private Long productId;
+    private String productName;
+    private String productImage;
     private Long productDate;
     private String productExplanation;
 
@@ -20,8 +22,10 @@ public class ShopMemberDto {
     }
 
     // 매개변수를 받는 생성자
-    public ShopMemberDto(Long productId, Long productDate, String productExplanation) {
+    public ShopMemberDto(Long productId, String productName, String productImage, Long productDate, String productExplanation) {
         this.productId = productId;
+        this.productName = productName;
+        this.productImage = productImage;
         this.productDate = productDate;
         this.productExplanation = productExplanation;
     }
@@ -34,8 +38,10 @@ public class ShopMemberDto {
     public static ShopMemberDto mapFromShopMember(ShopMember shopMember) {
         ShopMemberDto dto = new ShopMemberDto();
         dto.setProductId(shopMember.getShop().getProductId());
+        dto.setProductName(shopMember.getShop().getProductName());
+        dto.setProductImage(shopMember.getShop().getProductImage());
         dto.setProductDate(shopMember.getProductDate());
-        dto.setProductExplanation(shopMember.getShop().getProductExplanation()); // 상품 설명 설정
+        dto.setProductExplanation(shopMember.getShop().getProductExplanation());
         return dto;
     }
 
@@ -49,7 +55,9 @@ public class ShopMemberDto {
     public static ShopMemberDto mapFromShop(Shop shop) {
         ShopMemberDto dto = new ShopMemberDto();
         dto.setProductId(shop.getProductId());
-        dto.setProductExplanation(shop.getProductExplanation()); // 상품 설명
+        dto.setProductName(shop.getProductName());
+        dto.setProductImage(shop.getProductImage());
+        dto.setProductExplanation(shop.getProductExplanation());
         return dto;
     }
 
