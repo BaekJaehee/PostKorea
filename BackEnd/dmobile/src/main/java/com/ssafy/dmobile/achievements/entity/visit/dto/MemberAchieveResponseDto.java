@@ -16,6 +16,6 @@ public class MemberAchieveResponseDto {
     private String achieveDesc;
     @JsonProperty("achieve_date")
     private Long achieveDate;
-    @JsonProperty("achieve_relic_id")
-    private Long achieveRelicId;
+    @JsonProperty("achieve_relic_name")
+    private String achieveRelicName;
 }
