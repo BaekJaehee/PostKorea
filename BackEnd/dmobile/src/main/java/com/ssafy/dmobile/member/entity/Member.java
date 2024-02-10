@@ -43,4 +43,7 @@ public class Member {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "member_oauth_info")
     private OAuthType oAuthType = OAuthType.NONE;
+
+    @Column(name = "member_achieve")
+    private String achieve;
 }

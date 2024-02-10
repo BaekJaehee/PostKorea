@@ -1,67 +1,81 @@
 package com.ssafy.travelcollector
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.location.LocationListener
 import android.location.LocationManager
-import android.opengl.Visibility
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import com.ssafy.travelcollector.config.BaseActivity
+import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
+import com.ssafy.travelcollector.config.geofence.GeofenceManager
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
-import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
-    private val locationManager by lazy {
-        getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    private lateinit var navController: NavController
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initView()
+        initGeofence()
     }
 
-    private val gpsListener = LocationListener { p0 ->
-        mainActivityViewModel.setCurLocation(p0.latitude, p0.longitude)
+    private fun initGeofence(){
+        GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
+            override fun onEnter(id: String) {
+                showToast("onEnter $id")
+                mainActivityViewModel.addGameEnableHeritage(id.toInt())
+            }
 
-    }
+            override fun onDwell(id: String) {
+                showToast("onDwell $id")
+                mainActivityViewModel.addVisitedHeritage(id.toInt()){
+                    achievementViewModel.loadAchievement()
+                }
+            }
 
-    @SuppressLint("MissingPermission")
-    private fun getProviders(){
-        val listProviders = locationManager.allProviders as MutableList<String>
-        val isEnable = BooleanArray(4)
-        for (provider in listProviders) {
-            when ( provider ) {
-                LocationManager.GPS_PROVIDER -> {
-                    isEnable[0] = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,1f, gpsListener)
-                }
-                LocationManager.NETWORK_PROVIDER -> {
-                    isEnable[1] = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,1f, gpsListener)
-                }
-                LocationManager.PASSIVE_PROVIDER -> {
-                    isEnable[2] = locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)
-                    locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER,1000,1f, gpsListener)
-                }
+            override fun onExit(id: String) {
+                showToast("onExit $id")
+                mainActivityViewModel.removeGameEnableHeritage(id.toInt())
+            }
+        }
+
+        lifecycleScope.launch {
+            mainActivityViewModel.geofenceList.collect{
+                Log.d(TAG, "initGeofence: $it")
+                if(it.isNotEmpty())
+                    GeofenceManager.addGeofences(it)
             }
         }
     }
 
-    private lateinit var navController: NavController
+    private fun initView(){
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         navController = (supportFragmentManager.findFragmentById(binding.mainFrameLayout.id) as NavHostFragment).navController
         setSupportActionBar(binding.toolbar)
 
@@ -77,7 +91,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         }
-
 
         if(supportActionBar!=null){
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -108,10 +121,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 else->false
             }
         }
-
-        //다른 기능 개발 후에 주석 풀기
-//        getProviders()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -138,27 +147,4 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
         }
     }
-
-    @SuppressLint("MissingPermission")
-    override fun onResume() {
-        super.onResume()
-        //다른  개발 후에 다시 주석 풀기
-//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1f, gpsListener)
-//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 1f, gpsListener)
-//        locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 1000, 1f, gpsListener)
-//
-//        lifecycleScope.launch {
-//            mainActivityViewModel.curLocation.collect{
-//
-//            }
-//        }
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //다른  개발 후에 다시 주석 풀기
-//        locationManager.removeUpdates(gpsListener)
-    }
-
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import com.ssafy.travelcollector.MainActivity
 import com.ssafy.travelcollector.viewModel.AccountViewModel
+import com.ssafy.travelcollector.viewModel.AchievementViewModel
 import com.ssafy.travelcollector.viewModel.BoardViewModel
 import com.ssafy.travelcollector.viewModel.HeritageViewModel
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
@@ -33,6 +34,7 @@ abstract class BaseFragment<B : ViewBinding>(
     protected val heritageViewModel: HeritageViewModel by activityViewModels()
     protected val boardViewModel: BoardViewModel by activityViewModels()
     protected val storeViewModel: StoreViewModel by activityViewModels()
+    protected val achievementViewModel: AchievementViewModel by activityViewModels()
 
     protected lateinit var mainActivity: MainActivity
 

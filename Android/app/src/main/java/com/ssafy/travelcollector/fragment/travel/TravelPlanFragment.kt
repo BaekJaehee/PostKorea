@@ -111,17 +111,29 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
     }
 
     private fun initAdapter(){
-
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                launch {
-                    travelViewModel.travelPlanHeritageList.collect{
-                        heritageAdapter.submitList(it)
-                    }
+            launch {
+                mainActivityViewModel.gameEnableList.collect{
+                    travelViewModel.updateMiniGameEnable(ArrayList(it))
                 }
             }
-        }
 
+            launch {
+                travelViewModel.travelPlanHeritageList.collect{
+                    Log.d(TAG, "initAdapter: $it")
+                    heritageAdapter.submitList(it)
+                }
+            }
+
+//            repeatOnLifecycle(Lifecycle.State.STARTED){
+//                launch {
+//                    travelViewModel.travelPlanHeritageList.collect{
+//                        heritageAdapter.submitList(it)
+//                    }
+//                }
+//            }
+
+        }
 
         val itemTouchCallBack = ItemTouchHelper(ItemTouchCallBack())
         itemTouchCallBack.attachToRecyclerView(binding.travelPlanRv)

@@ -30,6 +30,9 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
                         .fitCenter()
                         .into(binding.culturalAssetDetailIv)
                     binding.culturalAssetDetailTvDescription.text = it.content
+                   if(it.gameEnable){
+                       mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.MiniGame))
+                   }
                 }
             }
             launch {

@@ -4,7 +4,7 @@ import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.oauth.service.params.OAuthLoginParams;
 import com.ssafy.dmobile.oauth.service.response.OAuthInfoResponse;
-import com.ssafy.dmobile.utils.AuthTokens;
+import com.ssafy.dmobile.utils.AuthTokenDto;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ public class OAuthLoginService {
 
     // params 기준으로 login 실행
 
-    public AuthTokens login(OAuthLoginParams params) {
+    public AuthTokenDto login(OAuthLoginParams params) {
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params);
         Long memberId = findOrCreateMember(oAuthInfoResponse);
         return authTokensGenerator.generate(memberId);

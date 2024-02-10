@@ -3,6 +3,7 @@ package com.ssafy.dmobile.relic.controller;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.relic.service.DetailDataService;
+import com.ssafy.dmobile.relic.service.LocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -38,6 +39,12 @@ public class RelicController {
         List<DetailData> result = detailDataRepository.findByName(name);
         return ResponseEntity.ok().body(result);
     }
+//    @GetMapping("/find")    // 포함되는 이름이 있으면 반환
+//    @Operation(summary = "이름 검색", description = "이름으로 검색해서 포함되는 문자가 있는 행 반환")
+//    public ResponseEntity<List<DetailData>> findData(@RequestParam String name) {
+//        List<DetailData> result = detailDataRepository.findByName(name);
+//        return ResponseEntity.ok().body(result);
+//    }
 
     @GetMapping("/search")
     @Operation(summary = "조건 검색", description = "시/도, 시/군/구, 시대, 분류를 파라미터로 검색해 해당하는 행 반환")
@@ -148,5 +155,25 @@ public class RelicController {
         }
 
         return ResponseEntity.ok().body(randomResult);
+    }
+
+
+
+    // 위도 경도 계산
+    private static double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515 * 1609.344;
+
+        return dist; //단위 meter
+    }
+    private static double deg2rad(double deg){
+        return (deg * Math.PI/180.0);
+    }
+    //radian(라디안)을 10진수로 변환
+    private static double rad2deg(double rad){
+        return (rad * 180 / Math.PI);
     }
 }

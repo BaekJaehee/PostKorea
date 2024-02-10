@@ -27,13 +27,24 @@ class HeritageAdapter(val isPlanning: Boolean = false) : BaseAdapter<Heritage>()
                 eventListener.onClick(layoutPosition)
             }
             if(isPlanning){
-                binding.touchIcon.setImageResource(R.drawable.drag_handle)
-                binding.touchIcon.setOnTouchListener{ _, event->
-                    if(event.action == MotionEvent.ACTION_DOWN)
-                        eventListener.onStartDrag(this)
-                    false
+                if(!data.gameEnable){
+                    binding.touchIcon.visibility = View.VISIBLE
+                    binding.btnMiniGame.visibility = View.GONE
+                    binding.touchIcon.setImageResource(R.drawable.drag_handle)
+                    binding.touchIcon.setOnTouchListener{ _, event->
+                        if(event.action == MotionEvent.ACTION_DOWN)
+                            eventListener.onStartDrag(this)
+                        false
+                    }
+                }else{
+                    binding.touchIcon.visibility = View.GONE
+                    binding.btnMiniGame.visibility = View.VISIBLE
                 }
+
             }
+
+
+
             binding.root.setOnCreateContextMenuListener(this)
         }
 

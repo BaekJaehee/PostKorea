@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.gms:play-services-location:21.1.0")
     val lifecycle_version = "2.6.1"
     val arch_version = "2.2.0"
     val nav_version = "2.4.2"

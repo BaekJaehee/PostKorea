@@ -33,7 +33,6 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
     private fun initAdapter(){
         lifecycleScope.launch{
             boardViewModel.boardList.collect{
-                Log.d(TAG, "initView: $it")
                 boardAdapter.submitList(it)
             }
         }
@@ -43,7 +42,7 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
                 boardViewModel.loadDetailBoard(
                     boardAdapter.currentList[position].id
                 )
-                findNavController().navigate(R.id.action_boardListFragment_to_heritagePostFragment)
+                findNavController().navigate(R.id.action_boardListFragment_to_boardPostFragment)
             }
 
         }

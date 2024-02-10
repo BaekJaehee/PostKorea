@@ -36,6 +36,18 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
     private fun initView(){
         lifecycleScope.launch {
             travelViewModel.loadUserTravelList()
+            travelViewModel.loadOnGoingTravel()
+            travelViewModel.onGoingTravel.collect{
+                travel->
+                if(travel.id!=-1){
+                    binding.travelListOliOngoing.setImages(
+                        ArrayList(travel.heritageList.map{it.imageUrl})
+                    )
+                }else{
+                    binding.travelListViewOngoing.visibility = View.GONE
+                    binding.travelListTvAltText.visibility = View.VISIBLE
+                }
+            }
         }
     }
 

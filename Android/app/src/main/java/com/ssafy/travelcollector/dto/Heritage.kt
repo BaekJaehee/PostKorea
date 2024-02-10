@@ -8,5 +8,8 @@ data class Heritage(
     @SerializedName("ccbaMnm1") var name: String = "",
     @SerializedName("imageUrl") var imageUrl: String = "",
     @SerializedName("content") var content: String = "",
-    var isBookMarked: Boolean = false
+    @SerializedName("latitude") var lat: String = "",
+    @SerializedName("longitude") var lng: String = "",
+    var isBookMarked: Boolean = false,
+    val gameEnable: Boolean = false
 )
