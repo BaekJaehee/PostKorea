@@ -17,7 +17,7 @@ enum class OAuthInfo{
 data class User(
     @SerializedName("member_email") var memberEmail: String = "",
     @SerializedName("member_pwd") var memberPwd: String = "",
-    @SerializedName("member_name") var userName: String = "1",
+    @SerializedName("member_name") var userName: String = "",
     @SerializedName("member_nickname") var userNickname: String = "1",
     @SerializedName("member_age") var userAge: Int = 0,
     @SerializedName("member_gender") var userGender: String = "MALE",

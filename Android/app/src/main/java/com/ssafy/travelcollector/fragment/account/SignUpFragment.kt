@@ -46,14 +46,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
                             )
                         )
                     }
-                    Log.d(TAG, "initView: $res")
-//                    if(msg == "succeed"){
-//                        findNavController().navigate(R.id.loginFragment)
-//                        showToast("회원가입 성공")
-//                    }else{
-//                        Log.d(TAG, "initView: $msg")
-//                        showToast("실패ㅠㅠ")
-//                    }
+                    if(res.code()/100 == 2){
+                        findNavController().navigate(R.id.loginFragment)
+                        showToast("회원가입 성공")
+                    }else{
+                        showToast("실패ㅠㅠ")
+                    }
                 }
             }else{
                 showToast("정보가 잘못됨")

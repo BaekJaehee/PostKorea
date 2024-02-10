@@ -41,15 +41,15 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginBottom="10dp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        >
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/login_et_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/user_info_form"
-            android:hint="pw"
-            />
+            android:inputType="textVisiblePassword"
+            android:hint="pw" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
