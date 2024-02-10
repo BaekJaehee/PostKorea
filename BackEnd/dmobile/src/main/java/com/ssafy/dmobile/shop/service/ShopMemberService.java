@@ -1,6 +1,5 @@
 package com.ssafy.dmobile.shop.service;
 
-import com.ssafy.dmobile.shop.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.ShopMember;
 //import com.ssafy.dmobile.shop.mapper.ShopMemberMapper;
 import com.ssafy.dmobile.shop.repository.ShopMemberRepository;
