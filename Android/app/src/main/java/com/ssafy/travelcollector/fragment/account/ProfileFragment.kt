@@ -1,32 +1,23 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.fragment.account
 
-import android.content.Context
-import android.database.Cursor
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentProfileBinding
 import com.ssafy.travelcollector.util.GalleryLauncher
-import com.ssafy.travelcollector.util.RetrofitUtil
-import com.ssafy.travelcollector.util.UriPartConverter
-import com.ssafy.travelcollector.viewModel.AccountViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 
-class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::bind, R.layout.fragment_profile) {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::bind,
+    R.layout.fragment_profile
+) {
 
     private val galleryLauncher: GalleryLauncher by lazy{
         GalleryLauncher(this)
@@ -38,7 +29,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initView(){
+
         galleryLauncher.pictureCallbackListener = object : GalleryLauncher.PictureCallbackListener{
             override fun onGetData(data: Uri) {
                 Glide.with(requireContext())
@@ -57,6 +50,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                         Glide.with(requireContext())
                             .load(it.profileUrl)
                             .into(binding.profileImage)
+                        binding.profileTvName.text = it.userName
+                        binding.profileTvTitle.text = "-${it.title?:""}-"
                     }
                 }
             }
@@ -65,12 +60,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.profileCamera.setOnClickListener{
             galleryLauncher.launch()
         }
-        binding.profileChangePersonalInfo.setOnClickListener {
+        binding.profileBtnChangePersonalInfo.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_changeUserInfoFragment)
         }
 
-        binding.profileAchievement.setOnClickListener {
+        binding.profileBtnAchievement.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_titleFragment)
+        }
+
+        binding.profileBtnCollection.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_collectionFragment)
         }
 
     }

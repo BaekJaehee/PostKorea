@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Board
 import com.ssafy.travelcollector.dto.Comment
+import com.ssafy.travelcollector.dto.User
 import com.ssafy.travelcollector.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,9 @@ class BoardViewModel: ViewModel() {
 
     private val _comments = MutableStateFlow(arrayListOf<Comment>())
     val comments = _comments.asStateFlow()
+
+    private val _writer = MutableStateFlow(User())
+    val writer = _writer.asStateFlow()
 
     fun postBoard(title: String, content: String, images: ArrayList<MultipartBody.Part>){
         viewModelScope.launch {
@@ -58,7 +62,10 @@ class BoardViewModel: ViewModel() {
             val res = withContext(Dispatchers.IO){
                 RetrofitUtil.BOARD_SERVICE.getBoardDetail(id)
             }
-            setCurDetailBoard(res.body()!!)
+            if(res.code()/100 == 2){
+                setCurDetailBoard(res.body()!!)
+                loadWriter(res.body()!!.writer)
+            }
         }
     }
 
@@ -97,12 +104,36 @@ class BoardViewModel: ViewModel() {
             val res = withContext(Dispatchers.IO){
                 RetrofitUtil.BOARD_SERVICE.getComments(boardId)
             }
-            setComments(ArrayList(res.body()!!))
+            if(res.code()/100 == 2){
+                for(comment in res.body()!!){
+                    val writerRes = withContext(Dispatchers.IO){
+                        RetrofitUtil.USER_SERVICE.getUserInfoById(comment.writerId)
+                    }
+                    if(writerRes.code() / 100 == 2){
+                        Log.d(TAG, "loadComments: ${writerRes.body()}")
+                        comment.writerName = writerRes.body()!!.userName
+                        comment.writerTitle = writerRes.body()!!.title
+                        comment.imgUrl = writerRes.body()!!.profileUrl
+                    }
+                }
+                setComments(ArrayList(res.body()!!))
+            }
         }
     }
 
     fun setComments(list: ArrayList<Comment>){
         _comments.update { list }
+    }
+
+    private fun loadWriter(writerId: Int){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.USER_SERVICE.getUserInfoById(writerId)
+            }
+            if(res.code()/100 == 2){
+                _writer.update { res.body()!! }
+            }
+        }
     }
 
 

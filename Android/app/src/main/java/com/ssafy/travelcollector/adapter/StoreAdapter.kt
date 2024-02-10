@@ -2,6 +2,7 @@ package com.ssafy.travelcollector.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.StoreRvItemBinding
 import com.ssafy.travelcollector.dto.Product
@@ -11,6 +12,9 @@ class StoreAdapter : BaseAdapter<Product>() {
         override fun bindInfo(data: Product) {
             binding.productName.text = data.name
             binding.productPrice.text = data.point.toString()
+            Glide.with(binding.root)
+                .load(data.image)
+                .into(binding.productImg)
             binding.btnPurchase.setOnClickListener {
                 eventListener.onClick(layoutPosition)
             }

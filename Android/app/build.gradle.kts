@@ -73,7 +73,9 @@ dependencies {
 
 
     implementation("com.navercorp.nid:oauth-jdk8:5.9.0")
-    implementation("com.kakao.sdk:v2-user:2.12.1")
+//    implementation("com.kakao.sdk:v2-user:2.12.1")
+
+    implementation("com.kakao.sdk:v2-all:2.19.0")
 
 
     implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")

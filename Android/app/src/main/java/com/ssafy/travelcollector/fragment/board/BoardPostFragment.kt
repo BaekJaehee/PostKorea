@@ -48,13 +48,23 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         binding.heritagePostVp2Images.adapter = imageAdapter
 
         lifecycleScope.launch{
-            boardViewModel.boardDetail.collect{
-                binding.heritagePostTvTitle.text = it.title
-                binding.heritagePostText.text = it.content
-                binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
-                imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
-                boardViewModel.loadComments(it.id)
+            launch {
+                boardViewModel.boardDetail.collect{
+                    binding.heritagePostTvTitle.text = it.title
+                    binding.heritagePostText.text = it.content
+                    binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
+                    imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
+                    boardViewModel.loadComments(it.id)
+                }
             }
+            launch {
+                boardViewModel.writer.collect{
+                    Glide.with(requireContext())
+                        .load(it.profileUrl)
+                        .into(binding.heritagePostProfileImg)
+                }
+            }
+
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
