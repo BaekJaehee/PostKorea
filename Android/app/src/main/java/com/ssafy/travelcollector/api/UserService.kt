@@ -16,7 +16,7 @@ import retrofit2.http.Path
 
 interface UserService {
     @POST("member/signup")
-    suspend fun insert(@Body body: User): Response<HashMap<String, Any>>
+    suspend fun insert(@Body body: User): Response<Any>
     @POST("member/login")
     suspend fun login(@Body body: User): Response<HashMap<String, Any>>
 

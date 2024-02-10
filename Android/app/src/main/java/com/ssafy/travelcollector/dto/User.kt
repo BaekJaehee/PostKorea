@@ -23,6 +23,7 @@ data class User(
     @SerializedName("member_gender") var userGender: String = "MALE",
     @SerializedName("member_auth") var userAuth: String = "NONE",
     @SerializedName("member_profile_url") var profileUrl: String = "",
+    @SerializedName("member_role") var role: String = "MEMBER",
     @SerializedName("member_point") var point: Int = 0,
     @SerializedName("member_achieve") val title: String? = null
 )
