@@ -151,9 +151,9 @@ public class ShopController {
                         .noneMatch(purchasedItem -> purchasedItem.getShop().getProductId().equals(item.getProductId())))
                 .collect(Collectors.toList());
 
-        // Shop 객체를 ShopMemberDto로
+        // Shop 객체를 ShopMemberDto로 변환
         List<ShopMemberDto> purchasedDtoList = purchasedItems.stream()
-                .map(shopMember -> ShopMemberDto.mapFromShopMember(shopMember))
+                .map(ShopMemberDto::mapFromShopMember)
                 .collect(Collectors.toList());
         List<ShopMemberDto> nonPurchasedDtoList = nonPurchasedItems.stream()
                 .map(ShopMemberDto::mapFromShop)
