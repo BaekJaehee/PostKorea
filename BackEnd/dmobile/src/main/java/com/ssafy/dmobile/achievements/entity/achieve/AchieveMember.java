@@ -25,6 +25,6 @@ public class AchieveMember {
     @Column(name = "achieve_date")
     private Long achieveDate;
 
-    @Column(name = "achieve_relic_id")
-    private Long relicId;
+    @Column(name = "achieve_relic_name")
+    private String relicName;
 }
