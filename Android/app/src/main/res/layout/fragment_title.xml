@@ -6,13 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context=".TitleFragment">
+    tools:context=".fragment.others.TitleFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:padding="16dp">
+
 
         <TextView
             android:id="@+id/title_in_use"
@@ -29,7 +31,7 @@
             android:id="@+id/title_acquisition_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="획득 날짜 : XXXX.XX.XX"
+            android:text="획득 날짜 : -"
             android:layout_marginVertical="8dp"
             android:layout_marginStart="16dp"/>
 
@@ -37,7 +39,7 @@
             android:id="@+id/title_acquisition_site"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="획득 장소 : XXXX"
+            android:text="획득 장소 : -"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="16dp"/>
 
@@ -70,7 +72,6 @@
                 android:textSize="32sp"
                 android:textStyle="bold"
                 android:paddingVertical="8dp"/>
-
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +83,7 @@
             android:paddingBottom="24dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/title_list_rv_my_travel"
+                android:id="@+id/title_list_rv_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -95,53 +96,38 @@
 
     </LinearLayout>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="70dp"
+        android:background="@drawable/upper_round"
+        android:backgroundTint="@color/brown1"
+        android:orientation="horizontal">
 
-
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        <TextView
             android:id="@+id/title_btn_how_acquisition_progress"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            app:layout_constraintHeight_percent="1"
-            android:background="@drawable/upper_round"
-            android:backgroundTint="@color/brown1"
-            android:text="획득 조건 : ~"
-            android:gravity="center_vertical"
-            android:padding="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-"
+            android:layout_gravity="center"
+            android:padding="16dp"/>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+
+        <Button
             android:id="@+id/title_btn_use"
             android:layout_width="80dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:backgroundTint="@color/brown2"
             android:text="장착"
+            android:layout_gravity="center"
             android:textSize="16sp"
             android:textStyle="bold"
             android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.9"/>
+            android:paddingBottom="5dp"
+            android:layout_marginRight="16dp"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

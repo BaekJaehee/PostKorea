@@ -37,6 +37,7 @@ public class MemberManageController {
                 .memberGender(member.getGender())
                 .memberAuth(member.getOAuthType())
                 .memberRole(member.getRole())
+                .memberAchieve(member.getAchieve())
                 .build();
 
         return ResponseEntity.ok(response); // 200

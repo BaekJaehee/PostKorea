@@ -81,12 +81,10 @@ class TravelViewModel: ViewModel() {
     fun loadUserTravelList(){
         viewModelScope.launch {
             val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
-            val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
             val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
             val responseList = arrayListOf<TravelPlanResponse>()
             responseList.apply{
                 addAll(ArrayList(upcoming.body()!!))
-                addAll(ArrayList(ongoing.body()!!))
                 addAll(ArrayList(completed.body()!!))
             }
 
@@ -157,10 +155,9 @@ class TravelViewModel: ViewModel() {
     }
 
     fun addHeritageToTravelPlan(heritage: Heritage){
-        _travelPlanHeritageList.update {
-            it.add(heritage)
-            it
-        }
+        val newList = _travelPlanHeritageList.value.toMutableSet()
+        newList.add(heritage)
+        _travelPlanHeritageList.update { ArrayList(newList) }
     }
 
     fun updateMiniGameEnable(list:List<Int>){

@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_corner_black_stroke_item"
-    android:padding="16dp">
+    android:paddingVertical="16dp"
+    android:paddingRight="16dp">
 
     <com.ssafy.travelcollector.customView.OverlapImages
         android:id="@+id/theme_rv_item_images"
@@ -16,31 +17,32 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:size="50" />
 
     <TextView
         android:id="@+id/theme_rv_item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="테마1"
-        android:textSize="32sp"
+        android:breakStrategy="simple"
+        android:text="구미에서 불교 문화재 정복하기"
+        android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@+id/theme_rv_item_heart_unclicked"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/theme_rv_item_images"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/theme_rv_item_heart_unclicked"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/heart_unclicked"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.972"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="visible"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/theme_rv_item_heart_clicked"

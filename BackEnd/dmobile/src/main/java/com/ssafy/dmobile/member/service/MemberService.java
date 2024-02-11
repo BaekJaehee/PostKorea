@@ -1,8 +1,8 @@
 package com.ssafy.dmobile.member.service;
 
-import com.ssafy.dmobile.achieve.entity.Achieve;
-import com.ssafy.dmobile.achieve.repository.AchieveMemberRepository;
-import com.ssafy.dmobile.achieve.repository.AchieveRepository;
+import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
+import com.ssafy.dmobile.achievements.repository.AchieveMemberRepository;
+import com.ssafy.dmobile.achievements.repository.AchieveRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;

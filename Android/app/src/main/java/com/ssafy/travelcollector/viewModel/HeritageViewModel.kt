@@ -55,7 +55,6 @@ class HeritageViewModel: ViewModel() {
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, era, category)
             }
             result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
-            Log.d(TAG, "searchHeritageList: ${result}")
         }
     }
 
@@ -65,16 +64,15 @@ class HeritageViewModel: ViewModel() {
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritageRandom(region1, region2, era, category)
             }
             result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
-            Log.d(TAG, "searchHeritageListRandom: ${result}")
         }
     }
 
 
-    private var _HeritageListByName = MutableStateFlow(arrayListOf<Heritage>())
-    val HeritageListByName = _HeritageListByName.asStateFlow()
+    private var _heritageListByName = MutableStateFlow(arrayListOf<Heritage>())
+    val heritageListByName = _heritageListByName.asStateFlow()
 
     fun setHeritageListByName(list: ArrayList<Heritage>){
-        _HeritageListByName.update { list }
+        _heritageListByName.update { list }
     }
     fun searchHeritageByName(name: String){
         viewModelScope.launch {

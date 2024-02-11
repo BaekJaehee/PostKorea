@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@color/background"
-    tools:context=".ProfileFragment"
+    tools:context=".fragment.account.ProfileFragment"
     android:padding="24dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,13 +41,22 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/profile_name"
+        android:id="@+id/profile_tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="김동영 진골"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:layout_margin="16dp"/>
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/profile_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        tools:text ="-칭호-"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,7 +70,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/profile_change_personal_info"
+                android:id="@+id/profile_btn_change_personal_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/button_brown"
@@ -81,7 +90,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/profile_achievement"
+                android:id="@+id/profile_btn_achievement"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/button_brown"
@@ -101,27 +110,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/profile_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/button_brown"
-                android:text="칭호"
-                app:layout_constraintWidth_percent="0.5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <Button
-                android:id="@+id/profile_collection"
+                android:id="@+id/profile_btn_collection"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/button_brown"
@@ -141,7 +130,7 @@
             android:layout_weight="1">
 
             <Button
-                android:id="@+id/profile_friends_list"
+                android:id="@+id/profile_btn_friends_list"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/button_brown"

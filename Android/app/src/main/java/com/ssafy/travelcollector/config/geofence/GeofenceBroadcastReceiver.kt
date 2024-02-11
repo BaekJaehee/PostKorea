@@ -13,7 +13,8 @@ private const val TAG = "GeofenceBroadcastReceiv"
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, p1: Intent?) {
         Log.d(TAG, "onReceive1: herere")
-        Log.d(TAG, "onReceive2: $p1")
+//        Log.d(TAG, "onReceive2: $p1")
+        Log.d(TAG, "onReceive3: $p1 \n ${p1?.extras.toString()}")
         val geofencingEvent = GeofencingEvent.fromIntent(p1!!)
         if(geofencingEvent!!.hasError()){
             val error = GeofenceStatusCodes.getStatusCodeString(geofencingEvent.errorCode)

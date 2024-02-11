@@ -15,11 +15,11 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!--수정했음-->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
             android:gravity="center">
 
             <LinearLayout
@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
                     android:textSize="28sp"
-                    android:text="북촌 전망대와 한옥마을"
+                    android:text="asd"
                     android:layout_margin="10dp"
                     android:textAlignment="textStart"/>
 

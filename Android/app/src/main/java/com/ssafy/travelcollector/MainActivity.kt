@@ -14,11 +14,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.bumptech.glide.Glide
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.GeofencingRequest
@@ -30,12 +33,17 @@ import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
 import com.ssafy.travelcollector.config.geofence.GeofenceManager
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var navController: NavController
+
+    private lateinit var sideImg: CircleImageView
+    private lateinit var sideName: TextView
+    private lateinit var sideLogout: Button
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +55,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initGeofence(){
         GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
             override fun onEnter(id: String) {
-                Log.d(TAG, "onEnter: $id")
+                showToast("onEnter $id")
                 mainActivityViewModel.addGameEnableHeritage(id.toInt())
             }
 
-            override fun onDwell(id: String) {}
+            override fun onDwell(id: String) {
+                showToast("onDwell $id")
+                mainActivityViewModel.addVisitedHeritage(id.toInt()){
+                    achievementViewModel.loadAchievement()
+                }
+            }
 
             override fun onExit(id: String) {
+                showToast("onExit $id")
                 mainActivityViewModel.removeGameEnableHeritage(id.toInt())
             }
         }
@@ -69,6 +83,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     private fun initView(){
 
+
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         navController = (supportFragmentManager.findFragmentById(binding.mainFrameLayout.id) as NavHostFragment).navController
         setSupportActionBar(binding.toolbar)
@@ -83,6 +99,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 else->{
                     false
                 }
+            }
+        }
+
+        val header = binding.hamburgerView.getHeaderView(0)
+
+        sideImg = header.findViewById(R.id.side_user_profile_img)
+        sideLogout = header.findViewById(R.id.side_logout)
+        sideName = header.findViewById(R.id.side_user_name)
+        val sideWelcome = header.findViewById<TextView>(R.id.side_tv_welcome)
+
+        lifecycleScope.launch {
+            accountViewModel.user.collect{
+                sideName.text = it.userName
+                if(it.memberEmail.isNotEmpty()){
+                    Glide.with(applicationContext)
+                        .load(it.profileUrl)
+                        .into(sideImg)
+                    sideLogout.visibility = View.VISIBLE
+                    sideWelcome.text = "님 안녕하세요"
+                }else{
+                    sideLogout.visibility = View.GONE
+                    sideWelcome.text = "로그인이 필요합니다"
+                }
+
             }
         }
 
