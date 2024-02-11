@@ -22,6 +22,7 @@ public class BoardResponseDTO {
     private Long createdate;
     private List<CommentResponseDTO> comments;
     private List<ImageResponseDTO> imageUrls;
+    private List<String> tags;
 
 
     public BoardResponseDTO(Board board) {
@@ -33,6 +34,9 @@ public class BoardResponseDTO {
         this.comments = board.getComments().stream().map(CommentResponseDTO::new).collect(Collectors.toList());
         this.imageUrls = board.getImages().stream()
                 .map(image -> new ImageResponseDTO(image.getImageId(), image.getFileName(), image.getAccessUrl()))
+                .collect(Collectors.toList());
+        this.tags = board.getTags().stream()
+                .map(boardTag -> boardTag.getTag().getTagName()) // Tag 엔티티에 이름 필드가 있다고 가정
                 .collect(Collectors.toList());
     }
 }
