@@ -69,6 +69,14 @@ class HeritageViewModel: ViewModel() {
         }
     }
 
+    fun searchHeritageListForGame(category: String?, limit: Int?){
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO){
+                RetrofitUtil.HERITAGE_SERVICE.searchHeritageForGame(category, limit)
+            }
+            result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+        }
+    }
 
     private var _HeritageListByName = MutableStateFlow(arrayListOf<Heritage>())
     val HeritageListByName = _HeritageListByName.asStateFlow()

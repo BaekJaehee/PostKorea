@@ -51,10 +51,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
 
             launch{
                 val category = "불교"
-                heritageViewModel.searchHeritageListRandom(
-                    null, null, null, category
-                )
+                val limit = 100
+                heritageViewModel.searchHeritageListForGame(category, limit)
                 heritageViewModel.curHeritageList.collect{
+                    it.shuffle()
                     heritageCategory = it
                 }
             }
