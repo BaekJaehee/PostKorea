@@ -18,15 +18,14 @@ private const val TAG = "GameFragment"
 
 class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind, R.layout.fragment_game), View.OnClickListener {
 
-    private val imageList = Constants.getImage()
     private var currentStage : Int = 0
-    private val currentLocation : Int = 1
+    private val currentLocation : String = "부석사"
     private var selectedOption : TextView? = null
     private var correctAnswers : Int = 0
     private var isSubmit : Boolean = false
-    private var heritageList : MutableList<Heritage> = ArrayList(10)
-    private var heritageName : MutableList<Heritage> = ArrayList(5)
-    private var heritageCategory : MutableList<Heritage> = ArrayList(5)
+    private var heritageList : MutableList<Heritage> = ArrayList()
+    private var heritageName : MutableList<Heritage> = ArrayList()
+    private var heritageCategory : MutableList<Heritage> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,7 +45,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                 heritageViewModel.searchHeritageByName(name)
                 heritageViewModel.HeritageListByName.collect{
                     it.shuffle()
-                    heritageName = it.toMutableList()
+                    heritageName = it
                 }
             }
 
@@ -56,16 +55,11 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                     null, null, null, category
                 )
                 heritageViewModel.curHeritageList.collect{
-                    heritageCategory = it.toMutableList()
+                    heritageCategory = it
                 }
             }
-
         }
     }
-
-
-
-
 
     private fun start() {
         binding.gameTvNext.text = "제출"
@@ -76,9 +70,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvWrong.visibility = View.VISIBLE
         binding.gameIvHeritage.visibility = View.VISIBLE
 
-        Log.d(TAG, "onCreate: ${heritageName} ${heritageCategory}")
-        heritageList.addAll(heritageName)
-        heritageList.addAll(heritageCategory)
+        for (i in 0..4){
+            heritageList.add(heritageName[i])
+            heritageList.add(heritageCategory[i])
+        }
         heritageList.shuffle()
 
         setImage()
@@ -90,8 +85,6 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         Glide.with(this)
             .load(heritageList!![currentStage-1].imageUrl) // 불러올 이미지 url
             .into(binding.gameIvHeritage) // 이미지를 넣을 뷰
-//        val heritageImage : HeritageImage = imageList[currentStage - 1]
-//        binding.gameIvHeritage.setImageResource(heritageImage.image)
         binding.gameTvNext.background = ContextCompat.getDrawable(mainActivity, R.drawable.bg_round_grey)
         selectedOption = null
     }
@@ -117,8 +110,8 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
     }
 
     private fun onSubmit(tv : TextView) {
-        val heritageImage : HeritageImage = imageList[currentStage - 1]
-        if (heritageImage.id == currentLocation ) {
+        val heritage : Heritage = heritageList[currentStage - 1]
+        if (heritage.name.contains(currentLocation)) {
             if (selectedOption == binding.gameTvCorrect) {
                 correctAnswers += 1
                 correctView(selectedOption!!)
@@ -194,9 +187,6 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                     }
                 }
             }
-
         }
     }
-
-
 }
