@@ -43,9 +43,9 @@ public class Board {
     private Long createdDate;
 
     // 태그
-    @OneToMany(mappedBy = "board")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.ALL)
     @Column(name = "board_tag")
-    private Set<Tag> tags = new HashSet<>();
+    private Set<BoardTag> tags = new HashSet<>();
 
 
     // 댓글
@@ -70,5 +70,14 @@ public class Board {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void addTag(Tag tag) {
+        BoardTag boardTag = new BoardTag();
+        boardTag.setBoard(this); // 현재 board 인스턴스를 설정
+        boardTag.setTag(tag); // tag 인스턴스 설정
+        boardTag.setBoardTagKeyId(new BoardTagKey(this.getBoardId(), tag.getTagId())); // BoardTagKey 설정
+        this.tags.add(boardTag);
+        tag.getBoards().add(boardTag);
     }
 }

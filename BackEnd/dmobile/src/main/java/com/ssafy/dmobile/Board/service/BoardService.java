@@ -25,6 +25,10 @@ public interface BoardService {
 
     Page<Board> findAllBoards(Pageable pageable);
 
+    // BoardService.java
+    List<BoardResponseDTO> findBoardsByTag(String tag, Pageable pageable);
+
+
     // throws IOException : 예외처리를 강제하는 코드
 //    String uploadBoardImage(Long boardId, MultipartFile file, Long imageId) throws IOException;
 

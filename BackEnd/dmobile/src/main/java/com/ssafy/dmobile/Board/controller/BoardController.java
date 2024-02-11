@@ -141,4 +141,11 @@ public class BoardController {
         Board board = boardService.createBoardWithImages(boardId, file);
         return ResponseEntity.ok().body("Images uploaded successfully to board with ID: " + boardId);
     }
+
+    @Operation(summary = "태그로 게시판 검색", description = "태그로 게시판을 검색합니다.")
+    @GetMapping("/search")
+    public ResponseEntity<List<BoardResponseDTO>> findBoardsByTag(@RequestParam String tag, Pageable pageable) {
+        List<BoardResponseDTO> boards = boardService.findBoardsByTag(tag, pageable);
+        return ResponseEntity.ok(boards);
+    }
 }
