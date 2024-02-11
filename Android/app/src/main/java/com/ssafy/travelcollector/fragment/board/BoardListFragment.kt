@@ -28,6 +28,10 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
         lifecycleScope.launch {
             boardViewModel.loadAllBoards()
         }
+
+        binding.boardListAddPost.setOnClickListener{
+            findNavController().navigate(R.id.travelPostEditFragment)
+        }
     }
 
     private fun initAdapter(){

@@ -66,7 +66,7 @@
                     >
 
                     <TextView
-                        android:id="@+id/main_posting_title"
+                        android:id="@+id/travel_list_tv_ongoing_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="22sp"
@@ -86,7 +86,7 @@
                             android:layout_gravity="bottom"
                             />
                         <TextView
-                            android:id="@+id/travel_list_rv_item_tv_duration"
+                            android:id="@+id/travel_list_tv_duration"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="xx월 xx일 - xx월 xx일"

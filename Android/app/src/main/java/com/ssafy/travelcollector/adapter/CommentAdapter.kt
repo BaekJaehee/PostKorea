@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.CommentRvItemBinding
 import com.ssafy.travelcollector.dto.Comment
@@ -23,6 +24,7 @@ class CommentAdapter: BaseAdapter<Comment> (){
             binding.root.setOnCreateContextMenuListener(this)
             Glide.with(binding.root)
                 .load(data.imgUrl)
+                .fallback(R.drawable.profile)
                 .into(binding.boardDetailProfileImg)
             binding.userName.text = "${data.writerTitle?:""} ${data.writerName}"
             Log.d(TAG, "bindInfo: ${data.writerTitle}")

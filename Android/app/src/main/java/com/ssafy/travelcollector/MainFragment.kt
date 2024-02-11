@@ -45,17 +45,39 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
         lifecycleScope.launch {
             launch {
                 travelViewModel.loadOnGoingTravel()
-                travelViewModel.onGoingTravel.collect{
-                    if(it.id!=-1){
-                        mainActivityViewModel.createGeofenceList(
-                            it.heritageList
-                        )
-                    }
-                    else{
-                        binding.mainCurTravelView.visibility = View.GONE
-                        binding.mainTvAltText.visibility = View.VISIBLE
+                travelViewModel.loadUserTravelList()
+                launch {
+                    travelViewModel.onGoingTravel.collect{ travel ->
+                        if(travel.id!=-1){
+                            mainActivityViewModel.createGeofenceList(
+                                travel.heritageList
+                            )
+                            binding.mainCurTravelView.visibility = View.VISIBLE
+                            binding.mainTvAltText.visibility = View.GONE
+                            binding.mainOli.setImages(ArrayList(travel.heritageList.map{it.imageUrl}))
+                            binding.mainTravelTitle.text = travel.name
+                            binding.mainTvDuration.text =
+                                "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
+                        }else{
+                            travelViewModel.userTravelList.collect{lst->
+                                if(lst.isNotEmpty()){
+                                    binding.mainCurTravelView.visibility = View.VISIBLE
+                                    binding.mainTvAltText.visibility = View.GONE
+                                    val first = lst[0]
+                                    binding.mainOli.setImages(ArrayList(first.heritageList.map{it.imageUrl}))
+                                    binding.mainTravelTitle.text = first.name
+                                    binding.mainTvDuration.text =
+                                        "${TimeConverter.timeMilliToDateString(first.startDate)} ~ ${TimeConverter.timeMilliToDateString(first.endDate)}"
+                                }else{
+                                    binding.mainCurTravelView.visibility = View.GONE
+                                    binding.mainTvAltText.visibility = View.VISIBLE
+                                }
+                            }
+                        }
                     }
                 }
+
+
             }
 
             launch {

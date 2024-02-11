@@ -7,5 +7,5 @@ data class Achievement(
     @SerializedName("achieve_name") val name: String,
     @SerializedName("achieve_desc") val description: String,
     @SerializedName("achieve_date") val date: Long,
-    val getPlace: String?
+    @SerializedName("achieve_relic_name") val place: String?
 )

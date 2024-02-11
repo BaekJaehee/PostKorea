@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.dto.Heritage
+import com.ssafy.travelcollector.dto.HeritageImage
 import com.ssafy.travelcollector.util.Constants
 import kotlinx.coroutines.launch
 

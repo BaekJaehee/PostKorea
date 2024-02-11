@@ -2,6 +2,7 @@ package com.ssafy.travelcollector.fragment.board
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
@@ -20,6 +21,7 @@ import com.ssafy.travelcollector.util.TimeConverter
 import kotlinx.coroutines.launch
 import retrofit2.http.Url
 
+private const val TAG = "BoardPostFragment"
 class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeritagePostBinding::bind,
     R.layout.fragment_heritage_post
 ){
@@ -61,6 +63,7 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
                 boardViewModel.writer.collect{
                     Glide.with(requireContext())
                         .load(it.profileUrl)
+                        .fallback(R.drawable.profile)
                         .into(binding.heritagePostProfileImg)
                 }
             }
