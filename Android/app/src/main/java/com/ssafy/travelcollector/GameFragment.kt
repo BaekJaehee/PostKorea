@@ -1,7 +1,6 @@
 package com.ssafy.travelcollector
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentGameBinding
@@ -10,16 +9,18 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.dto.Heritage
-import com.ssafy.travelcollector.dto.HeritageImage
-import com.ssafy.travelcollector.util.Constants
 import kotlinx.coroutines.launch
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 private const val TAG = "GameFragment"
 
 class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind, R.layout.fragment_game), View.OnClickListener {
 
     private var currentStage : Int = 0
-    private val currentLocation : String = "부석사"
     private var selectedOption : TextView? = null
     private var correctAnswers : Int = 0
     private var isSubmit : Boolean = false
@@ -41,7 +42,13 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
 
         lifecycleScope.launch {
             launch {
-                val name = "부석사"
+                val heritage = heritageViewModel.curHeritage.value
+                var name = ""
+                if (heritage.name.split(" ").size == 1) {
+                    name = heritage.name
+                } else {
+                    name = heritage.name.split(" ")[0] +" "+ heritage.name.split(" ")[1]
+                }
                 heritageViewModel.searchHeritageByName(name)
                 heritageViewModel.heritageListByName.collect{
                     it.shuffle()
@@ -50,7 +57,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
             }
 
             launch{
-                val category = "불교"
+                val category = heritageViewModel.curHeritage.value.category
                 val limit = 100
                 heritageViewModel.searchHeritageListForGame(category, limit)
                 heritageViewModel.curHeritageList.collect{
@@ -59,6 +66,21 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                 }
             }
         }
+    }
+
+    private fun findDistance(lat: Double, lng: Double): Double {
+        val R = 6371.0
+        val heritage = heritageViewModel.curHeritage.value
+        val curLat = heritage.lat.toDouble()
+        val curLng = heritage.lng.toDouble()
+        val dlat = Math.toRadians(lat - curLat)
+        val dlng = Math.toRadians(lng - curLng)
+        val originLat = Math.toRadians(curLat);
+        val destinationLat = Math.toRadians(lat);
+        val a = sin(dlat / 2).pow(2) + cos(originLat) * cos(destinationLat) * sin(dlng / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return R * c
     }
 
     private fun start() {
@@ -70,10 +92,36 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvWrong.visibility = View.VISIBLE
         binding.gameIvHeritage.visibility = View.VISIBLE
 
-        for (i in 0..4){
-            heritageList.add(heritageName[i])
-            heritageList.add(heritageCategory[i])
+        heritageName = heritageName.filter {
+            it.lat != "0"
+        }.toMutableList()
+
+        heritageName = heritageName.filter {
+            findDistance(it.lat.toDouble(), it.lng.toDouble()) < 0.5
+        }.toMutableList()
+
+        if (heritageName.size > 4){
+            for (i in 0..4){
+                if (heritageName[i].imageUrl != null){
+                    heritageList.add(heritageName[i])
+                } else {
+                    heritageList.add(heritageCategory[i])
+                }
+                heritageList.add(heritageCategory[i])
+            }
+        } else {
+            for (i in 0..heritageName.size-1) {
+                if (heritageName[i].imageUrl != null) {
+                    heritageList.add(heritageName[i])
+                } else {
+                    continue
+                }
+            }
+            for (i in 1..(10-heritageList.size)){
+                heritageList.add(heritageCategory[i])
+            }
         }
+
         heritageList.shuffle()
 
         setImage()
@@ -111,7 +159,8 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
 
     private fun onSubmit(tv : TextView) {
         val heritage : Heritage = heritageList[currentStage - 1]
-        if (heritage.name.contains(currentLocation)) {
+        val distance = findDistance(heritage.lat.toDouble(), heritage.lng.toDouble())
+        if (distance < 0.5) {
             if (selectedOption == binding.gameTvCorrect) {
                 correctAnswers += 1
                 correctView(selectedOption!!)
