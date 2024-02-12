@@ -1,5 +1,6 @@
 package com.ssafy.dmobile.shop.controller;
 
+import com.amazonaws.Response;
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
@@ -42,8 +43,23 @@ public class ShopController {
     private final AuthTokensGenerator authTokensGenerator;
 
     @GetMapping("/product")    // 상점 들어가면 맨 처음 뜨는 물품 리스트
+    @Operation(summary = "물건 전체 리스트")
     public ResponseEntity<List<Shop>> productList() {
         List<Shop> shop = shopRepository.findAll();
+        return ResponseEntity.ok().body(shop);
+    }
+
+    @GetMapping("/product/available")
+    @Operation(summary = "상점에서 구매 가능한 물건만 표시")
+    public ResponseEntity<?> availableOnShop() {
+        List<Shop> shop = shopRepository.findByIsPurchasable(true);
+        return ResponseEntity.ok().body(shop);
+    }
+
+    @GetMapping("/product/unavilable")
+    @Operation(summary = "상점에서는 구매 불가능하고 업적이나 게임 보상으로 얻을 수 있는 물건만 표시")
+    public ResponseEntity<?> unavailableOnShop() {
+        List<Shop> shop = shopRepository.findByIsPurchasable(false);
         return ResponseEntity.ok().body(shop);
     }
 

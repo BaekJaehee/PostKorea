@@ -20,6 +20,8 @@ public class Shop {
     private Integer productPoint;
     @Column(name = "product_explanation")
     private String productExplanation;
+    @Column(name = "is_purchasable")
+    private Boolean isPurchasable;
 
     // 무한재귀 막으려면 단방향
 //    @OneToMany(mappedBy = "shop")
