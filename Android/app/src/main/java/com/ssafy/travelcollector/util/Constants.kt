@@ -1,6 +1,6 @@
 package com.ssafy.travelcollector.util
 
-import com.ssafy.travelcollector.HeritageImage
+import com.ssafy.travelcollector.dto.HeritageImage
 import com.ssafy.travelcollector.R
 
 object Constants {

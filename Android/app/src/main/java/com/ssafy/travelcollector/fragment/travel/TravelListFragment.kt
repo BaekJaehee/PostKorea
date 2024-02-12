@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.fragment.travel
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import com.ssafy.travelcollector.adapter.TravelAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTravelListBinding
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
+import com.ssafy.travelcollector.util.TimeConverter
 import kotlinx.coroutines.launch
 
 class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTravelListBinding::bind,
@@ -33,6 +35,7 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         initAdapter()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView(){
         lifecycleScope.launch {
             travelViewModel.loadUserTravelList()
@@ -43,6 +46,9 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
                     binding.travelListOliOngoing.setImages(
                         ArrayList(travel.heritageList.map{it.imageUrl})
                     )
+                    binding.travelListTvOngoingTitle.text = travel.name
+                    binding.travelListTvDuration.text =
+                        "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
                 }else{
                     binding.travelListViewOngoing.visibility = View.GONE
                     binding.travelListTvAltText.visibility = View.VISIBLE

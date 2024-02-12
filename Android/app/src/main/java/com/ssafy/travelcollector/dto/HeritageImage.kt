@@ -1,4 +1,4 @@
-package com.ssafy.travelcollector
+package com.ssafy.travelcollector.dto
 
 data class HeritageImage(
     var id: Int,

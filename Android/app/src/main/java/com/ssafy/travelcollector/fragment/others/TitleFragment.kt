@@ -81,10 +81,11 @@ class TitleFragment: BaseFragment<FragmentTitleBinding>(FragmentTitleBinding::bi
 
         titleAdapter.eventListener = object: TitleAdapter.EventListener{
             @SuppressLint("NotifyDataSetChanged", "SetTextI18n")
-            override fun onClick(title: String, desc: String, date: Long, position: Int) {
+            override fun onClick(title: String, desc: String, date: Long, place: String?, position: Int) {
                 binding.titleBtnHowAcquisitionProgress.text = desc
                 val dateString = if(ownState) TimeConverter.timeMilliToDateString(date) else "-"
                 binding.titleAcquisitionDate.text = "획득날짜 : $dateString"
+                binding.titleAcquisitionSite.text = "획득장소 : ${place?:"-"}"
                 titleAdapter.setSelectIdx(position)
                 titleAdapter.notifyDataSetChanged()
                 selectedTitle = if(ownState) achievementViewModel.ownAchievement.value[position].id else achievementViewModel.notOwnAchievement.value[position].id

@@ -8,6 +8,7 @@ import com.ssafy.dmobile.achievements.repository.AchieveRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.repository.MemberRepository;
+import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class AchieveMemberService {
 
     public final MemberRepository memberRepository;
+    public final DetailDataRepository detailDataRepository;
     public final AchieveRepository achieveRepository;
     public final AchieveMemberRepository achieveMemberRepository;
 
@@ -34,7 +36,7 @@ public class AchieveMemberService {
         achieveMember.setAchieve(achieveRepository.getReferenceById(achieveId));
         achieveMember.setMember(memberRepository.getReferenceById(memberId));
         achieveMember.setAchieveDate(new Date().getTime());
-        achieveMember.setRelicId(relicId);
+        achieveMember.setRelicName(detailDataRepository.getReferenceById(relicId).getCcbaMnm1());
 
         achieveMemberRepository.save(achieveMember);
     }

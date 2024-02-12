@@ -1,14 +1,30 @@
 package com.ssafy.dmobile.Board.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "tag_id")
+    private Long tagId;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
+    @Column(name = "tag_name")
+    private String tagName;
+
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<BoardTag> boards = new HashSet<>();
+
+    public Tag(String tagName) {
+        this.tagName = tagName;
+    }
 }

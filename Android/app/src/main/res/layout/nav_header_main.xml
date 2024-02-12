@@ -8,7 +8,7 @@
     android:padding="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_profile_img"
+        android:id="@+id/side_user_profile_img"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@color/white"
@@ -19,19 +19,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/user_name"
+        android:id="@+id/side_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@+id/user_profile_img"
+        app:layout_constraintEnd_toStartOf="@+id/side_tv_welcome"
+        app:layout_constraintStart_toEndOf="@+id/side_user_profile_img"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.7"
         tools:text="김동영" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/side_tv_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="님 안녕하세요"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/side_logout"
         android:layout_width="70dp"
         android:layout_height="40dp"
         android:padding="0dp"

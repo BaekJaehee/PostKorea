@@ -13,4 +13,8 @@ interface StoreService {
 
     @POST("shop/purchase/{productId}")
     suspend fun purchaseProduct(@Header("Authorization") token: String, @Path("productId") id: Int): Response<Any>
+
+    @GET("shop/collect")
+    suspend fun getCollection(@Header("Authorization") token: String): Response<List<Product>>
+
 }

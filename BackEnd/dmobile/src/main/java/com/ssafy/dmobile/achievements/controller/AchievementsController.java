@@ -116,7 +116,7 @@ public class AchievementsController {
                         .achieveName(am.getAchieve().getAchieveName())
                         .achieveDesc(am.getAchieve().getAchieveDesc())
                         .achieveDate(am.getAchieveDate())
-                        .achieveRelicId(am.getRelicId()).build();
+                        .achieveRelicName(am.getRelicName()).build();
 
                 response.add(dto);
             }

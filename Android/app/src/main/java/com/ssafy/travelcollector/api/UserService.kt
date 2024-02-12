@@ -12,10 +12,11 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface UserService {
     @POST("member/signup")
-    suspend fun insert(@Body body: User): Response<HashMap<String, Any>>
+    suspend fun insert(@Body body: User): Response<Any>
     @POST("member/login")
     suspend fun login(@Body body: User): Response<HashMap<String, Any>>
 
@@ -34,5 +35,9 @@ interface UserService {
     @Multipart
     @POST("member/profile/image")
     suspend fun uploadProfileImage(@Header("Authorization") token: String, @Part img:MultipartBody.Part): Response<Any>
+
+    @GET("member/manage/{memberId}")
+    suspend fun getUserInfoById(@Path("memberId") id: Int): Response<User>
+
 
 }

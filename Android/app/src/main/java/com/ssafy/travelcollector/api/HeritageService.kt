@@ -22,6 +22,12 @@ interface HeritageService {
         @Query("category") category: String?
     ): Response<List<Heritage>>
 
+    @GET("relic/search")
+    suspend fun searchHeritageForGame(
+        @Query("category") category: String?,
+        @Query("limit") limit: Int?,
+    ): Response<List<Heritage>>
+
     @GET("relic/random")
     suspend fun searchHeritageRandom(
         @Query("region1") region1: String?,

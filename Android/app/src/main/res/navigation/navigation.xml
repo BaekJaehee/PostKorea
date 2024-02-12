@@ -110,7 +110,7 @@
         tools:layout="@layout/fragment_cultural_asset_detail" />
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.ssafy.travelcollector.ProfileFragment"
+        android:name="com.ssafy.travelcollector.fragment.account.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -119,6 +119,9 @@
         <action
             android:id="@+id/action_profileFragment_to_titleFragment"
             app:destination="@id/titleFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_collectionFragment"
+            app:destination="@id/collectionFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeUserInfoFragment"
@@ -154,4 +157,9 @@
         android:name="com.ssafy.travelcollector.fragment.board.BoardPostFragment"
         android:label="fragment_heritage_post"
         tools:layout="@layout/fragment_heritage_post" />
+    <fragment
+        android:id="@+id/collectionFragment"
+        android:name="com.ssafy.travelcollector.fragment.others.CollectionFragment"
+        android:label="fragment_collection"
+        tools:layout="@layout/fragment_collection" />
 </navigation>
