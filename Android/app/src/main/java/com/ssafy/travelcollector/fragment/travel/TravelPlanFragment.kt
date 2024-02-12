@@ -62,6 +62,7 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
             binding.travelPlanTvDuration.text = "기간을 선택하세요"
         }else{
             mainActivityViewModel.setPageTitle("탐방 계획 상세")
+            mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.WatchingTravel))
             val startDateString = TimeConverter.timeMilliToDateString(curTravel.startDate)
             val endDateString = TimeConverter.timeMilliToDateString(curTravel.endDate)
             binding.travelPlanTvDuration.text = "$startDateString ~ $endDateString"
@@ -171,7 +172,11 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         }
 
         binding.travelPlanRv.adapter = heritageAdapter
+    }
 
+    override fun onDestroyView() {
+        mainActivityViewModel.removeDetailState(DetailStateEnum.WatchingTravel)
+        super.onDestroyView()
     }
 
 

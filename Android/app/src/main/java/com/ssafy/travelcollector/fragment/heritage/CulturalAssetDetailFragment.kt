@@ -29,7 +29,7 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
         initView()
     }
 
-    lateinit var curHeritage: Heritage
+    private lateinit var curHeritage: Heritage
 
     private fun initView(){
 
@@ -67,7 +67,7 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
         }
 
         binding.culturalAssetDetailBtnNewRecord.setOnClickListener {
-            //태그 기능 백엔드에 적용되면 태그 추가 필요
+            boardViewModel.setIsHeritageBoard(true)
             findNavController().navigate(R.id.travelPostEditFragment)
         }
 
@@ -77,6 +77,13 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
 
         binding.culturalAssetDetailBtnGame.setOnClickListener {
             findNavController().navigate(R.id.gameFragment)
+        }
+
+        binding.culturalAssetDetailBtnReadRecord.setOnClickListener {
+            boardViewModel.setSearchBoardTags(listOf(
+                "email=${accountViewModel.user.value.memberEmail}", "heritage=${curHeritage.id}"
+            ))
+            findNavController().navigate(R.id.boardListFragment)
         }
 
     }

@@ -149,13 +149,23 @@ class TravelViewModel: ViewModel() {
                 )
                 _onGoingTravel.update { travel }
             }
-
         }
-
     }
 
-    fun setUserTravelList(newList: ArrayList<TravelWithHeritageList>){
-        _userTravelList.update { newList }
+    fun deleteTravel(){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.TRAVEL_SERVICE.deleteTravel(
+                    AccountViewModel.ACCESS_TOKEN, userTravelId.value
+                )
+            }
+            if(res.code()/100==2){
+                loadOnGoingTravel()
+                loadUserTravelList()
+            }else{
+                Log.d(TAG, "deleteTravel: ${res}")
+            }
+        }
     }
 
     //계획 중인 여행 목록의 원본. 저장 시 해당 리스트로 저장.

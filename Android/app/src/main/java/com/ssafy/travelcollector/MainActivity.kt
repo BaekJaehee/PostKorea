@@ -163,16 +163,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_action, menu)
-        val menuItem = menu!!.findItem(R.id.action_side_menu)
+        val menuItem = menu!!.findItem(R.id.delete_board)
+        val deleteTravel = menu.findItem(R.id.delete_travel)
         menuItem.isVisible = false
+        deleteTravel.isVisible = false
+
         menuItem.setOnMenuItemClickListener {
             boardViewModel.deleteBoard()
             navController.popBackStack()
             false
         }
+        deleteTravel.setOnMenuItemClickListener {
+            travelViewModel.deleteTravel()
+            navController.popBackStack()
+            false
+        }
+
         lifecycleScope.launch {
             boardViewModel.writer.collect{
                 menuItem.isVisible = it.memberEmail == accountViewModel.user.value.memberEmail
+            }
+        }
+        lifecycleScope.launch {
+            mainActivityViewModel.detailState.collect{
+                deleteTravel.isVisible = it.contains(DetailStateEnum.WatchingTravel)
             }
         }
 

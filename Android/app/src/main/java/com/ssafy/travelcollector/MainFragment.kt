@@ -96,6 +96,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
             }
 
             launch {
+                boardViewModel.setSearchBoardTags(listOf())
                 boardViewModel.loadAllBoards()
             }
 

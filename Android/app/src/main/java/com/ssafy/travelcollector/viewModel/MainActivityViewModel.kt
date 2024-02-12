@@ -19,7 +19,8 @@ private const val TAG = "MainActivityViewModel"
 enum class DetailStateEnum(private val state: Int) {
     None(0),
     AddToTravel(1),
-    MiniGame(2)
+    MiniGame(2),
+    WatchingTravel(3)
 }
 
 class MainActivityViewModel : ViewModel() {
@@ -61,21 +62,19 @@ class MainActivityViewModel : ViewModel() {
         _geofenceList.update { newList }
     }
 
-    private val _detailState = MutableStateFlow(arraySetOf(DetailStateEnum.None))
+    private val _detailState = MutableStateFlow(mutableSetOf(DetailStateEnum.None))
     val detailState = _detailState.asStateFlow()
 
     fun addDetailState(states: ArrayList<DetailStateEnum>){
-        _detailState.update {
-            it.addAll(states)
-            it
-        }
+        val newSet = _detailState.value.toMutableSet()
+        newSet.addAll(states)
+        _detailState.update { newSet }
     }
 
     fun removeDetailState(state: DetailStateEnum){
-        _detailState.update {
-            if(it.contains(state)) it.remove(state)
-            it
-        }
+        val newSet = _detailState.value.toMutableSet()
+        if(newSet.contains(state)) newSet.remove(state)
+        _detailState.update { newSet }
     }
 
     private val _recommendedTheme = MutableStateFlow(arrayListOf<TravelTheme>())

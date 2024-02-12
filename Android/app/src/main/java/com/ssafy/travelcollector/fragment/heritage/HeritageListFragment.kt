@@ -69,6 +69,8 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
             }
         })
 
+
+
         binding.heritageListBtnSearchCondition.setOnClickListener {
             val era = binding.heritageListAtvEra.text.toString()
             val category = binding.heritageListAtvCategory.text.toString()

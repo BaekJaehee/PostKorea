@@ -3,6 +3,7 @@ package com.ssafy.travelcollector.fragment.board
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
@@ -25,13 +26,30 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
     }
 
     private fun initView(){
+        mainActivityViewModel.setPageTitle("게시판")
+
         lifecycleScope.launch {
-            boardViewModel.loadAllBoards()
+            boardViewModel.searchTag.collect{
+                boardViewModel.searchBoardsByTags(it)
+            }
         }
 
         binding.boardListAddPost.setOnClickListener{
+            boardViewModel.setIsHeritageBoard(false)
             findNavController().navigate(R.id.travelPostEditFragment)
         }
+
+        binding.boardListSv.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                boardViewModel.searchByWord(p0!!)
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return true
+            }
+
+        })
     }
 
     private fun initAdapter(){
