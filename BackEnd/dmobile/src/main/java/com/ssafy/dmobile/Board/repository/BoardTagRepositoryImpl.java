@@ -2,9 +2,9 @@ package com.ssafy.dmobile.Board.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.dmobile.Board.entity.QBoardTag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BoardTagRepositoryImpl implements CustomBoardTagRepository{
 
     private final JPAQueryFactory queryFactory;

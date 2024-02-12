@@ -3,10 +3,7 @@ package com.ssafy.dmobile.Board.service;
 import com.ssafy.dmobile.Board.Dto.request.BoardRequestDTO;
 import com.ssafy.dmobile.Board.Dto.response.BoardResponseDTO;
 import com.ssafy.dmobile.Board.entity.*;
-import com.ssafy.dmobile.Board.repository.BoardRepository;
-import com.ssafy.dmobile.Board.repository.BoardTagRepository;
-import com.ssafy.dmobile.Board.repository.ImageRepository;
-import com.ssafy.dmobile.Board.repository.TagRepository;
+import com.ssafy.dmobile.Board.repository.*;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
@@ -38,6 +35,7 @@ public class BoardServiceImpl implements BoardService {
     private final S3Service s3Service;
     private final TagRepository tagRepository;
     private final BoardTagRepository boardTagRepository;
+    private final CustomBoardRepository customBoardRepository;
 
     @Override
     @Transactional
@@ -262,10 +260,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<BoardResponseDTO> findBoardsByTag(String tagName, Pageable pageable) {
-        List<BoardTag> boardTags = boardTagRepository.findByTag_TagName(tagName, pageable);
-        return boardTags.stream()
-                .map(boardTag -> new BoardResponseDTO(boardTag.getBoard()))
+    public List<BoardResponseDTO> findBoardsByTag(List<String> tags) {
+        List<Board> boards = customBoardRepository.findBoardsByTags(tags);
+        return boards.stream()
+                .map(BoardResponseDTO::new)
                 .collect(Collectors.toList());
     }
 

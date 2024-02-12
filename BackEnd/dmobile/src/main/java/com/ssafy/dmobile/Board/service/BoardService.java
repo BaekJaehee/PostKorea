@@ -26,7 +26,7 @@ public interface BoardService {
     Page<Board> findAllBoards(Pageable pageable);
 
     // BoardService.java
-    List<BoardResponseDTO> findBoardsByTag(String tag, Pageable pageable);
+    List<BoardResponseDTO> findBoardsByTag(List<String> tags);
 
 
     // throws IOException : 예외처리를 강제하는 코드

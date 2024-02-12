@@ -142,15 +142,15 @@ public class BoardController {
         return ResponseEntity.ok().body("Images uploaded successfully to board with ID: " + boardId);
     }
 
-    @Operation(summary = "태그로 게시판 검색", description = "태그로 게시판을 검색합니다.")
-    @GetMapping("/search")
-    public ResponseEntity<List<BoardResponseDTO>> findBoardsByTag(@RequestParam String tag, Pageable pageable) {
-        List<BoardResponseDTO> boards = boardService.findBoardsByTag(tag, pageable);
+    @Operation(summary = "태그로 게시판 검색", description = "여러 태그로 게시판을 검색합니다.")
+    @GetMapping("/searchByTags")
+    public ResponseEntity<List<BoardResponseDTO>> findBoardsByTag(@RequestParam List<String> tags) {
+        List<BoardResponseDTO> boards = boardService.findBoardsByTag(tags);
         return ResponseEntity.ok(boards);
     }
 
     @Operation(summary = "키워드로 게시판 검색", description = "키워드로 게시판의 제목 또는 내용을 검색합니다.")
-    @GetMapping("/searchkeyword")
+    @GetMapping("/searchKeyword")
     public ResponseEntity<List<BoardResponseDTO>> searchBoards(@RequestParam String keyword) {
         List<BoardResponseDTO> boards = boardService.searchBoards(keyword);
         return ResponseEntity.ok(boards);
