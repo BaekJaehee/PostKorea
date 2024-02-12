@@ -10,6 +10,7 @@ data class Heritage(
     @SerializedName("content") var content: String = "",
     @SerializedName("latitude") var lat: String = "",
     @SerializedName("longitude") var lng: String = "",
+    @SerializedName("mcodeName") var category: String = "",
     var isBookMarked: Boolean = false,
     val gameEnable: Boolean = false
 )

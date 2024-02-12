@@ -1,7 +1,6 @@
 package com.ssafy.travelcollector
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentGameBinding
@@ -10,23 +9,24 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.dto.Heritage
-import com.ssafy.travelcollector.dto.HeritageImage
-import com.ssafy.travelcollector.util.Constants
 import kotlinx.coroutines.launch
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 private const val TAG = "GameFragment"
 
 class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind, R.layout.fragment_game), View.OnClickListener {
 
-    private val imageList = Constants.getImage()
     private var currentStage : Int = 0
-    private val currentLocation : Int = 1
     private var selectedOption : TextView? = null
     private var correctAnswers : Int = 0
     private var isSubmit : Boolean = false
-    private var heritageList : MutableList<Heritage> = ArrayList(10)
-    private var heritageName : MutableList<Heritage> = ArrayList(5)
-    private var heritageCategory : MutableList<Heritage> = ArrayList(5)
+    private var heritageList : MutableList<Heritage> = ArrayList()
+    private var heritageName : MutableList<Heritage> = ArrayList()
+    private var heritageCategory : MutableList<Heritage> = ArrayList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,30 +42,46 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
 
         lifecycleScope.launch {
             launch {
-                val name = "부석사"
+                val heritage = heritageViewModel.curHeritage.value
+                var name = ""
+                if (heritage.name.split(" ").size == 1) {
+                    name = heritage.name
+                } else {
+                    name = heritage.name.split(" ")[0] +" "+ heritage.name.split(" ")[1]
+                }
                 heritageViewModel.searchHeritageByName(name)
                 heritageViewModel.heritageListByName.collect{
                     it.shuffle()
-                    heritageName = it.toMutableList()
+                    heritageName = it
                 }
             }
 
             launch{
-                val category = "불교"
-                heritageViewModel.searchHeritageListRandom(
-                    null, null, null, category
-                )
+                val category = heritageViewModel.curHeritage.value.category
+                val limit = 100
+                heritageViewModel.searchHeritageListForGame(category, limit)
                 heritageViewModel.curHeritageList.collect{
-                    heritageCategory = it.toMutableList()
+                    it.shuffle()
+                    heritageCategory = it
                 }
             }
-
         }
     }
 
+    private fun findDistance(lat: Double, lng: Double): Double {
+        val R = 6371.0
+        val heritage = heritageViewModel.curHeritage.value
+        val curLat = heritage.lat.toDouble()
+        val curLng = heritage.lng.toDouble()
+        val dlat = Math.toRadians(lat - curLat)
+        val dlng = Math.toRadians(lng - curLng)
+        val originLat = Math.toRadians(curLat);
+        val destinationLat = Math.toRadians(lat);
+        val a = sin(dlat / 2).pow(2) + cos(originLat) * cos(destinationLat) * sin(dlng / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
-
-
+        return R * c
+    }
 
     private fun start() {
         binding.gameTvNext.text = "제출"
@@ -76,9 +92,36 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvWrong.visibility = View.VISIBLE
         binding.gameIvHeritage.visibility = View.VISIBLE
 
-        Log.d(TAG, "onCreate: ${heritageName} ${heritageCategory}")
-        heritageList.addAll(heritageName)
-        heritageList.addAll(heritageCategory)
+        heritageName = heritageName.filter {
+            it.lat != "0"
+        }.toMutableList()
+
+        heritageName = heritageName.filter {
+            findDistance(it.lat.toDouble(), it.lng.toDouble()) < 0.5
+        }.toMutableList()
+
+        if (heritageName.size > 4){
+            for (i in 0..4){
+                if (heritageName[i].imageUrl != null){
+                    heritageList.add(heritageName[i])
+                } else {
+                    heritageList.add(heritageCategory[i])
+                }
+                heritageList.add(heritageCategory[i])
+            }
+        } else {
+            for (i in 0..heritageName.size-1) {
+                if (heritageName[i].imageUrl != null) {
+                    heritageList.add(heritageName[i])
+                } else {
+                    continue
+                }
+            }
+            for (i in 1..(10-heritageList.size)){
+                heritageList.add(heritageCategory[i])
+            }
+        }
+
         heritageList.shuffle()
 
         setImage()
@@ -90,8 +133,6 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         Glide.with(this)
             .load(heritageList!![currentStage-1].imageUrl) // 불러올 이미지 url
             .into(binding.gameIvHeritage) // 이미지를 넣을 뷰
-//        val heritageImage : HeritageImage = imageList[currentStage - 1]
-//        binding.gameIvHeritage.setImageResource(heritageImage.image)
         binding.gameTvNext.background = ContextCompat.getDrawable(mainActivity, R.drawable.bg_round_grey)
         selectedOption = null
     }
@@ -117,8 +158,9 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
     }
 
     private fun onSubmit(tv : TextView) {
-        val heritageImage : HeritageImage = imageList[currentStage - 1]
-        if (heritageImage.id == currentLocation ) {
+        val heritage : Heritage = heritageList[currentStage - 1]
+        val distance = findDistance(heritage.lat.toDouble(), heritage.lng.toDouble())
+        if (distance < 0.5) {
             if (selectedOption == binding.gameTvCorrect) {
                 correctAnswers += 1
                 correctView(selectedOption!!)
@@ -194,9 +236,6 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                     }
                 }
             }
-
         }
     }
-
-
 }

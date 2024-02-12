@@ -75,6 +75,10 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
             kakaoNavi()
         }
 
+        binding.culturalAssetDetailBtnGame.setOnClickListener {
+            findNavController().navigate(R.id.gameFragment)
+        }
+
     }
 
     private fun kakaoNavi(){

@@ -71,7 +71,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
         }
 
         binding.loginTvLogo.setOnClickListener {
-            findNavController().navigate(R.id.gameFragment)
+            findNavController().navigate(R.id.heritageListFragment)
         }
 
     }
