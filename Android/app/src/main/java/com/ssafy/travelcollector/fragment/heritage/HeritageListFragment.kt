@@ -39,6 +39,7 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
 
     private fun initView(){
 
+        mainActivityViewModel.setPageTitle("문화재 도감")
         val eraItems = resources.getStringArray(R.array.era)
         val categoryItems = resources.getStringArray(R.array.category)
         binding.heritageListAtvEra.setAdapter(ArrayAdapter(
@@ -59,7 +60,8 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
 
         binding.heritageListSv.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
-                return false
+                heritageViewModel.searchHeritageByName(p0!!)
+                return true
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {

@@ -33,6 +33,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(
 
     @SuppressLint("SetTextI18n")
     private fun initView(){
+        mainActivityViewModel.setPageTitle("상점")
         lifecycleScope.launch{
             storeViewModel.loadProductList()
             accountViewModel.user.collect{

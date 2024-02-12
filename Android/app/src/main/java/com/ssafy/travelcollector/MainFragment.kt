@@ -10,9 +10,11 @@ import com.ssafy.travelcollector.adapter.main.MainHeritageAdapter
 import com.ssafy.travelcollector.adapter.main.MainPostingAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentMainBinding
+import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import com.ssafy.travelcollector.util.TimeConverter
 import kotlinx.coroutines.launch
 import kotlin.math.min
+import kotlin.random.Random
 
 private const val TAG = "MainFragment"
 class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bind, R.layout.fragment_main){
@@ -42,56 +44,52 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
     @SuppressLint("SetTextI18n")
     private fun initView(){
+        mainActivityViewModel.setPageTitle("")
+
         lifecycleScope.launch {
+
             launch {
                 travelViewModel.loadOnGoingTravel()
                 travelViewModel.loadUserTravelList()
-                launch {
-                    travelViewModel.onGoingTravel.collect{ travel ->
-                        if(travel.id!=-1){
-                            mainActivityViewModel.createGeofenceList(
-                                travel.heritageList
-                            )
-                            binding.mainCurTravelView.visibility = View.VISIBLE
-                            binding.mainTvAltText.visibility = View.GONE
-                            binding.mainOli.setImages(ArrayList(travel.heritageList.map{it.imageUrl}))
-                            binding.mainTravelTitle.text = travel.name
-                            binding.mainTvDuration.text =
-                                "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
+            }
+
+            launch {
+                travelViewModel.onGoingTravel.collect{ travel ->
+                    if(travel.id!=-1){
+                        mainActivityViewModel.createGeofenceList(
+                            travel.heritageList
+                        )
+                        setMyTravel(travel)
+                    }
+                }
+            }
+
+            launch {
+                travelViewModel.userTravelList.collect{lst->
+                    if(travelViewModel.onGoingTravel.value.id == -1 && lst.isNotEmpty()){
+                        val first = lst[0]
+                        setMyTravel(first)
+                    }
+                }
+            }
+
+            launch{
+                travelViewModel.completedTravelList.collect{ lst->
+                    if(travelViewModel.onGoingTravel.value.id == -1
+                        && travelViewModel.userTravelList.value.isEmpty()){
+                        if(lst.isNotEmpty()){
+                            val travel = lst[Random.nextInt(lst.size)]
+                            setMyTravel(travel)
                         }else{
-                            travelViewModel.userTravelList.collect{lst->
-                                if(lst.isNotEmpty()){
-                                    binding.mainCurTravelView.visibility = View.VISIBLE
-                                    binding.mainTvAltText.visibility = View.GONE
-                                    val first = lst[0]
-                                    binding.mainOli.setImages(ArrayList(first.heritageList.map{it.imageUrl}))
-                                    binding.mainTravelTitle.text = first.name
-                                    binding.mainTvDuration.text =
-                                        "${TimeConverter.timeMilliToDateString(first.startDate)} ~ ${TimeConverter.timeMilliToDateString(first.endDate)}"
-                                }else{
-                                    binding.mainCurTravelView.visibility = View.GONE
-                                    binding.mainTvAltText.visibility = View.VISIBLE
-                                }
-                            }
+                            binding.mainCurTravelView.visibility = View.GONE
+                            binding.mainTvAltText.visibility = View.VISIBLE
                         }
                     }
                 }
 
-
             }
 
-            launch {
-                travelViewModel.loadUserTravelList()
-                travelViewModel.userTravelList.collect{ travel->
-                    if(travel.size>0){
-                        binding.mainOli.setImages(ArrayList(travel[0].heritageList.map { it.imageUrl }))
-                        binding.mainTravelTitle.text = travel[0].name
-                        val startDate = TimeConverter.timeMilliToDateString(travel[0].startDate)
-                        val endDate = TimeConverter.timeMilliToDateString(travel[0].endDate)
-                        binding.mainTvDuration.text = "$startDate ~ $endDate"
-                    }
-                }
-            }
+
 
             launch {
                 heritageViewModel.searchHeritageListRandom(null, null, null, null)
@@ -137,5 +135,14 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
         binding.mainCultureHeritageRv.adapter = mainHeritageAdapter
     }
 
+    @SuppressLint("SetTextI18n")
+    private fun setMyTravel(travel: TravelWithHeritageList){
+        binding.mainCurTravelView.visibility = View.VISIBLE
+        binding.mainTvAltText.visibility = View.GONE
+        binding.mainOli.setImages(ArrayList(travel.heritageList.map{it.imageUrl}))
+        binding.mainTravelTitle.text = travel.name
+        binding.mainTvDuration.text =
+            "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
+    }
 
 }

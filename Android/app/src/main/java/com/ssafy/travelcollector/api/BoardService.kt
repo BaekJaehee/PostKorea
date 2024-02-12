@@ -40,4 +40,7 @@ interface BoardService {
         @Path("commentId") cId: Int
     ): Response<Any>
 
+    @DELETE("boards/{boardId}")
+    suspend fun deleteBoard(@Header("Authorization") token: String, @Path("boardId") bId: Int): Response<Any>
+
 }

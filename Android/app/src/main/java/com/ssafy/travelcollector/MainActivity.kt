@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.Geofence
@@ -32,6 +33,7 @@ import com.ssafy.travelcollector.config.BaseActivity
 import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
 import com.ssafy.travelcollector.config.geofence.GeofenceManager
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
+import com.ssafy.travelcollector.viewModel.AccountViewModel
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.launch
@@ -55,19 +57,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initGeofence(){
         GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
             override fun onEnter(id: String) {
-                showToast("onEnter $id")
                 mainActivityViewModel.addGameEnableHeritage(id.toInt())
             }
 
             override fun onDwell(id: String) {
-                showToast("onDwell $id")
                 mainActivityViewModel.addVisitedHeritage(id.toInt()){
                     achievementViewModel.loadAchievement()
                 }
             }
 
             override fun onExit(id: String) {
-                showToast("onExit $id")
                 mainActivityViewModel.removeGameEnableHeritage(id.toInt())
             }
         }
@@ -82,8 +81,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun initView(){
-
-
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         navController = (supportFragmentManager.findFragmentById(binding.mainFrameLayout.id) as NavHostFragment).navController
@@ -112,7 +109,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         lifecycleScope.launch {
             accountViewModel.user.collect{
                 sideName.text = it.userName
-                if(it.memberEmail.isNotEmpty()){
+                if(it.memberEmail != AccountViewModel.DEFAULT_EMAIL){
                     Glide.with(applicationContext)
                         .load(it.profileUrl)
                         .into(sideImg)
@@ -127,10 +124,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
         if(supportActionBar!=null){
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu_hamburger)
-            supportActionBar!!.title = "abc"
-            supportActionBar!!.setHomeButtonEnabled(true)
+            supportActionBar!!.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.menu_hamburger)
+                setDisplayShowTitleEnabled(false)
+                setHomeButtonEnabled(true)
+            }
+            lifecycleScope.launch{
+                mainActivityViewModel.pageTitle.collect{
+                    binding.toolbarTitle.text = it
+                }
+            }
         }
 
         binding.bottomNavigation.setOnItemSelectedListener {
@@ -159,6 +163,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_action, menu)
+        val menuItem = menu!!.findItem(R.id.action_side_menu)
+        menuItem.isVisible = false
+        menuItem.setOnMenuItemClickListener {
+            boardViewModel.deleteBoard()
+            navController.popBackStack()
+            false
+        }
+        lifecycleScope.launch {
+            boardViewModel.writer.collect{
+                menuItem.isVisible = it.memberEmail == accountViewModel.user.value.memberEmail
+            }
+        }
+
         return true
     }
 

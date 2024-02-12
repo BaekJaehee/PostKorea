@@ -124,4 +124,11 @@ class MainActivityViewModel : ViewModel() {
             }
         }
     }
+
+    private val _pageTitle = MutableStateFlow("")
+    val pageTitle = _pageTitle.asStateFlow()
+
+    fun setPageTitle(title: String){
+        _pageTitle.update { title }
+    }
 }

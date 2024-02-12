@@ -46,6 +46,17 @@ class BoardViewModel: ViewModel() {
         }
     }
 
+    fun deleteBoard(){
+        viewModelScope.launch {
+            val res = RetrofitUtil.BOARD_SERVICE.deleteBoard(
+                AccountViewModel.ACCESS_TOKEN, _boardDetail.value.id
+            )
+            if(res.code() / 100 == 2){
+                loadAllBoards()
+            }
+        }
+    }
+
     fun loadAllBoards(){
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO){
@@ -137,6 +148,10 @@ class BoardViewModel: ViewModel() {
                 _writer.update { res.body()!! }
             }
         }
+    }
+
+    fun initWriter(){
+        _writer.update { User() }
     }
 
 

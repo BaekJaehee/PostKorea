@@ -124,4 +124,10 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         binding.heritagePostEtComment.setText("")
     }
 
+
+    override fun onDestroyView() {
+        boardViewModel.initWriter()
+        super.onDestroyView()
+    }
+
 }

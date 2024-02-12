@@ -87,8 +87,10 @@ class HeritageViewModel: ViewModel() {
             val result = withContext(Dispatchers.IO){
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritageByName(name)
             }
-            result.body()?.let { ArrayList(it) }?.let { setHeritageListByName(it) }
-            Log.d(TAG, "searchHeritageListRandom: ${result}")
+            result.body()?.let { ArrayList(it) }?.let {
+                setHeritageListByName(it)
+                setCurHeritageList(it)
+            }
         }
     }
 }

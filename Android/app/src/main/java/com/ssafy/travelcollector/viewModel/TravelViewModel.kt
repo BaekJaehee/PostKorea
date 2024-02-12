@@ -31,8 +31,20 @@ class TravelViewModel: ViewModel() {
         _userTravel.update { travel }
     }
 
+    //upcoming
     private val _userTravelList = MutableStateFlow(arrayListOf<TravelWithHeritageList>())
     val userTravelList = _userTravelList.asStateFlow()
+
+    //completed
+    private val _completedTravelList = MutableStateFlow(arrayListOf<TravelWithHeritageList>())
+    val completedTravelList = _completedTravelList.asStateFlow()
+
+    private val _isPlanning = MutableStateFlow(true)
+    val isPlanning = _isPlanning.asStateFlow()
+
+    fun setWatchingState(isPlanning: Boolean){
+        _isPlanning.update { isPlanning }
+    }
 
     fun addTravel(newTravel: TravelWithHeritageList){
         val heritageIdList = newTravel.heritageList.map { it.id }
@@ -78,16 +90,8 @@ class TravelViewModel: ViewModel() {
         }
     }
 
-    fun loadUserTravelList(){
+    private fun setHeritageListOfTravel(responseList: List<TravelPlanResponse>, isPlanning: Boolean){
         viewModelScope.launch {
-            val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
-            val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
-            val responseList = arrayListOf<TravelPlanResponse>()
-            responseList.apply{
-                addAll(ArrayList(upcoming.body()!!))
-                addAll(ArrayList(completed.body()!!))
-            }
-
             val newTravel = withContext(Dispatchers.IO){
                 val newTravel = arrayListOf<TravelWithHeritageList>()
                 for(res in responseList){
@@ -107,9 +111,18 @@ class TravelViewModel: ViewModel() {
                 }
                 newTravel
             }
-            _userTravelList.update {
-                ArrayList(newTravel.sortedBy { it.startDate })
-            }
+            if(isPlanning) _userTravelList.update { ArrayList(newTravel.sortedBy { it.startDate }) }
+            else _completedTravelList.update { ArrayList(newTravel.sortedByDescending { it.startDate }) }
+        }
+
+    }
+
+    fun loadUserTravelList(){
+        viewModelScope.launch {
+            val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
+            val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
+            if(upcoming.code()/100 == 2) setHeritageListOfTravel(upcoming.body()!!, true)
+            if(completed.code()/100 == 2) setHeritageListOfTravel(completed.body()!!, false)
         }
     }
 
