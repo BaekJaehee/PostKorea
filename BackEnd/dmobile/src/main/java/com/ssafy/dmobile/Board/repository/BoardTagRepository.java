@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface BoardTagRepository extends JpaRepository<BoardTag, Long> {
+public interface BoardTagRepository extends JpaRepository<BoardTag, Long>, CustomBoardTagRepository {
     List<BoardTag> findByTag_TagName(String tagName, Pageable pageable);
 }

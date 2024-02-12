@@ -23,6 +23,11 @@ public class Shop {
     @Column(name = "is_purchasable")
     private Boolean isPurchasable;
 
+    // 컨트롤러에서 접근하기 위함
+    public boolean getIsPurchasable() {
+        return this.isPurchasable;
+    }
+
     // 무한재귀 막으려면 단방향
 //    @OneToMany(mappedBy = "shop")
 //    private List<ShopMember> shopMember;

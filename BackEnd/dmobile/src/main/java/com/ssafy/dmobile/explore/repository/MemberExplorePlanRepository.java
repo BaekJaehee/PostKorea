@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MemberExplorePlanRepository extends JpaRepository<MemberExplorePlan, MemberExplorePlanKey> {
 
     int countByKeyMemberIdAndKeyPlanId(Long memberId, Long planId);
+
+    void deleteByKeyPlanId(Long planId);
 }
