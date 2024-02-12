@@ -3,10 +3,7 @@ package com.ssafy.dmobile.Board.service;
 import com.ssafy.dmobile.Board.Dto.request.BoardRequestDTO;
 import com.ssafy.dmobile.Board.Dto.response.BoardResponseDTO;
 import com.ssafy.dmobile.Board.entity.*;
-import com.ssafy.dmobile.Board.repository.BoardRepository;
-import com.ssafy.dmobile.Board.repository.BoardTagRepository;
-import com.ssafy.dmobile.Board.repository.ImageRepository;
-import com.ssafy.dmobile.Board.repository.TagRepository;
+import com.ssafy.dmobile.Board.repository.*;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
@@ -43,10 +40,10 @@ public class BoardServiceImpl implements BoardService {
     private final S3Service s3Service;
     private final TagRepository tagRepository;
     private final BoardTagRepository boardTagRepository;
+    private final CustomBoardRepository customBoardRepository;
 
     @Override
     @Transactional
-    // 태그 삭제, 변경기능은 없음.
     public BoardResponseDTO createBoard(BoardRequestDTO dto, Long memberId) {
         if (dto.getTitle().trim().isEmpty()) {
             throw new CustomException(ExceptionType.TITLE_CANNOT_BE_EMPTY);
@@ -106,6 +103,31 @@ public class BoardServiceImpl implements BoardService {
             throw new CustomException(ExceptionType.USER_NOT_AUTHORIZED_TO_UPDATE_THIS_BOARD);
         }
         board.update(dto.getTitle(), dto.getContent());
+
+        // 기존 연결된 태그 처리 (예시에서는 모든 기존 태그를 삭제하고 새 태그를 추가합니다)
+        boardTagRepository.deleteByBoardId(board.getBoardId()); // 이 메소드는 직접 구현해야 합니다.
+
+        // 새 태그 처리 로직
+        if (dto.getTags() != null && !dto.getTags().isEmpty()) {
+            for (String tagName : dto.getTags()) {
+                Tag tag = tagRepository.findByTagName(tagName)
+                        .orElseGet(() -> tagRepository.save(new Tag(tagName)));
+                BoardTag boardTag = new BoardTag();
+
+                // BoardTagKey 객체 생성 및 초기화
+                BoardTagKey boardTagKey = new BoardTagKey(board.getBoardId(), tag.getTagId());
+
+                // BoardTag 객체에 BoardTagKey 설정
+                boardTag.setBoardTagKeyId(boardTagKey);
+
+                // BoardTag 객체에 Board와 Tag 엔티티 참조 설정
+                boardTag.setBoard(board);
+                boardTag.setTag(tag);
+
+                // 설정된 BoardTag 객체 저장
+                boardTagRepository.save(boardTag);
+            }
+        }
         Board save = boardRepository.save(board);
         return new BoardResponseDTO(save);
     }
@@ -238,13 +260,5 @@ public class BoardServiceImpl implements BoardService {
 
         boardRepository.save(board);
         return board;
-    }
-
-    @Override
-    public List<BoardResponseDTO> findBoardsByTag(String tagName, Pageable pageable) {
-        List<BoardTag> boardTags = boardTagRepository.findByTag_TagName(tagName, pageable);
-        return boardTags.stream()
-                .map(boardTag -> new BoardResponseDTO(boardTag.getBoard()))
-                .collect(Collectors.toList());
     }
 }
