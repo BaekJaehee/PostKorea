@@ -100,7 +100,33 @@ public class BoardServiceImpl implements BoardService {
         if (!board.getMember().getId().equals(memberId)) {
             throw new CustomException(ExceptionType.USER_NOT_AUTHORIZED_TO_UPDATE_THIS_BOARD);
         }
+        // 게시글 내용 업데이트
         board.update(dto.getTitle(), dto.getContent());
+
+        // 기존 연결된 태그 처리 (예시에서는 모든 기존 태그를 삭제하고 새 태그를 추가합니다)
+        boardTagRepository.deleteByBoardId(board.getBoardId()); // 이 메소드는 직접 구현해야 합니다.
+
+        // 새 태그 처리 로직
+        if (dto.getTags() != null && !dto.getTags().isEmpty()) {
+            for (String tagName : dto.getTags()) {
+                Tag tag = tagRepository.findByTagName(tagName)
+                        .orElseGet(() -> tagRepository.save(new Tag(tagName)));
+                BoardTag boardTag = new BoardTag();
+
+                // BoardTagKey 객체 생성 및 초기화
+                BoardTagKey boardTagKey = new BoardTagKey(board.getBoardId(), tag.getTagId());
+
+                // BoardTag 객체에 BoardTagKey 설정
+                boardTag.setBoardTagKeyId(boardTagKey);
+
+                // BoardTag 객체에 Board와 Tag 엔티티 참조 설정
+                boardTag.setBoard(board);
+                boardTag.setTag(tag);
+
+                // 설정된 BoardTag 객체 저장
+                boardTagRepository.save(boardTag);
+            }
+        }
         Board save = boardRepository.save(board);
         return new BoardResponseDTO(save);
     }
