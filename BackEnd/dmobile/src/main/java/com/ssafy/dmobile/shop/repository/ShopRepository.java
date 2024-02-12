@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ShopRepository extends JpaRepository<Shop, Long> {
-    @Query("SELECT s FROM Shop s WHERE s.isPurchasable = 1")
+    @Query("SELECT s FROM Shop s WHERE s.isPurchasable = :isPurchasable")
     List<Shop> findByIsPurchasable(Boolean isPurchasable);
 }

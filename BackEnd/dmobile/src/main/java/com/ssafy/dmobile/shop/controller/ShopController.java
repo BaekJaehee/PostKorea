@@ -1,6 +1,5 @@
 package com.ssafy.dmobile.shop.controller;
 
-import com.amazonaws.Response;
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
@@ -56,7 +55,7 @@ public class ShopController {
         return ResponseEntity.ok().body(shop);
     }
 
-    @GetMapping("/product/unavilable")
+    @GetMapping("/product/unavailable")
     @Operation(summary = "상점에서는 구매 불가능하고 업적이나 게임 보상으로 얻을 수 있는 물건만 표시")
     public ResponseEntity<?> unavailableOnShop() {
         List<Shop> shop = shopRepository.findByIsPurchasable(false);
