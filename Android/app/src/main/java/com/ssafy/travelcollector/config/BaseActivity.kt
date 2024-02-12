@@ -9,7 +9,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 import com.ssafy.travelcollector.viewModel.AccountViewModel
 import com.ssafy.travelcollector.viewModel.AchievementViewModel
+import com.ssafy.travelcollector.viewModel.BoardViewModel
 import com.ssafy.travelcollector.viewModel.MainActivityViewModel
+import com.ssafy.travelcollector.viewModel.TravelViewModel
 
 // 액티비티의 기본을 작성, 뷰 바인딩 활용
 abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflater) -> B) :
@@ -18,6 +20,8 @@ abstract class BaseActivity<B : ViewBinding>(private val inflate: (LayoutInflate
     protected val mainActivityViewModel: MainActivityViewModel by viewModels()
     protected val achievementViewModel: AchievementViewModel by viewModels()
     protected val accountViewModel: AccountViewModel by viewModels()
+    protected val boardViewModel: BoardViewModel by viewModels()
+    protected val travelViewModel: TravelViewModel by viewModels()
 
     protected lateinit var binding: B
         private set

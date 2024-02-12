@@ -31,7 +31,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     @SuppressLint("SetTextI18n")
     private fun initView(){
-
+        mainActivityViewModel.setPageTitle("프로필")
         galleryLauncher.pictureCallbackListener = object : GalleryLauncher.PictureCallbackListener{
             override fun onGetData(data: Uri) {
                 Glide.with(requireContext())

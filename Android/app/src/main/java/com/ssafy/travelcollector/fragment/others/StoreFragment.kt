@@ -33,6 +33,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(
 
     @SuppressLint("SetTextI18n")
     private fun initView(){
+        mainActivityViewModel.setPageTitle("상점")
         lifecycleScope.launch{
             storeViewModel.loadProductList()
             accountViewModel.user.collect{
@@ -76,20 +77,17 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(
 
         customDialog.setCancelable(false)
 
-        // 확인 버튼 누르면 할 일 작성
         binding.btnConfirm.setOnClickListener {
-            Toast.makeText(mainActivity, "Purchase completed", Toast.LENGTH_SHORT).show()
             lifecycleScope.launch {
                 storeViewModel.purchaseProduct(product.id){
                     accountViewModel.getInfo(it)
+                    storeViewModel.loadProductList()
                 }
             }
             customDialog.dismiss()
         }
 
-        // 취소 버튼 누르면 할 일 작성
         binding.btnCancel.setOnClickListener {
-            Toast.makeText(mainActivity, "Purchase canceled", Toast.LENGTH_SHORT).show()
             customDialog.dismiss()
         }
         customDialog.show()

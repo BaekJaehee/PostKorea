@@ -14,7 +14,7 @@
         tools:context=".fragment.board.BoardListFragment"
         android:gravity="center_horizontal">
 
-        <androidx.appcompat.widget.SearchView
+        <android.widget.SearchView
             android:id="@+id/board_list_sv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

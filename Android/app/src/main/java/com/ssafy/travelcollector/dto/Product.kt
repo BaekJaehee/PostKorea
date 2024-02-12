@@ -8,7 +8,8 @@ data class Product(
     @SerializedName("productImage") val image: String,
     @SerializedName("productPoint") val point: Int,
     @SerializedName("productExplanation") val desc: String,
-    @SerializedName("productDate") val date: Long?
+    @SerializedName("productDate") val date: Long?,
+    var isPurchasable: Boolean = true
 ){
     constructor():this(0, "", "", 0, "", null)
 }
