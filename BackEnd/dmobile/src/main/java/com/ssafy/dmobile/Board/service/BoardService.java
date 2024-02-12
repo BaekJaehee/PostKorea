@@ -37,4 +37,6 @@ public interface BoardService {
 //    void deleteBoardImage(Long boardId, Long imageId);
 
     Board createBoardWithImages(Long boardId, List<MultipartFile> images);
+
+    List<BoardResponseDTO> searchBoards(String keyword);
 }

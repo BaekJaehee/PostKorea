@@ -261,4 +261,17 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(board);
         return board;
     }
+    @Override
+    public List<BoardResponseDTO> findBoardsByTag(List<String> tags) {
+        List<Board> boards = customBoardRepository.findBoardsByTags(tags);
+        return boards.stream()
+                .map(BoardResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BoardResponseDTO> searchBoards(String keyword) {
+        List<Board> boards = boardRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+        return boards.stream().map(BoardResponseDTO::new).collect(Collectors.toList());
+    }
 }
