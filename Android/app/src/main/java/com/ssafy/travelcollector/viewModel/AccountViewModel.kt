@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 private const val TAG = "AccountViewModel"
 class AccountViewModel: ViewModel(){
 
-    private val _user = MutableStateFlow(User())
+    private val _user = MutableStateFlow(User(memberEmail = DEFAULT_EMAIL))
     val user = _user.asStateFlow()
 
     private val _accessToken = MutableStateFlow("")
@@ -29,6 +29,7 @@ class AccountViewModel: ViewModel(){
 
     companion object{
         var ACCESS_TOKEN: String = ""
+        const val DEFAULT_EMAIL: String = "x@x"
     }
 
     fun login(id: String, pwd: String){

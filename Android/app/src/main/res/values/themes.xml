@@ -1,9 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.TravelCollector" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.TravelCollector" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:actionOverflowButtonStyle">@style/MyOverflowButton</item>
         <item name="android:windowFullscreen">true</item>
+
     </style>
 
     <style name="Theme.TravelCollector" parent="Base.Theme.TravelCollector" />
@@ -13,6 +15,10 @@
 
     <style name="BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="android:background">@color/brown4</item>
+    </style>
+
+    <style name="MyOverflowButton" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@color/white</item>
     </style>
 
 

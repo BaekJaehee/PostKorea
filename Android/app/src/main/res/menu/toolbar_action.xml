@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
     <item
-        android:id="@+id/action_side_menu"
+        android:id="@+id/delete_board"
         android:enabled="true"
         android:icon="@drawable/hamburger_menu_foreground"
-        android:title="side_menu" />
+        android:title="게시글 삭제" />
+
+    <item
+        android:id="@+id/delete_travel"
+        android:enabled="true"
+        android:icon="@drawable/hamburger_menu_foreground"
+        android:title="탐방 삭제" />
 
 </menu>

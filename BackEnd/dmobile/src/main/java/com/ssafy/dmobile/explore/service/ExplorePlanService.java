@@ -42,7 +42,7 @@ public class ExplorePlanService {
 
     // 계획에 맴버 매핑
     @Transactional
-    public MemberExplorePlan connectMemberToExplorePlan(Long memberId, Long planId) {
+    public void connectMemberToExplorePlan(Long memberId, Long planId) {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
@@ -61,7 +61,6 @@ public class ExplorePlanService {
         memberExplorePlan.setExplorePlan(plan);
         memberExplorePlanRepository.save(memberExplorePlan);
 
-        return memberExplorePlan;
     }
 
     // 계획 정보 업데이트
@@ -81,6 +80,7 @@ public class ExplorePlanService {
 
     @Transactional
     public void deletePlan(Long planId) {
+        memberExplorePlanRepository.deleteByKeyPlanId(planId);
         explorePlanRepository.deleteById(planId);
     }
 

@@ -18,8 +18,7 @@
         android:background="@drawable/rounded_rectangle_white"
         app:queryHint="검색어를 입력하세요"
         app:queryBackground="@color/white"
-        android:padding="5dp"
-        />
+        android:padding="5dp" />
 
     <LinearLayout
         android:layout_width="match_parent"

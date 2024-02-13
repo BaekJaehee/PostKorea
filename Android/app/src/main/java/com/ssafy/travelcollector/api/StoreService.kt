@@ -8,7 +8,7 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface StoreService {
-    @GET("shop/product")
+    @GET("shop/product/available")
     suspend fun getProducts(): Response<List<Product>>
 
     @POST("shop/purchase/{productId}")

@@ -55,6 +55,7 @@ interface TravelService {
         @Path("planId") travelId: Int
     ): Response<List<Heritage>>
 
-
+    @DELETE("explore-plans/{planId}")
+    suspend fun deleteTravel(@Header("Authorization") token: String, @Path("planId") travelId: Int): Response<Any>
 
 }
