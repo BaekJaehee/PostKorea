@@ -1,5 +1,7 @@
 package com.ssafy.dmobile.shop.controller;
 
+import com.ssafy.dmobile.exception.CustomException;
+import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
@@ -66,7 +68,7 @@ public class ShopController {
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
     @PostMapping("/purchase/{productId}")
     @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행<br>" +
-        "사용자의 포인트가 모자라다면 물건 목록 반환, 중복 구매 시 메시지")
+        "사용자의 포인트가 모자란 경우, 혹은 중복 구매 시 메시지")
     @SecurityRequirement(name="Authorization")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
@@ -92,10 +94,10 @@ public class ShopController {
         }
 
         // 상점에서만 구매가 가능한 것인지 구매 가능 여부 확인
-        Shop shop = shopService.getProductById(productId);
-        if (!shop.getIsPurchasable()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This item is not available for purchase in Shop");
-        }
+//        Shop shop = shopService.getProductById(productId);
+//        if (!shop.getIsPurchasable()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This item is not available for purchase in Shop");
+//        }
 
 
         // 중복 구매 확인
@@ -103,7 +105,8 @@ public class ShopController {
 
         if (isDuplicatePurchase) {
             // 중복 구매인 경우
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Duplicate purchase is not allowed");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Duplicate purchase is not allowed");
+            throw new CustomException(ExceptionType.PRODUCT_DUPLICATE_EXCEPTION);
         }
         // 구매 True False (member_id, product_id)
         boolean purchaseResult = shopService.purchaseProduct(memberId, productId);
@@ -117,7 +120,7 @@ public class ShopController {
 
                 ShopMember shopMember = new ShopMember();
                 Member member = memberService.getMemberById(memberId);
-                // Shop shop = shopService.getProductById(productId);
+                 Shop shop = shopService.getProductById(productId);
                 // 구매가능여부 확인할 때 이미 나옴
 
                 // ShopMemberId 객체 생성
@@ -135,11 +138,14 @@ public class ShopController {
 
                 shopMemberService.saveShopMember(shopMember);
 
-                return ResponseEntity.ok().body(String.format("%s Purchased Successfully", productId));
+                return ResponseEntity.ok().body(String.format("%s 상품 구매 완료", productId));
 
             } else {
-                List<Shop> product = shopRepository.findAll();
-                return ResponseEntity.ok().body(product);
+//                List<Shop> product = shopRepository.findByIsPurchasable(true);
+//                return ResponseEntity.ok().body(product);
+//                return ResponseEntity.ok().body("No enough point");
+//                throw new CustomException(ExceptionType.PRODUCT_POINT_EXCEPTION);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족합니다.");
             }
         } catch (Exception e) {
             e.printStackTrace();

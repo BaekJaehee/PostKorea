@@ -5,7 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.kakao.sdk.navi.Constants
@@ -49,13 +51,15 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
                 }
             }
             launch {
-                mainActivityViewModel.detailState.collect{
-                    if(it.contains(DetailStateEnum.MiniGame)){
-                        binding.culturalAssetDetailBtnGame.visibility = View.VISIBLE
-                        binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
-                    }else if(it.contains(DetailStateEnum.AddToTravel)){
-                        binding.culturalAssetDetailBtnGame.visibility = View.GONE
-                        binding.culturalAssetDetailBtnAddToTravel.visibility = View.VISIBLE
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    mainActivityViewModel.detailState.collect{
+                        if(it.contains(DetailStateEnum.MiniGame)){
+                            binding.culturalAssetDetailBtnGame.visibility = View.VISIBLE
+                            binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
+                        }else if(it.contains(DetailStateEnum.AddToTravel)){
+                            binding.culturalAssetDetailBtnGame.visibility = View.GONE
+                            binding.culturalAssetDetailBtnAddToTravel.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -77,6 +81,10 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
 
         binding.culturalAssetDetailBtnGame.setOnClickListener {
             findNavController().navigate(R.id.gameFragment)
+        }
+
+        binding.culturalAssetDetailBtnGame2.setOnClickListener {
+            findNavController().navigate(R.id.miniGame2Fragment)
         }
 
         binding.culturalAssetDetailBtnReadRecord.setOnClickListener {

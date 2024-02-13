@@ -24,6 +24,9 @@ class StoreViewModel : ViewModel() {
     private val _notOwnProductList = MutableStateFlow(arrayListOf<Product>())
     val notOwnProductList = _notOwnProductList.asStateFlow()
 
+    private val _ownList = MutableStateFlow(arrayListOf<Product>())
+    val ownList = _ownList.asStateFlow()
+
     fun loadProductList(){
         viewModelScope.launch {
             var own: Set<Int>
@@ -66,8 +69,9 @@ class StoreViewModel : ViewModel() {
                 RetrofitUtil.STORE_SERVICE.getCollection(AccountViewModel.ACCESS_TOKEN)
             }
             if(res.code()/100 == 2){
-                _ownProductList.update { ArrayList(res.body()!!.filter{it.date!=null}) }
-                _notOwnProductList.update { ArrayList(res.body()!!.filter{it.date==null}) }
+//                _ownProductList.update { ArrayList(res.body()!!.filter{it.date!=null}) }
+//                _notOwnProductList.update { ArrayList(res.body()!!.filter{it.date==null})}
+                _ownList.update { ArrayList(res.body()!!) }
             }
         }
     }

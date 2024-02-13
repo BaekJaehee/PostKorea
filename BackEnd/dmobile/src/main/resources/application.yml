@@ -1,4 +1,5 @@
 #server:
+#  forward-headers-strategy: framework
 #  port: 443
 #  ssl:
 #    enabled: true
@@ -88,6 +89,7 @@ springdoc:
     operations-sorter: method
   api-docs:
     path: /api-docs/json
+#    path: http://i10d102.p.ssafy.io:8080/api-docs/json/swagger-config
     groups:
       enabled: true
   cache:

@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -130,4 +131,19 @@ class MainActivityViewModel : ViewModel() {
     fun setPageTitle(title: String){
         _pageTitle.update { title }
     }
+
+    private val _visitedHeritage = MutableStateFlow(setOf<Int>())
+    val visitedHeritage = _visitedHeritage.asStateFlow()
+
+    fun loadVisitedHeritage(){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.VISIT_SERVICE.getVisited(AccountViewModel.ACCESS_TOKEN)
+            }
+            if(res.code()/100 == 2){
+                _visitedHeritage.update { res.body()!!.map { it.visitResponseId }.toSet()}
+            }
+        }
+    }
+
 }
