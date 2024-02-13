@@ -92,9 +92,9 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvWrong.visibility = View.VISIBLE
         binding.gameIvHeritage.visibility = View.VISIBLE
 
-        heritageName = heritageName.filter {
-            it.lat != "0"
-        }.toMutableList()
+//        heritageName = heritageName.filter {
+//            it.lat != "0"
+//        }.toMutableList()
 
         heritageName = heritageName.filter {
             findDistance(it.lat.toDouble(), it.lng.toDouble()) < 0.5
@@ -193,7 +193,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvWrong.visibility = View.GONE
         binding.gameIvHeritage.visibility = View.GONE
         binding.gameTvQuestionUpper.text = "수고하셨습니다"
-        binding.gameTvQuestionLower.text = "획득한 포인트 : $correctAnswers"
+        binding.gameTvQuestionLower.text = "획득한 포인트 : ${correctAnswers*10}"
         binding.gameTvQuestionNumber.visibility = View.GONE
         binding.gameTvNext.text = "맞은 문제 : $correctAnswers / 10"
     }
