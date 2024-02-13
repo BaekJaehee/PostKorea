@@ -131,20 +131,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/mini_game_tv_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/bg_round_brown"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="제출"
-            android:textColor="#7A8089"
-            android:textSize="24sp"
-            android:visibility="gone"
-            />
-
     </LinearLayout>
 
 
