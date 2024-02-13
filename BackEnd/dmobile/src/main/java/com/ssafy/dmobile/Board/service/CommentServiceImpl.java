@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
                 () -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
 
         if (dto.getContent().trim().isEmpty()) {
-            throw new CustomException(ExceptionType.TITLE_CANNOT_BE_EMPTY);
+            throw new CustomException(ExceptionType.CONTENT_CANNOT_BE_EMPTY);
         }
 
 
