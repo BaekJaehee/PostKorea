@@ -68,7 +68,7 @@ public class ShopController {
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
     @PostMapping("/purchase/{productId}")
     @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행<br>" +
-        "사용자의 포인트가 모자라다면 물건 목록 반환, 중복 구매 시 메시지")
+        "사용자의 포인트가 모자란 경우, 혹은 중복 구매 시 메시지")
     @SecurityRequirement(name="Authorization")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
