@@ -11,6 +11,7 @@ import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,17 @@ public class RelicController {
 
     @GetMapping("/find")    // 포함되는 이름이 있으면 반환
     @Operation(summary = "이름 검색", description = "이름으로 검색해서 포함되는 문자가 있는 행 반환")
-    public ResponseEntity<List<DetailData>> findData(@RequestParam String name) {
+    public ResponseEntity<?> findData(@RequestParam String name) {
+        try {
         List<DetailData> result = detailDataRepository.findByName(name);
         return ResponseEntity.ok().body(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("msg", "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/search")
