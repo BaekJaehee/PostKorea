@@ -106,6 +106,7 @@ public class ExplorePlanController {
             throw new CustomException(ExceptionType.INVALID_MEMBER_FOR_PLAN_EXCEPTION);
         }
 
+        relicExplorePlanService.deleteAllRelicsInPlan(planId);
         explorePlanService.deletePlan(planId);
         return ResponseEntity.ok().build();
     }
