@@ -32,8 +32,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
     private val manager: LoginUserManager by lazy{ LoginUserManager(ApplicationClass.applicationContext())}
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity.setNavigationBarStatus(false)

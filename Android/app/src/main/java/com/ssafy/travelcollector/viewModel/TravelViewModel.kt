@@ -60,13 +60,8 @@ class TravelViewModel: ViewModel() {
                 travelList = heritageIdList
             )
         }
-
-        _userTravelList.update { it ->
-            it.apply{
-                add(newTravel)
-                sortBy { it.startDate }
-            }
-        }
+        loadUserTravelList()
+        loadOnGoingTravel()
     }
 
     fun updateTravel(newTravel: TravelWithHeritageList){

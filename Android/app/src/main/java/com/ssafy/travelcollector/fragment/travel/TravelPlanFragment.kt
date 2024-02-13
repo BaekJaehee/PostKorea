@@ -97,7 +97,6 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
                     endDate = endDate,
                     heritageList = ArrayList(heritageAdapter.currentList)
                 )
-
                 if(curTravel.id == -1){
                     travelViewModel.addTravel(newTravel)
                 }else{
