@@ -5,6 +5,8 @@ import com.ssafy.dmobile.exception.ExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum RelicTypeMappingInfo {
@@ -30,5 +32,15 @@ public enum RelicTypeMappingInfo {
         }
 
         throw new CustomException(ExceptionType.MAPPING_INFO_NOT_FOUND_EXCEPTION);
+    }
+
+    public static String findRelicTypeCodeByAchieveId(Long achieveId) {
+        for (RelicTypeMappingInfo mapping : values()) {
+            if (Arrays.stream(mapping.getAchieveIds()).anyMatch(id -> id == achieveId)) {
+                return mapping.getRelicTypeCode();
+            }
+        }
+
+        throw new CustomException(ExceptionType.ACHIEVE_NOT_FOUND_EXCEPTION);
     }
 }
