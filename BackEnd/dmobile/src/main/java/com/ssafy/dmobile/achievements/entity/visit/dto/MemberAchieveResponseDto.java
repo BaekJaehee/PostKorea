@@ -18,4 +18,7 @@ public class MemberAchieveResponseDto {
     private Long achieveDate;
     @JsonProperty("achieve_relic_name")
     private String achieveRelicName;
+    @JsonProperty("achieve_percentage")
+    private Integer achievePercentage;
+
 }
