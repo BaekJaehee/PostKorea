@@ -162,4 +162,13 @@
         android:name="com.ssafy.travelcollector.fragment.others.CollectionFragment"
         android:label="fragment_collection"
         tools:layout="@layout/fragment_collection" />
+    <fragment
+        android:id="@+id/travelPastFragment"
+        android:name="com.ssafy.travelcollector.fragment.travel.TravelPastFragment"
+        android:label="fragment_travel_past"
+        tools:layout="@layout/fragment_travel_past" />
+    <fragment
+        android:id="@+id/miniGame2Fragment"
+        android:name="com.ssafy.travelcollector.MiniGame2Fragment"
+        android:label="MiniGame2Fragment" />
 </navigation>
