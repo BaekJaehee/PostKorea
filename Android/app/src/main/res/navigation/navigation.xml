@@ -58,9 +58,6 @@
         <action
             android:id="@+id/action_loginFragment_to_signUpFragment2"
             app:destination="@id/signUpFragment" />
-        <action
-            android:id="@+id/action_loginFragment_to_gameFragment"
-            app:destination="@id/gameFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -107,7 +104,14 @@
         android:id="@+id/culturalAssetDetailFragment"
         android:name="com.ssafy.travelcollector.fragment.heritage.CulturalAssetDetailFragment"
         android:label="fragment_cultural_asset_detail"
-        tools:layout="@layout/fragment_cultural_asset_detail" />
+        tools:layout="@layout/fragment_cultural_asset_detail" >
+        <action
+            android:id="@+id/action_culturalAssetDetailFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_culturalAssetDetailFragment_to_miniGame2Fragment"
+            app:destination="@id/miniGame2Fragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.ssafy.travelcollector.fragment.account.ProfileFragment"
@@ -162,4 +166,8 @@
         android:name="com.ssafy.travelcollector.fragment.others.CollectionFragment"
         android:label="fragment_collection"
         tools:layout="@layout/fragment_collection" />
+    <fragment
+        android:id="@+id/miniGame2Fragment"
+        android:name="com.ssafy.travelcollector.MiniGame2Fragment"
+        android:label="MiniGame2Fragment" />
 </navigation>

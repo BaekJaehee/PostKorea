@@ -79,6 +79,10 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
             findNavController().navigate(R.id.gameFragment)
         }
 
+        binding.culturalAssetDetailBtnGame2.setOnClickListener {
+            findNavController().navigate(R.id.miniGame2Fragment)
+        }
+
         binding.culturalAssetDetailBtnReadRecord.setOnClickListener {
             boardViewModel.setSearchBoardTags(listOf(
                 "email=${accountViewModel.user.value.memberEmail}", "heritage=${curHeritage.id}"
