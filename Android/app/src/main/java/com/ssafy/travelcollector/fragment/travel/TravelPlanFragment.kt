@@ -35,11 +35,6 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
         HeritageAdapter(true)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        // DB 불러오기
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
@@ -124,19 +119,9 @@ class TravelPlanFragment : BaseFragment<FragmentTravelPlanBinding>(FragmentTrave
 
             launch {
                 travelViewModel.travelPlanHeritageList.collect{
-                    Log.d(TAG, "initAdapter: $it")
                     heritageAdapter.submitList(it)
                 }
             }
-
-//            repeatOnLifecycle(Lifecycle.State.STARTED){
-//                launch {
-//                    travelViewModel.travelPlanHeritageList.collect{
-//                        heritageAdapter.submitList(it)
-//                    }
-//                }
-//            }
-
         }
 
         val itemTouchCallBack = ItemTouchHelper(ItemTouchCallBack())

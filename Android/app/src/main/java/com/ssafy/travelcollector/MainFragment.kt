@@ -89,8 +89,6 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
             }
 
-
-
             launch {
                 heritageViewModel.searchHeritageListRandom(null, null, null, null)
             }

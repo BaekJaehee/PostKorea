@@ -24,6 +24,8 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         TravelAdapter()
     }
 
+    private var isPlanning = true
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.travelListAddBtnMyTravel.setOnClickListener{
@@ -42,12 +44,14 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         mainActivityViewModel.setPageTitle("탐방 리스트")
 
         binding.btnTravelUpcoming.setOnClickListener {
+            isPlanning = true
             binding.btnTravelUpcoming.background.setTint(resources.getColor(R.color.brown2))
             binding.btnTravelCompleted.background.setTint(resources.getColor(R.color.brown3))
             travelViewModel.setWatchingState(true)
         }
 
         binding.btnTravelCompleted.setOnClickListener {
+            isPlanning = false
             binding.btnTravelUpcoming.background.setTint(resources.getColor(R.color.brown3))
             binding.btnTravelCompleted.background.setTint(resources.getColor(R.color.brown2))
             travelViewModel.setWatchingState(false)
@@ -88,15 +92,21 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         }
         travelAdapter.clickListener = object : TravelAdapter.ClickListener{
             override fun onClick(position: Int, state: Boolean) {
-                val curTravel = travelViewModel.userTravelList.value[position]
+                val curTravel: TravelWithHeritageList
+                val destination: Int
+                if(isPlanning){
+                    curTravel = travelViewModel.userTravelList.value[position]
+                    destination = R.id.travelPlanFragment
+                }else{
+                    curTravel = travelViewModel.completedTravelList.value[position]
+                    destination = R.id.travelPastFragment
+                }
                 travelViewModel.apply {
                     setTravelPlanHeritageList(curTravel.heritageList)
                     setUserTravel(curTravel)
                     setUserTravelId(curTravel.id)
                 }
-                if(state){
-                    findNavController().navigate(R.id.travelPlanFragment)
-                }
+                findNavController().navigate(destination)
             }
         }
 

@@ -1,18 +1,27 @@
 package com.ssafy.travelcollector.fragment.account
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
+import com.ssafy.travelcollector.config.ApplicationClass
 import com.ssafy.travelcollector.config.BaseFragment
+import com.ssafy.travelcollector.config.LoginUserManager
 import com.ssafy.travelcollector.config.SNSAuth
 import com.ssafy.travelcollector.databinding.FragmentLoginBinding
 import com.ssafy.travelcollector.dto.User
+import com.ssafy.travelcollector.viewModel.AccountViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 
 private const val TAG = "LoginFragment"
 
@@ -21,36 +30,66 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
     R.layout.fragment_login
 ) {
 
+    private val manager: LoginUserManager by lazy{ LoginUserManager(ApplicationClass.applicationContext())}
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         mainActivity.setNavigationBarStatus(false)
-
         setLoginCallBack()
 
         lifecycleScope.launch {
-            accountViewModel.accessToken.collect{
-                if(it.isNotEmpty() && it!="null" && accountViewModel.loginResponseCode == 200){
-                    lifecycleScope.launch {
-                        accountViewModel.getInfo(it)
-                        findNavController().navigate(R.id.mainFragment)
-                    }
-                }else{
-                    if(accountViewModel.loginResponseCode != 0){
-                        Log.d(TAG, "onViewCreated: ${accountViewModel.loginResponseCode}")
-                        showToast("잘못됐습니다")
+            launch {
+                manager.getIsLogin().collectLatest{
+                    if(it){
+                        LoginUserManager.isWhileLogin = true
+                        Log.d(TAG, "onViewCreated: login o")
+                        manager.getToken().collectLatest{ info->
+                            if(info[0].isNotEmpty() && info[1].isNotEmpty()){
+                                Log.d(TAG, "onViewCreated: aaa")
+                                accountViewModel.login(info[0], info[1])
+                            }
+                        }
+                    }else{
+                        LoginUserManager.isWhileLogin = false
+                        Log.d(TAG, "onViewCreated: login xx")
                     }
                 }
             }
+
+            launch {
+                accountViewModel.accessToken.collect{
+                    Log.d(TAG, "onViewCreated: $it")
+                    if(it.isNotEmpty() && it!="Bearer " && it!= "null" && accountViewModel.loginResponseCode / 100 == 2){
+                        lifecycleScope.launch {
+                            Log.d(TAG, "onViewCreated: dddddd")
+                            accountViewModel.getInfo(it)
+                            findNavController().navigate(R.id.mainFragment)
+                        }
+                    }else{
+                        if(accountViewModel.loginResponseCode / 100 != 2){
+                            Log.d(TAG, "onViewCreated: $it \n ${accountViewModel.loginResponseCode}")
+                            showToast("잘못됐습니다")
+                        }
+                        manager.deleteToken()
+                    }
+                }
+            }
+
         }
 
         binding.loginBtnLogin.setOnClickListener{
-            lifecycleScope.launch {
-                try{
-                    accountViewModel.login(binding.loginEtId.text.toString(), binding.loginEtPw.text.toString())
-                }catch(e: Exception){
-                    Log.e(TAG, "onViewCreated: $e",)
+            try{
+//                accountViewModel.login(binding.loginEtId.text.toString(), binding.loginEtPw.text.toString())
+                lifecycleScope.launch {
+                    manager.saveToken(
+                        listOf(binding.loginEtId.text.toString(), binding.loginEtPw.text.toString())
+                    ) 
                 }
+
+            }catch(e: Exception){
+                Log.e(TAG, "onViewCreated: $e",)
             }
         }
 
