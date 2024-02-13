@@ -138,14 +138,14 @@ public class ShopController {
 
                 shopMemberService.saveShopMember(shopMember);
 
-                return ResponseEntity.ok().body(String.format("%s Purchased Successfully", productId));
+                return ResponseEntity.ok().body(String.format("%s 상품 구매 완료", productId));
 
             } else {
 //                List<Shop> product = shopRepository.findByIsPurchasable(true);
 //                return ResponseEntity.ok().body(product);
 //                return ResponseEntity.ok().body("No enough point");
 //                throw new CustomException(ExceptionType.PRODUCT_POINT_EXCEPTION);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No enough point");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("포인트가 부족합니다.");
             }
         } catch (Exception e) {
             e.printStackTrace();
