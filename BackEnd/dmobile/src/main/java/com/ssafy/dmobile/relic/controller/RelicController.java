@@ -39,7 +39,7 @@ public class RelicController {
     @GetMapping("/list")
     @Operation(summary = "목록 보기", description = "전체 목록 보기")
     public ResponseEntity<?> getRelic() {
-        int limit = 10;
+        int limit = 20;
         Pageable pageable = PageRequest.of(0, limit);
         List<DetailData> detailData = detailDataRepository.findDataByLimit(pageable);
         return ResponseEntity.ok().body(detailData);
