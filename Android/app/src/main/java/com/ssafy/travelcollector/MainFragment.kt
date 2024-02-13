@@ -50,6 +50,10 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
         lifecycleScope.launch {
             launch {
+                mainActivityViewModel.loadVisitedHeritage()
+            }
+
+            launch {
                 travelViewModel.loadOnGoingTravel()
                 travelViewModel.loadUserTravelList()
             }
@@ -97,8 +101,11 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED){
-                    heritageViewModel.searchHeritageListRandom(null, null, null, null)
+                    launch {
+                        heritageViewModel.searchHeritageListRandom(null, null, null, null)
+                    }
                 }
+
             }
 
             launch {
@@ -134,8 +141,10 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
             }
 
             launch {
-                heritageViewModel.curHeritageList.collect{
-                    mainHeritageAdapter.submitList(it)
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    heritageViewModel.curHeritageList.collect{
+                        mainHeritageAdapter.submitList(it)
+                    }
                 }
             }
         }

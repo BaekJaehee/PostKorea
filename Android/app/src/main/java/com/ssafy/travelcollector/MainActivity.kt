@@ -67,6 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             override fun onDwell(id: String) {
                 mainActivityViewModel.addVisitedHeritage(id.toInt()){
                     achievementViewModel.loadAchievement()
+                    mainActivityViewModel.loadVisitedHeritage()
                 }
             }
 
@@ -111,29 +112,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val sideWelcome = header.findViewById<TextView>(R.id.side_tv_welcome)
 
         lifecycleScope.launch {
-            accountViewModel.user.collect{
-                sideName.text = it.userName
-                if(it.memberEmail != AccountViewModel.DEFAULT_EMAIL){
-                    Glide.with(applicationContext)
-                        .load(it.profileUrl)
-                        .into(sideImg)
-                    sideLogout.visibility = View.VISIBLE
-                    sideLogout.setOnClickListener {
-                        launch {
-                            manager.deleteToken()
-                            LoginUserManager.isWhileLogin = false
-                            accountViewModel.updateToken("")
-                            navController.popBackStack(R.id.loginFragment, true)
-                            navController.navigate(R.id.loginFragment)
-                        }
-                    }
-                    sideWelcome.text = "님 안녕하세요"
-                }else{
-                    sideLogout.visibility = View.GONE
-                    sideWelcome.text = "로그인이 필요합니다"
-                }
 
+            launch {
+                accountViewModel.user.collect{
+                    sideName.text = it.userName
+                    if(it.memberEmail != AccountViewModel.DEFAULT_EMAIL){
+                        Glide.with(applicationContext)
+                            .load(it.profileUrl)
+                            .into(sideImg)
+                        sideLogout.visibility = View.VISIBLE
+                        sideLogout.setOnClickListener {
+                            launch {
+                                manager.deleteToken()
+                                LoginUserManager.isWhileLogin = false
+                                accountViewModel.updateToken("")
+                                navController.popBackStack(R.id.loginFragment, true)
+                                navController.navigate(R.id.loginFragment)
+                            }
+                        }
+                        sideWelcome.text = "님 안녕하세요"
+                    }else{
+                        sideLogout.visibility = View.GONE
+                        sideWelcome.text = "로그인이 필요합니다"
+                    }
+                }
             }
+
+
+
+
         }
 
         if(supportActionBar!=null){

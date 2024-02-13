@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.SearchView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.travelcollector.R
@@ -30,16 +32,12 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
         initAdapter()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        lifecycleScope.launch {
-            heritageViewModel.loadHeritageList()
-        }
-    }
-
     private fun initView(){
 
         mainActivityViewModel.setPageTitle("문화재 도감")
+        heritageViewModel.loadHeritageList()
+
+
         val eraItems = resources.getStringArray(R.array.era)
         val categoryItems = resources.getStringArray(R.array.category)
         binding.heritageListAtvEra.setAdapter(ArrayAdapter(
@@ -89,8 +87,9 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
     }
 
     private fun initAdapter () {
+        heritageAdapter.setVisitedList(mainActivityViewModel.visitedHeritage.value)
         lifecycleScope.launch {
-            heritageViewModel.curHeritageList.collect{
+            heritageViewModel.listPageHeritageList.collect{
                 heritageAdapter.submitList(it)
             }
         }
@@ -101,7 +100,7 @@ class HeritageListFragment : BaseFragment<FragmentHeritageListBinding>(FragmentH
             override fun onMove(from: Int, to: Int) {}
             override fun onClick(position: Int) {
                 heritageViewModel.loadHeritageDetail(
-                    heritageViewModel.curHeritageList.value[position].id
+                    heritageViewModel.listPageHeritageList.value[position].id
                 )
                 findNavController().navigate(R.id.action_heritageListFragment_to_culturalAssetDetailFragment)
             }
