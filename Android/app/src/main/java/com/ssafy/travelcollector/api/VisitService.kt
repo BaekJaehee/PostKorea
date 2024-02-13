@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector.api
 
 import com.ssafy.travelcollector.dto.Achievement
+import com.ssafy.travelcollector.dto.Heritage
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -18,5 +19,8 @@ interface VisitService {
 
     @PUT("visit/title/{achieveId}")
     suspend fun useTitle(@Header("Authorization") token: String, @Path("achieveId") id: Int): Response<Any>
+
+    @GET("visit/list")
+    suspend fun getVisited(@Header("Authorization") token: String): Response<List<Heritage>>
 
 }

@@ -39,7 +39,11 @@ public enum ExceptionType {
     ACHIEVE_NOT_FOUND_EXCEPTION(404, "해당하는 업적을 찾을 수 없습니다."),
     MAPPING_INFO_NOT_FOUND_EXCEPTION(404, "해당하는 매핑 정보를 찾을 수 없습니다."),
     INVALID_MEMBER_FOR_ACHIEVE_EXCEPTION(401, "해당 업적에 접근할 수 있는 사용자가 아닙니다."),
-    ;
+
+    // 상점 관리
+    PRODUCT_NOT_FOUND_EXCEPTION(404, "해당하는 상품을 찾을 수 없습니다."),
+    PRODUCT_DUPLICATE_EXCEPTION(404, "상품은 중복해서 구매할 수 없습니다."),
+    PRODUCT_POINT_EXCEPTION(404, "포인트가 부족합니다");
 
     // 사용자 정의 enum 을 통해 exception 세분화
     private final int code;

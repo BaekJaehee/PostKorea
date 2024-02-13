@@ -13,18 +13,20 @@ public class ShopMemberDto {
     private String productImage;
     private Long productDate;
     private String productExplanation;
+    private String productAcquisition;
 
     // 기본 생성자
     public ShopMemberDto() {
     }
 
     // 매개변수를 받는 생성자
-    public ShopMemberDto(Long productId, String productName, String productImage, Long productDate, String productExplanation) {
+    public ShopMemberDto(Long productId, String productName, String productImage, Long productDate, String productExplanation, String productAcquisition) {
         this.productId = productId;
         this.productName = productName;
         this.productImage = productImage;
         this.productDate = productDate;
         this.productExplanation = productExplanation;
+        this.productAcquisition = productAcquisition;
     }
 
 //    public static ShopMemberDto mapFromShopMember(ShopMember shopMember) {
@@ -39,6 +41,7 @@ public class ShopMemberDto {
         dto.setProductImage(shopMember.getShop().getProductImage());
         dto.setProductDate(shopMember.getProductDate());
         dto.setProductExplanation(shopMember.getShop().getProductExplanation());
+        dto.setProductAcquisition(shopMember.getShop().getProductAcquisition());
         return dto;
     }
 
@@ -55,6 +58,7 @@ public class ShopMemberDto {
         dto.setProductName(shop.getProductName());
         dto.setProductImage(shop.getProductImage());
         dto.setProductExplanation(shop.getProductExplanation());
+        dto.setProductAcquisition(shop.getProductAcquisition());
         return dto;
     }
 

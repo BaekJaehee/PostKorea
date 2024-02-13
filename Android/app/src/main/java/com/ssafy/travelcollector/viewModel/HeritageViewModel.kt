@@ -33,19 +33,27 @@ class HeritageViewModel: ViewModel() {
 
     //눈에 보이는 여행 목록. db에 저장되지 않는 임시 리스트.
     //테마 내의 목록이나 문화재 검색 결과가 될 수 있다
-    private var _curHeritageList = MutableStateFlow(arrayListOf<Heritage>())
+    private val _curHeritageList = MutableStateFlow(arrayListOf<Heritage>())
     val curHeritageList = _curHeritageList.asStateFlow()
-    fun setCurHeritageList(list: ArrayList<Heritage>){
+    private fun setCurHeritageList(list: ArrayList<Heritage>){
         _curHeritageList.update { list }
     }
 
+    private val _listPageHeritageList = MutableStateFlow(arrayListOf<Heritage>())
+    val listPageHeritageList = _listPageHeritageList.asStateFlow()
+
+    private fun setListHeritageList(list: List<Heritage>){
+        _listPageHeritageList.update { ArrayList(list) }
+    }
 
     fun loadHeritageList(){
         viewModelScope.launch {
             val result = withContext(Dispatchers.IO){
                 RetrofitUtil.HERITAGE_SERVICE.getHeritageList()
             }
-            result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+            if(result.code()/100 == 2){
+                setListHeritageList(ArrayList(result.body()!!))
+            }
         }
     }
 
@@ -63,7 +71,9 @@ class HeritageViewModel: ViewModel() {
             val result = withContext(Dispatchers.IO){
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritageRandom(region1, region2, era, category)
             }
-            result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+            if(result.code()/100 == 2){
+                result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+            }
         }
     }
 

@@ -60,13 +60,8 @@ class TravelViewModel: ViewModel() {
                 travelList = heritageIdList
             )
         }
-
-        _userTravelList.update { it ->
-            it.apply{
-                add(newTravel)
-                sortBy { it.startDate }
-            }
-        }
+        loadUserTravelList()
+        loadOnGoingTravel()
     }
 
     fun updateTravel(newTravel: TravelWithHeritageList){
@@ -132,7 +127,7 @@ class TravelViewModel: ViewModel() {
     fun loadOnGoingTravel(){
         viewModelScope.launch {
             val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
-            if(ongoing.body()!!.isNotEmpty()){
+            if(ongoing.code()/100 == 2 && ongoing.body()!!.isNotEmpty()){
                 val res = ongoing.body()!![0]
                 val travel = TravelWithHeritageList(
                     id = res.planId,
@@ -173,7 +168,6 @@ class TravelViewModel: ViewModel() {
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
 
     fun setTravelPlanHeritageList(list: List<Heritage>){
-        Log.d(TAG, "initAdapter travel: $list")
         _travelPlanHeritageList.update { ArrayList(list) }
     }
 

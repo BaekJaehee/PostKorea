@@ -46,6 +46,7 @@ tools:context=".fragment.account.ChangeUserInfoFragment">
             android:id="@+id/change_user_info_current_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:background="@drawable/user_info_form"
             />
 
@@ -71,6 +72,7 @@ tools:context=".fragment.account.ChangeUserInfoFragment">
             android:id="@+id/change_user_info_pw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:background="@drawable/user_info_form"
             />
 
@@ -95,6 +97,7 @@ tools:context=".fragment.account.ChangeUserInfoFragment">
             android:id="@+id/change_user_info_pw_confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:background="@drawable/user_info_form"
             />
 

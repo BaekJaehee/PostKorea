@@ -121,6 +121,7 @@ class ApplicationClass : Application() {
         lateinit var retrofit: Retrofit
 
         private var instance: ApplicationClass? = null
+
         fun applicationContext() : Context {
             return instance!!.applicationContext
         }

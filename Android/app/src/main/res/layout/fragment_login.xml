@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/user_info_form"
-            android:hint="ID"
+            android:hint="email"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/user_info_form"
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:hint="pw" />
 
     </com.google.android.material.textfield.TextInputLayout>

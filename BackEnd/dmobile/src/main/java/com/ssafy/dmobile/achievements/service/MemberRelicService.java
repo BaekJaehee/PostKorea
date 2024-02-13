@@ -89,7 +89,7 @@ public class MemberRelicService {
         int relicTypeCount = memberRelicRepository.countVisitedKdcd(memberId, relicTypeCode);
 
         // 시도 코드에 매핑된 업적 ID를 조회
-        SidoAchieveMappingInfo sidoMapping = SidoAchieveMappingInfo.findBySidoCode(sidoCode);
+        SidoAchieveMappingInfo sidoMapping = SidoAchieveMappingInfo.findAchieveIdBySidoCode(sidoCode);
         Long[] achieveSidoIds = new Long[4];
         for (int i = 0; i < 4; i++) {
             achieveSidoIds[i] = (long) sidoMapping.getAchieveIds()[i];

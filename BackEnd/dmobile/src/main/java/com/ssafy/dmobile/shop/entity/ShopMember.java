@@ -28,4 +28,7 @@ public class ShopMember {
 
     @Column(name = "product_date")
     private Long productDate;
+
+    @Column(name = "product_acquisition")
+    private String productAcquisition;
 }
