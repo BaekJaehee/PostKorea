@@ -22,6 +22,7 @@ public enum ExceptionType {
     CONTENT_CANNOT_BE_EMPTY(400, "내용을 입력하세요."),
     BOARD_NOT_FOUND(404, "게시판을 찾을 수 없습니다."),
     USER_NOT_AUTHORIZED_TO_UPDATE_THIS_BOARD(403, "게시판을 수정할 권한이 없습니다."),
+    USER_NOT_AUTHORIZED_TO_UPDATE_THIS_COMMENT(403, "댓글을 수정할 권한이 없습니다."),
     COMMENT_NOT_FOUND(404, "댓글을 찾을 수 없습니다."),
 //    FILE_NOT_FOUND_EXCEPTION(404, "해당하는 파일을 찾을 수 없습니다."),
 
