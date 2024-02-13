@@ -37,20 +37,19 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
             //db에 회원 정보 저장
             if(isValidInformation()){
                 lifecycleScope.launch {
-                    val msg = withContext(Dispatchers.IO) {
+                    val res = withContext(Dispatchers.IO) {
                         RetrofitUtil.USER_SERVICE.insert(
                             User(
                                 memberEmail = binding.signUpEtEMail.text.toString(),
                                 memberPwd = binding.signUpEtPw.text.toString(),
                                 userNickname = binding.signUpEtName.text.toString()
                             )
-                        ).body()?.get("msg").toString()
+                        )
                     }
-                    if(msg == "succeed"){
+                    if(res.code()/100 == 2){
                         findNavController().navigate(R.id.loginFragment)
                         showToast("회원가입 성공")
                     }else{
-                        Log.d(TAG, "initView: $msg")
                         showToast("실패ㅠㅠ")
                     }
                 }

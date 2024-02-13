@@ -1,7 +1,9 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.Geofence
 import com.ssafy.travelcollector.dto.Heritage
 import com.ssafy.travelcollector.dto.TravelPlanResponse
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
@@ -29,8 +31,20 @@ class TravelViewModel: ViewModel() {
         _userTravel.update { travel }
     }
 
+    //upcoming
     private val _userTravelList = MutableStateFlow(arrayListOf<TravelWithHeritageList>())
     val userTravelList = _userTravelList.asStateFlow()
+
+    //completed
+    private val _completedTravelList = MutableStateFlow(arrayListOf<TravelWithHeritageList>())
+    val completedTravelList = _completedTravelList.asStateFlow()
+
+    private val _isPlanning = MutableStateFlow(true)
+    val isPlanning = _isPlanning.asStateFlow()
+
+    fun setWatchingState(isPlanning: Boolean){
+        _isPlanning.update { isPlanning }
+    }
 
     fun addTravel(newTravel: TravelWithHeritageList){
         val heritageIdList = newTravel.heritageList.map { it.id }
@@ -76,18 +90,8 @@ class TravelViewModel: ViewModel() {
         }
     }
 
-    fun loadUserTravelList(){
+    private fun setHeritageListOfTravel(responseList: List<TravelPlanResponse>, isPlanning: Boolean){
         viewModelScope.launch {
-            val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
-            val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
-            val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
-            val responseList = arrayListOf<TravelPlanResponse>()
-            responseList.apply{
-                addAll(ArrayList(upcoming.body()!!))
-                addAll(ArrayList(ongoing.body()!!))
-                addAll(ArrayList(completed.body()!!))
-            }
-
             val newTravel = withContext(Dispatchers.IO){
                 val newTravel = arrayListOf<TravelWithHeritageList>()
                 for(res in responseList){
@@ -107,32 +111,86 @@ class TravelViewModel: ViewModel() {
                 }
                 newTravel
             }
-            _userTravelList.update {
-                ArrayList(newTravel.sortedBy { it.startDate })
-            }
+            if(isPlanning) _userTravelList.update { ArrayList(newTravel.sortedBy { it.startDate }) }
+            else _completedTravelList.update { ArrayList(newTravel.sortedByDescending { it.startDate }) }
+        }
 
+    }
+
+    fun loadUserTravelList(){
+        viewModelScope.launch {
+            val upcoming = withContext(Dispatchers.IO){ RetrofitUtil.TRAVEL_SERVICE.getUpcomingTravelList(AccountViewModel.ACCESS_TOKEN) }
+            val completed = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getCompletedTravelList(AccountViewModel.ACCESS_TOKEN)}
+            if(upcoming.code()/100 == 2) setHeritageListOfTravel(upcoming.body()!!, true)
+            if(completed.code()/100 == 2) setHeritageListOfTravel(completed.body()!!, false)
         }
     }
 
-    fun setUserTravelList(newList: ArrayList<TravelWithHeritageList>){
-        _userTravelList.update { newList }
+    private val _onGoingTravel = MutableStateFlow(TravelWithHeritageList())
+    val onGoingTravel = _onGoingTravel.asStateFlow()
+
+    fun loadOnGoingTravel(){
+        viewModelScope.launch {
+            val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
+            if(ongoing.body()!!.isNotEmpty()){
+                val res = ongoing.body()!![0]
+                val travel = TravelWithHeritageList(
+                    id = res.planId,
+                    name = res.name,
+                    startDate = res.startDate,
+                    endDate = res.endDate,
+                    condition = res.condition,
+                    heritageList = ArrayList(
+                        withContext(Dispatchers.IO){
+                            RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                                AccountViewModel.ACCESS_TOKEN, res.planId
+                            ).body()!!
+                        })
+                )
+                _onGoingTravel.update { travel }
+            }
+        }
+    }
+
+    fun deleteTravel(){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.TRAVEL_SERVICE.deleteTravel(
+                    AccountViewModel.ACCESS_TOKEN, userTravelId.value
+                )
+            }
+            if(res.code()/100==2){
+                loadOnGoingTravel()
+                loadUserTravelList()
+            }else{
+                Log.d(TAG, "deleteTravel: ${res}")
+            }
+        }
     }
 
     //계획 중인 여행 목록의 원본. 저장 시 해당 리스트로 저장.
     private val _travelPlanHeritageList = MutableStateFlow(arrayListOf<Heritage>())
     val travelPlanHeritageList = _travelPlanHeritageList.asStateFlow()
-    fun loadTravelPlanHeritageList(){
-        //rest 통신을 하여 각 여행의 문화재 리스트를 불러온다
-    }
 
-    fun setTravelPlanHeritageList(list: ArrayList<Heritage>){
-        _travelPlanHeritageList.update { list }
+    fun setTravelPlanHeritageList(list: List<Heritage>){
+        Log.d(TAG, "initAdapter travel: $list")
+        _travelPlanHeritageList.update { ArrayList(list) }
     }
 
     fun addHeritageToTravelPlan(heritage: Heritage){
-        _travelPlanHeritageList.update {
-            it.add(heritage)
-            it
-        }
+        val newList = _travelPlanHeritageList.value.toMutableSet()
+        newList.add(heritage)
+        _travelPlanHeritageList.update { ArrayList(newList) }
     }
+
+    fun updateMiniGameEnable(list:List<Int>){
+        val newList = _travelPlanHeritageList.value.toMutableList()
+        for((idx, it) in newList.withIndex()){
+            if(list.contains(it.id)){
+                newList[idx] = it.copy(gameEnable = true)
+            }
+        }
+        setTravelPlanHeritageList(newList)
+    }
+
 }

@@ -8,6 +8,8 @@
     android:orientation="vertical"
     tools:context=".fragment.travel.TravelPostEditFragment">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,43 +51,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginBottom="10dp"
-        >
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-
-        <LinearLayout
-            android:id="@+id/heritage_list_btn_add_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/add"
-                android:layout_gravity="center"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:text="태그 추가" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/travel_post_edit_btn_add_picture"
@@ -153,10 +119,10 @@
             android:background="@drawable/edittext_drop_shadow_brown2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:hint="내용"
             android:gravity="top"
-            />
+            android:maxLines="5" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

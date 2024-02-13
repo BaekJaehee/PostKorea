@@ -4,7 +4,7 @@ import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.entity.request.*;
 import com.ssafy.dmobile.member.entity.response.MemberResponseDto;
 import com.ssafy.dmobile.member.service.MemberService;
-import com.ssafy.dmobile.utils.AuthTokens;
+import com.ssafy.dmobile.utils.AuthTokenDto;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,7 +53,7 @@ public class MemberController {
         Member loginMember = memberService.loginMember(memberDto);
 
         Long memberId = loginMember.getId();
-        AuthTokens tokens = authTokensGenerator.generate(memberId);
+        AuthTokenDto tokens = authTokensGenerator.generate(memberId);
 
         Map<String, Object> response = new HashMap<>();
         response.put("code", 0);
@@ -86,6 +86,7 @@ public class MemberController {
                 .memberGender(member.getGender())
                 .memberAuth(member.getOAuthType())
                 .memberRole(member.getRole())
+                .memberAchieve(member.getAchieve())
                 .build();
 
         return ResponseEntity.ok(response); // 200

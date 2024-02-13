@@ -18,8 +18,27 @@ interface HeritageService {
     suspend fun searchHeritage(
         @Query("region1") region1: String?,
         @Query("region2") region2: String?,
-        @Query("ccceName") era: String?,
-        @Query("mcodeName") category: String?
+        @Query("era") era: String?,
+        @Query("category") category: String?
+    ): Response<List<Heritage>>
+
+    @GET("relic/search")
+    suspend fun searchHeritageForGame(
+        @Query("category") category: String?,
+        @Query("limit") limit: Int?,
+    ): Response<List<Heritage>>
+
+    @GET("relic/random")
+    suspend fun searchHeritageRandom(
+        @Query("region1") region1: String?,
+        @Query("region2") region2: String?,
+        @Query("era") era: String?,
+        @Query("category") category: String?
+    ): Response<List<Heritage>>
+
+    @GET("relic/find")
+    suspend fun searchHeritageByName(
+        @Query("name") name: String?,
     ): Response<List<Heritage>>
 
 }

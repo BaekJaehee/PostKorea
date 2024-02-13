@@ -9,17 +9,19 @@ data class Board(
     @SerializedName("memberId") val writer: Int,
     @SerializedName("createdate") val date: Long,
     @SerializedName("comments") val comments: List<Comment>,
-    @SerializedName("imageUrls") val images: List<BoardImage>
+    @SerializedName("imageUrls") val images: List<BoardImage>,
+    @SerializedName("tags") val tags: List<String>
 ){
-    constructor(title: String, content:String): this(
+    constructor(title: String, content:String, tags:List<String>): this(
         id = 0,
         title = title,
         content = content,
         writer = 0,
         date = 0,
         comments = listOf(),
-        images = listOf()
+        images = listOf(),
+        tags = tags
     )
 
-    constructor():this(0, "", "", 0, 0, listOf(), listOf())
+    constructor():this(0, "", "", 0, 0, listOf(), listOf(), listOf())
 }

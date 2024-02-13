@@ -15,50 +15,38 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <!--수정했음-->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginHorizontal="16dp"
             android:gravity="center">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/heritage_post_tv_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="28sp"
-                    android:text="북촌 전망대와 한옥마을"
-                    android:layout_margin="10dp"
-                    android:textAlignment="textStart"/>
-
                 <LinearLayout
-                    android:id="@+id/heritage_post_btn_add_tag"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginBottom="10dp"
-                    >
+                    android:orientation="horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/heritage_post_tv_title"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="#북촌 마을"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="28sp"
+                        android:text="asd"
+                        android:layout_margin="10dp"
+                        android:textAlignment="textStart"/>
                 </LinearLayout>
+
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/heritage_post_profile_img"
@@ -106,8 +94,7 @@
             android:layout_height="wrap_content"
             android:text="xx.xx.xx"
             android:textSize="15sp"
-            android:paddingHorizontal="20dp"
-            />
+            android:paddingHorizontal="20dp"/>
 
         <TextView
             android:id="@+id/heritage_post_text"
@@ -116,7 +103,7 @@
             android:layout_weight="2"
             android:layout_marginVertical="10dp"
             android:layout_marginHorizontal="20dp"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:background="@drawable/edittext_drop_shadow_brown2"
             android:text="내용"/>
 
@@ -131,7 +118,7 @@
             android:id="@+id/heritage_post_btn_show_all_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="모두보기"/>
+            android:text="댓글 보기"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

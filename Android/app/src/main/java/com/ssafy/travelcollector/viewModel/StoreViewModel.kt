@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.travelcollector.dto.Product
@@ -11,17 +12,36 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+private const val TAG = "StoreViewModel"
 class StoreViewModel : ViewModel() {
 
-    private val _productList = MutableStateFlow(arrayListOf(Product()))
+    private val _productList = MutableStateFlow(arrayListOf<Product>())
     val productList = _productList.asStateFlow()
+
+    private val _ownProductList = MutableStateFlow(arrayListOf<Product>())
+    val ownProductList = _ownProductList.asStateFlow()
+
+    private val _notOwnProductList = MutableStateFlow(arrayListOf<Product>())
+    val notOwnProductList = _notOwnProductList.asStateFlow()
 
     fun loadProductList(){
         viewModelScope.launch {
+            var own: Set<Int>
             val res = withContext(Dispatchers.IO){
                 RetrofitUtil.STORE_SERVICE.getProducts()
             }
-            setProductList(ArrayList(res.body()!!))
+            val res2 = withContext(Dispatchers.IO){
+                RetrofitUtil.STORE_SERVICE.getCollection(AccountViewModel.ACCESS_TOKEN)
+            }
+            if(res.code()/100 == 2 && res2.code()/100 == 2){
+                val newList = res.body()!!
+                own = res2.body()!!.filter{it.date!=null}.map{it.id}.toSet()
+                for(product in newList){
+                    if(own.contains(product.id))
+                        product.isPurchasable = false
+                }
+                setProductList(ArrayList(newList))
+            }
         }
     }
 
@@ -39,5 +59,19 @@ class StoreViewModel : ViewModel() {
             if(res.code()/100==2){ callback.invoke(AccountViewModel.ACCESS_TOKEN) }
         }
     }
+
+    fun loadCollection(){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.STORE_SERVICE.getCollection(AccountViewModel.ACCESS_TOKEN)
+            }
+            if(res.code()/100 == 2){
+                _ownProductList.update { ArrayList(res.body()!!.filter{it.date!=null}) }
+                _notOwnProductList.update { ArrayList(res.body()!!.filter{it.date==null}) }
+            }
+        }
+    }
+
+
 
 }

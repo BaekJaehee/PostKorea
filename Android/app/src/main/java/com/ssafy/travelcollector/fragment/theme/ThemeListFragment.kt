@@ -38,6 +38,14 @@ class ThemeListFragment : BaseFragment<FragmentThemeListBinding>(
     }
 
     private fun initView(){
+        lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    mainActivityViewModel.loadRecommendedTheme()
+                }
+            }
+        }
+
         binding.themeListToggleOnlyRecommended.setOnCheckedChangeListener{
             _, isChecked ->
             onlyBookMarked = isChecked
@@ -58,7 +66,7 @@ class ThemeListFragment : BaseFragment<FragmentThemeListBinding>(
 
         themeAdapter.clickListener = object : ThemeAdapter.ClickListener {
             override fun onItemClick(position: Int) {
-//                mainActivityViewModel.setCurHeritageList(mainActivityViewModel.recommendedTheme.value[position].contents)
+                mainActivityViewModel.setCurTheme(mainActivityViewModel.recommendedTheme.value[position])
                 findNavController().navigate(R.id.themeDetailFragment)
             }
 

@@ -41,6 +41,7 @@ android {
 
 dependencies {
 
+    implementation("com.google.android.gms:play-services-location:21.1.0")
     val lifecycle_version = "2.6.1"
     val arch_version = "2.2.0"
     val nav_version = "2.4.2"
@@ -72,7 +73,9 @@ dependencies {
 
 
     implementation("com.navercorp.nid:oauth-jdk8:5.9.0")
-    implementation("com.kakao.sdk:v2-user:2.12.1")
+//    implementation("com.kakao.sdk:v2-user:2.12.1")
+
+    implementation("com.kakao.sdk:v2-all:2.19.0")
 
 
     implementation("io.github.ParkSangGwon:tedpermission-normal:3.3.0")

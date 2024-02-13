@@ -20,6 +20,13 @@ public class Shop {
     private Integer productPoint;
     @Column(name = "product_explanation")
     private String productExplanation;
+    @Column(name = "is_purchasable")
+    private Boolean isPurchasable;
+
+    // 컨트롤러에서 접근하기 위함
+    public boolean getIsPurchasable() {
+        return this.isPurchasable;
+    }
 
     // 무한재귀 막으려면 단방향
 //    @OneToMany(mappedBy = "shop")

@@ -2,7 +2,7 @@ package com.ssafy.dmobile.shop.controller;
 
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
-import com.ssafy.dmobile.shop.dto.ShopMemberDto;
+import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
 import com.ssafy.dmobile.shop.entity.Shop;
 import com.ssafy.dmobile.shop.entity.ShopMember;
 import com.ssafy.dmobile.shop.entity.ShopMemberId;
@@ -14,6 +14,7 @@ import com.ssafy.dmobile.shop.service.ShopMemberService;
 import com.ssafy.dmobile.shop.service.ShopService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
@@ -37,20 +38,36 @@ public class ShopController {
     private final ShopService shopService;
     private final ShopMemberService shopMemberService;
     private final ShopMemberRepository shopMemberRepository;
-//    private final ShopMemberMapper shopMemberMapper;
     private final MemberService memberService;
     private final AuthTokensGenerator authTokensGenerator;
 
     @GetMapping("/product")    // 상점 들어가면 맨 처음 뜨는 물품 리스트
+    @Operation(summary = "물건 전체 리스트")
     public ResponseEntity<List<Shop>> productList() {
         List<Shop> shop = shopRepository.findAll();
+        return ResponseEntity.ok().body(shop);
+    }
+
+    @GetMapping("/product/available")
+    @Operation(summary = "상점에서 구매 가능한 물건만 표시")
+    public ResponseEntity<?> availableOnShop() {
+        List<Shop> shop = shopRepository.findByIsPurchasable(true);
+        return ResponseEntity.ok().body(shop);
+    }
+
+    @GetMapping("/product/unavailable")
+    @Operation(summary = "상점에서는 구매 불가능하고 업적이나 게임 보상으로 얻을 수 있는 물건만 표시")
+    public ResponseEntity<?> unavailableOnShop() {
+        List<Shop> shop = shopRepository.findByIsPurchasable(false);
         return ResponseEntity.ok().body(shop);
     }
 
     // swagger에서 로그인 후 동작 검사 필요(application.properties에서 jwt.secret-key는 사용자의 토큰이 아님)
     // 특정 물품을 구매했을 때(목록에서 구매버튼을 누르면 동작)
     @PostMapping("/purchase/{productId}")
-    @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행")
+    @Operation(summary = "물건 구입", description = "productId에 해당하는 물건의 구입 진행<br>" +
+        "사용자의 포인트가 모자라다면 물건 목록 반환, 중복 구매 시 메시지")
+    @SecurityRequirement(name="Authorization")
     public ResponseEntity<?> PurchaseProduct(
             @RequestHeader("Authorization") String token,
             @PathVariable Long productId) {
@@ -74,6 +91,12 @@ public class ShopController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
+        // 상점에서만 구매가 가능한 것인지 구매 가능 여부 확인
+        Shop shop = shopService.getProductById(productId);
+        if (!shop.getIsPurchasable()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This item is not available for purchase in Shop");
+        }
+
 
         // 중복 구매 확인
         boolean isDuplicatePurchase = shopMemberService.existsByMemberIdAndProductId(memberId, productId);
@@ -94,7 +117,8 @@ public class ShopController {
 
                 ShopMember shopMember = new ShopMember();
                 Member member = memberService.getMemberById(memberId);
-                Shop shop = shopService.getProductById(productId);
+                // Shop shop = shopService.getProductById(productId);
+                // 구매가능여부 확인할 때 이미 나옴
 
                 // ShopMemberId 객체 생성
                 ShopMemberId shopMemberId = new ShopMemberId();
@@ -124,7 +148,10 @@ public class ShopController {
     }
 
     @GetMapping("/collect")
-    @Operation(summary = "구매 물건 확인", description = "특정 유저가 구입한 물건과 구입하지 않은 물건을 모아서 확인")
+    @Operation(summary = "구매 물건 확인", description = "특정 유저가 구입한 물건과 구입하지 않은 물건을 모아서 확인<br>" +
+        "구입 여부는 productDate로 구분(구입했다면 날짜 표시, 아니라면 null)<br>" +
+        "구입한 물건들의 리스트가 상위에 오고 하위에는 구입하지 않은 물건 리스트")
+    @SecurityRequirement(name="Authorization")
     public ResponseEntity<?> bought(@RequestHeader("Authorization") String token) {
         // 토큰에서 memberId 추출
         Long memberId= authTokensGenerator.extractMemberId(token);
@@ -151,9 +178,9 @@ public class ShopController {
                         .noneMatch(purchasedItem -> purchasedItem.getShop().getProductId().equals(item.getProductId())))
                 .collect(Collectors.toList());
 
-        // Shop 객체를 ShopMemberDto로
+        // Shop 객체를 ShopMemberDto로 변환
         List<ShopMemberDto> purchasedDtoList = purchasedItems.stream()
-                .map(shopMember -> ShopMemberDto.mapFromShopMember(shopMember))
+                .map(ShopMemberDto::mapFromShopMember)
                 .collect(Collectors.toList());
         List<ShopMemberDto> nonPurchasedDtoList = nonPurchasedItems.stream()
                 .map(ShopMemberDto::mapFromShop)
@@ -165,12 +192,5 @@ public class ShopController {
         mergedDtoList.addAll(nonPurchasedDtoList);
 
         return ResponseEntity.ok().body(mergedDtoList);
-
-        // 특정 유저가 구입한 물건 조회
-//        List<ShopMember> purchasedItems = shopMemberService.getPurchasedItemsByMemberId(memberId);
-//        List<ShopMemberDto> dtoList = purchasedItems.stream()
-//                .map(ShopMemberDto::from)
-//                .collect(Collectors.toList());
-//        return ResponseEntity.ok().body(dtoList);
     }
 }

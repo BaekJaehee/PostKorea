@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.fragment.travel
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,9 @@ import com.ssafy.travelcollector.adapter.TravelAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentTravelListBinding
 import com.ssafy.travelcollector.dto.TravelWithHeritageList
+import com.ssafy.travelcollector.util.TimeConverter
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTravelListBinding::bind,
@@ -33,16 +37,53 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         initAdapter()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView(){
+        mainActivityViewModel.setPageTitle("탐방 리스트")
+
+        binding.btnTravelUpcoming.setOnClickListener {
+            binding.btnTravelUpcoming.background.setTint(resources.getColor(R.color.brown2))
+            binding.btnTravelCompleted.background.setTint(resources.getColor(R.color.brown3))
+            travelViewModel.setWatchingState(true)
+        }
+
+        binding.btnTravelCompleted.setOnClickListener {
+            binding.btnTravelUpcoming.background.setTint(resources.getColor(R.color.brown3))
+            binding.btnTravelCompleted.background.setTint(resources.getColor(R.color.brown2))
+            travelViewModel.setWatchingState(false)
+        }
+
         lifecycleScope.launch {
             travelViewModel.loadUserTravelList()
+            travelViewModel.loadOnGoingTravel()
+            travelViewModel.onGoingTravel.collect{
+                travel->
+                if(travel.id!=-1){
+                    binding.travelListOliOngoing.setImages(
+                        ArrayList(travel.heritageList.map{it.imageUrl})
+                    )
+                    binding.travelListTvOngoingTitle.text = travel.name
+                    binding.travelListTvDuration.text =
+                        "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
+                }else{
+                    binding.travelListViewOngoing.visibility = View.GONE
+                    binding.travelListTvAltText.visibility = View.VISIBLE
+                }
+            }
         }
     }
 
     private fun initAdapter(){
         lifecycleScope.launch {
-            travelViewModel.userTravelList.collect{
-                travelAdapter.submitList(it)
+            travelViewModel.isPlanning.collect{ state->
+                launch {
+                    travelViewModel.userTravelList.takeWhile { state }.collect{
+                        travelAdapter.submitList(it)
+                    }
+                    travelViewModel.completedTravelList.takeWhile { !state }.collect{
+                        travelAdapter.submitList(it)
+                    }
+                }
             }
         }
         travelAdapter.clickListener = object : TravelAdapter.ClickListener{

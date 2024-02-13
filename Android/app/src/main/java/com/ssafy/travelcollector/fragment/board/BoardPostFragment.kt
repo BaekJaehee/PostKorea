@@ -2,6 +2,7 @@ package com.ssafy.travelcollector.fragment.board
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
@@ -20,6 +21,7 @@ import com.ssafy.travelcollector.util.TimeConverter
 import kotlinx.coroutines.launch
 import retrofit2.http.Url
 
+private const val TAG = "BoardPostFragment"
 class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeritagePostBinding::bind,
     R.layout.fragment_heritage_post
 ){
@@ -48,13 +50,24 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         binding.heritagePostVp2Images.adapter = imageAdapter
 
         lifecycleScope.launch{
-            boardViewModel.boardDetail.collect{
-                binding.heritagePostTvTitle.text = it.title
-                binding.heritagePostText.text = it.content
-                binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
-                imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
-                boardViewModel.loadComments(it.id)
+            launch {
+                boardViewModel.boardDetail.collect{
+                    binding.heritagePostTvTitle.text = it.title
+                    binding.heritagePostText.text = it.content
+                    binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
+                    imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
+                    boardViewModel.loadComments(it.id)
+                }
             }
+            launch {
+                boardViewModel.writer.collect{
+                    Glide.with(requireContext())
+                        .load(it.profileUrl)
+                        .fallback(R.drawable.profile)
+                        .into(binding.heritagePostProfileImg)
+                }
+            }
+
         }
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
@@ -109,6 +122,12 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
             )
         }
         binding.heritagePostEtComment.setText("")
+    }
+
+
+    override fun onDestroyView() {
+        boardViewModel.initWriter()
+        super.onDestroyView()
     }
 
 }

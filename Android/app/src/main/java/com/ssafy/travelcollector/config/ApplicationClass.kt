@@ -2,19 +2,23 @@ package com.ssafy.travelcollector.config
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.app.PendingIntent
 import android.content.Context
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.google.android.gms.location.Geofence
+import com.google.android.gms.location.GeofencingClient
+import com.google.android.gms.location.GeofencingRequest
+import com.google.android.gms.location.LocationServices
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.util.Utility
 import com.navercorp.nid.NaverIdLoginSDK
+import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -35,6 +39,15 @@ class ApplicationClass : Application() {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
+//    val errorInterceptor = Interceptor{
+//        val request = it.request()
+//        val response = it.proceed(request)
+//        if(!response.isSuccessful){
+//            Toast.makeText(applicationContext, "통신 오류", Toast.LENGTH_SHORT).show()
+//            Log.d(TAG, "abcd: $response")
+//        }
+//        response
+//    }
 
     val okHttpClient = OkHttpClient.Builder()
         .readTimeout(5000, TimeUnit.MILLISECONDS)
@@ -58,7 +71,8 @@ class ApplicationClass : Application() {
             }).setDeniedMessage("위치 정보 권한을 허용해주세요")
             .setPermissions(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
+                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
             ).check()
 
 
@@ -73,6 +87,7 @@ class ApplicationClass : Application() {
             .client(okHttpClient)
             .build()
     }
+
 
     private val nullOnEmptyConverterFactory = object : Converter.Factory() {
         fun converterFactory() = this
@@ -91,6 +106,10 @@ class ApplicationClass : Application() {
         }
     }
 
+    init{
+        instance = this
+    }
+
     companion object{
         const val NAVER_CLIENT_ID = "ISnINdg5vxbmmrhbZ2rJ"
         const val NAVER_CLIENT_SECRET = "Zc1XDYhfgo"
@@ -101,6 +120,10 @@ class ApplicationClass : Application() {
 
         lateinit var retrofit: Retrofit
 
+        private var instance: ApplicationClass? = null
+        fun applicationContext() : Context {
+            return instance!!.applicationContext
+        }
 
     }
 

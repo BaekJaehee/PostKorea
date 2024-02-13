@@ -3,7 +3,7 @@ package com.ssafy.dmobile.oauth.controller;
 import com.ssafy.dmobile.oauth.service.OAuthLoginService;
 import com.ssafy.dmobile.oauth.service.params.KakaoLoginParams;
 import com.ssafy.dmobile.oauth.service.params.NaverLoginParams;
-import com.ssafy.dmobile.utils.AuthTokens;
+import com.ssafy.dmobile.utils.AuthTokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +23,13 @@ public class OAuthController {
 
     @PostMapping("/kakao")
     @Operation(summary = "카카오 로그인", description = "현재 사용되지 않습니다.")
-    public ResponseEntity<AuthTokens> loginKakao(@RequestBody KakaoLoginParams params) {
+    public ResponseEntity<AuthTokenDto> loginKakao(@RequestBody KakaoLoginParams params) {
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 
     @PostMapping("/naver")
     @Operation(summary = "네이버 로그인", description = "현재 사용되지 않습니다.")
-    public ResponseEntity<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
+    public ResponseEntity<AuthTokenDto> loginNaver(@RequestBody NaverLoginParams params) {
         return ResponseEntity.ok(oAuthLoginService.login(params));
     }
 }
