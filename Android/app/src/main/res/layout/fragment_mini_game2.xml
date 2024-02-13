@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp"
+    android:background="@color/background"
+    tools:context=".GameFragment">
+
+    <LinearLayout
+        android:id="@+id/mini_game_ll_game_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.8"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/round_corner_black_stroke_item"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/mini_game_ll_button">
+
+        <ImageView
+            android:id="@+id/mini_game_iv_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/game_main"/>
+
+        <ImageView
+            android:id="@+id/mini_game_iv_heritage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/mini_game_tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="문화재가 속한 \n시대나 연도 맞추기"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/mini_game_tv_up_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="32sp"
+            android:text="정답 / Up / Down"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/mini_game_tv_remaining_tries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="남은 기회 : 10"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/mini_game_tv_my_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="내 제출 : 년"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/mini_game_tv_year_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:text="가능 범위 : 0 ~ 2024년"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mini_game_ll_button"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.2"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/mini_game_ll_game_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/mini_game_tv_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:padding="14dp"
+            android:text="시작"
+            android:textColor="#7A8089"
+            android:textSize="40sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/mini_game_text_input_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:visibility="gone"
+            >
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/mini_game_et_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user_info_form"
+                android:inputType="number"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/mini_game_tv_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="제출"
+            android:textColor="#7A8089"
+            android:textSize="24sp"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
