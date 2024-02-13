@@ -40,6 +40,11 @@ public class CommentServiceImpl implements CommentService {
         Member member = memberRepository.findById(memberId).orElseThrow(
                 () -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION));
 
+        if (dto.getContent().trim().isEmpty()) {
+            throw new CustomException(ExceptionType.TITLE_CANNOT_BE_EMPTY);
+        }
+
+
         // Comment 객체 생성 및 저장
         Comment comment = dto.dtoToEntity(dto);
         comment.setBoard(board);  // 게시물 설정
@@ -55,8 +60,9 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(ExceptionType.COMMENT_NOT_FOUND));
         if (!comment.getMember().getId().equals(memberId)) {
-            throw new CustomException(ExceptionType.USER_NOT_AUTHORIZED_TO_UPDATE_THIS_BOARD);
+            throw new CustomException(ExceptionType.USER_NOT_AUTHORIZED_TO_UPDATE_THIS_COMMENT);
         }
+
         commentRepository.deleteById(commentId);
         return new CommentResponseDTO(comment);
     }
@@ -68,7 +74,10 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(ExceptionType.COMMENT_NOT_FOUND));
         if (!comment.getMember().getId().equals(memberId)) {
-            throw new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION);
+            throw new CustomException(ExceptionType.USER_NOT_AUTHORIZED_TO_UPDATE_THIS_COMMENT);
+        }
+        if (dto.getContent().trim().isEmpty()) {
+            throw new CustomException(ExceptionType.CONTENT_CANNOT_BE_EMPTY);
         }
         comment.update(dto.getContent());
         Comment save = commentRepository.save(comment);
