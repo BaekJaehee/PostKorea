@@ -92,10 +92,10 @@ public class ShopController {
         }
 
         // 상점에서만 구매가 가능한 것인지 구매 가능 여부 확인
-        Shop shop = shopService.getProductById(productId);
-        if (!shop.getIsPurchasable()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This item is not available for purchase in Shop");
-        }
+//        Shop shop = shopService.getProductById(productId);
+//        if (!shop.getIsPurchasable()) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("This item is not available for purchase in Shop");
+//        }
 
 
         // 중복 구매 확인
@@ -117,7 +117,7 @@ public class ShopController {
 
                 ShopMember shopMember = new ShopMember();
                 Member member = memberService.getMemberById(memberId);
-                // Shop shop = shopService.getProductById(productId);
+                 Shop shop = shopService.getProductById(productId);
                 // 구매가능여부 확인할 때 이미 나옴
 
                 // ShopMemberId 객체 생성
