@@ -144,7 +144,8 @@ public class ShopController {
 //                List<Shop> product = shopRepository.findByIsPurchasable(true);
 //                return ResponseEntity.ok().body(product);
 //                return ResponseEntity.ok().body("No enough point");
-                throw new CustomException(ExceptionType.PRODUCT_NOT_FOUND_EXCEPTION);
+//                throw new CustomException(ExceptionType.PRODUCT_POINT_EXCEPTION);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No enough point");
             }
         } catch (Exception e) {
             e.printStackTrace();

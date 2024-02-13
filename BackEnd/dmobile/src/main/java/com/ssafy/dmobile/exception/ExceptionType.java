@@ -42,7 +42,8 @@ public enum ExceptionType {
 
     // 상점 관리
     PRODUCT_NOT_FOUND_EXCEPTION(404, "해당하는 상품을 찾을 수 없습니다."),
-    PRODUCT_DUPLICATE_EXCEPTION(404, "상품은 중복해서 구매할 수 없습니다.");
+    PRODUCT_DUPLICATE_EXCEPTION(404, "상품은 중복해서 구매할 수 없습니다."),
+    PRODUCT_POINT_EXCEPTION(404, "포인트가 부족합니다");
 
     // 사용자 정의 enum 을 통해 exception 세분화
     private final int code;
