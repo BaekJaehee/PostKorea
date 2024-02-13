@@ -20,7 +20,7 @@ import kotlinx.coroutines.withContext
 private const val TAG = "AccountViewModel"
 class AccountViewModel: ViewModel(){
 
-    private val _user = MutableStateFlow(User())
+    private val _user = MutableStateFlow(User(memberEmail = DEFAULT_EMAIL))
     val user = _user.asStateFlow()
 
     private val _accessToken = MutableStateFlow("")
@@ -29,6 +29,12 @@ class AccountViewModel: ViewModel(){
 
     companion object{
         var ACCESS_TOKEN: String = ""
+        const val DEFAULT_EMAIL: String = "x@x"
+    }
+
+    fun updateToken(token: String){
+        _accessToken.update { "Bearer $token" }
+        ACCESS_TOKEN = "Bearer $token"
     }
 
     fun login(id: String, pwd: String){
@@ -39,9 +45,12 @@ class AccountViewModel: ViewModel(){
                 )
             }
             loginResponseCode = response.code()
-            val token = response.body()?.get("access_token").toString()
-            _accessToken.update { "Bearer $token" }
-            ACCESS_TOKEN = "Bearer $token"
+            if(response.code()/100 == 2){
+                val token = response.body()?.get("access_token").toString()
+                updateToken(token)
+            }
+
+
         }
     }
 
@@ -50,9 +59,12 @@ class AccountViewModel: ViewModel(){
             val response = withContext(Dispatchers.IO){
                 RetrofitUtil.USER_SERVICE.getUserInfo(token)
             }
-            _user.update {
-                response.body()!!
+            if(response.code()/100 == 2){
+                _user.update {
+                    response.body()!!
+                }
             }
+
         }
     }
 

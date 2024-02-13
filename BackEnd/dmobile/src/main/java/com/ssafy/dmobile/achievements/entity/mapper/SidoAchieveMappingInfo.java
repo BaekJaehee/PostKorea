@@ -5,6 +5,8 @@ import com.ssafy.dmobile.exception.ExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
 @AllArgsConstructor
 public enum SidoAchieveMappingInfo {
@@ -31,7 +33,8 @@ public enum SidoAchieveMappingInfo {
     private final String sidoCode;
     private final int[] achieveIds;
 
-    public static SidoAchieveMappingInfo findBySidoCode(String sidoCode) {
+    // sidoCode -> achieveId
+    public static SidoAchieveMappingInfo findAchieveIdBySidoCode(String sidoCode) {
 
         for (SidoAchieveMappingInfo mapping : values()) {
             if (mapping.getSidoCode().equals(sidoCode)) {
@@ -40,5 +43,16 @@ public enum SidoAchieveMappingInfo {
         }
 
         throw new CustomException(ExceptionType.MAPPING_INFO_NOT_FOUND_EXCEPTION);
+    }
+
+    // achieveId -> sidoCode
+    public static String findSidoCodeByAchieveId(Long achieveId) {
+        for (SidoAchieveMappingInfo mapping : values()) {
+            if (Arrays.stream(mapping.getAchieveIds()).anyMatch(id -> id == achieveId)) {
+                return mapping.getSidoCode();
+            }
+        }
+
+        throw new CustomException(ExceptionType.ACHIEVE_NOT_FOUND_EXCEPTION);
     }
 }

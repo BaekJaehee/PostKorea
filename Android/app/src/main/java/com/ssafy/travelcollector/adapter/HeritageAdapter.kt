@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.adapter
 
+import android.util.Log
 import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -13,11 +14,20 @@ import com.ssafy.travelcollector.config.ITouchMove
 import com.ssafy.travelcollector.config.ITouchRemove
 import com.ssafy.travelcollector.databinding.HeritageRvItemNoHeartBinding
 import com.ssafy.travelcollector.dto.Heritage
+import com.ssafy.travelcollector.viewModel.MainActivityViewModel
 
+private const val TAG = "HeritageAdapter"
 class HeritageAdapter(val isPlanning: Boolean = false) : BaseAdapter<Heritage>(), ITouchMove {
+
+    private var visitedList = setOf<Int>()
+    fun setVisitedList(visited: Set<Int>){
+        visitedList = visited
+        Log.d(TAG, "setVisitedList: $visited")
+    }
 
     inner class HeritageHolder(private val binding: HeritageRvItemNoHeartBinding):BaseHolder(binding) , View.OnCreateContextMenuListener,
         ITouchRemove {
+
         override fun bindInfo(data: Heritage) {
             binding.heritageName.text = data.name
             Glide.with(binding.root)
@@ -40,10 +50,13 @@ class HeritageAdapter(val isPlanning: Boolean = false) : BaseAdapter<Heritage>()
                     binding.touchIcon.visibility = View.GONE
                     binding.btnMiniGame.visibility = View.VISIBLE
                 }
-
+            }else{
+                binding.touchIcon.visibility = View.GONE
+                if(visitedList.contains(data.id)){
+                    binding.touchIcon.visibility = View.VISIBLE
+                    binding.touchIcon.setImageResource(R.drawable.check_green)
+                }
             }
-
-
 
             binding.root.setOnCreateContextMenuListener(this)
         }

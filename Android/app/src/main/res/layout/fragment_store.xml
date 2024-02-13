@@ -8,14 +8,6 @@
     android:background="@color/background"
     tools:context=".fragment.others.StoreFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="36sp"
-        android:text="상점"
-        android:layout_gravity="center"
-        android:layout_marginVertical="16dp"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/store_rv_product"
         android:layout_width="match_parent"

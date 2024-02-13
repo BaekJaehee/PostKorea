@@ -24,12 +24,27 @@ class StoreViewModel : ViewModel() {
     private val _notOwnProductList = MutableStateFlow(arrayListOf<Product>())
     val notOwnProductList = _notOwnProductList.asStateFlow()
 
+    private val _ownList = MutableStateFlow(arrayListOf<Product>())
+    val ownList = _ownList.asStateFlow()
+
     fun loadProductList(){
         viewModelScope.launch {
+            var own: Set<Int>
             val res = withContext(Dispatchers.IO){
                 RetrofitUtil.STORE_SERVICE.getProducts()
             }
-            setProductList(ArrayList(res.body()!!))
+            val res2 = withContext(Dispatchers.IO){
+                RetrofitUtil.STORE_SERVICE.getCollection(AccountViewModel.ACCESS_TOKEN)
+            }
+            if(res.code()/100 == 2 && res2.code()/100 == 2){
+                val newList = res.body()!!
+                own = res2.body()!!.filter{it.date!=null}.map{it.id}.toSet()
+                for(product in newList){
+                    if(own.contains(product.id))
+                        product.isPurchasable = false
+                }
+                setProductList(ArrayList(newList))
+            }
         }
     }
 
@@ -54,10 +69,13 @@ class StoreViewModel : ViewModel() {
                 RetrofitUtil.STORE_SERVICE.getCollection(AccountViewModel.ACCESS_TOKEN)
             }
             if(res.code()/100 == 2){
-                _ownProductList.update { ArrayList(res.body()!!.filter{it.date!=null}) }
-                _notOwnProductList.update { ArrayList(res.body()!!.filter{it.date==null}) }
+//                _ownProductList.update { ArrayList(res.body()!!.filter{it.date!=null}) }
+//                _notOwnProductList.update { ArrayList(res.body()!!.filter{it.date==null})}
+                _ownList.update { ArrayList(res.body()!!) }
             }
         }
     }
+
+
 
 }

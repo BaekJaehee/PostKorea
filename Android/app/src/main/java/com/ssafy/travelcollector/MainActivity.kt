@@ -20,6 +20,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.Geofence
@@ -28,10 +29,13 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import com.ssafy.travelcollector.config.ApplicationClass
 import com.ssafy.travelcollector.config.BaseActivity
+import com.ssafy.travelcollector.config.LoginUserManager
 import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
 import com.ssafy.travelcollector.config.geofence.GeofenceManager
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
+import com.ssafy.travelcollector.viewModel.AccountViewModel
 import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.launch
@@ -45,6 +49,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private lateinit var sideName: TextView
     private lateinit var sideLogout: Button
 
+    private val manager: LoginUserManager by lazy{ LoginUserManager(ApplicationClass.applicationContext())}
+
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,19 +61,17 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initGeofence(){
         GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
             override fun onEnter(id: String) {
-                showToast("onEnter $id")
                 mainActivityViewModel.addGameEnableHeritage(id.toInt())
             }
 
             override fun onDwell(id: String) {
-                showToast("onDwell $id")
                 mainActivityViewModel.addVisitedHeritage(id.toInt()){
                     achievementViewModel.loadAchievement()
+                    mainActivityViewModel.loadVisitedHeritage()
                 }
             }
 
             override fun onExit(id: String) {
-                showToast("onExit $id")
                 mainActivityViewModel.removeGameEnableHeritage(id.toInt())
             }
         }
@@ -82,8 +86,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     }
 
     private fun initView(){
-
-
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         navController = (supportFragmentManager.findFragmentById(binding.mainFrameLayout.id) as NavHostFragment).navController
@@ -110,27 +112,49 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         val sideWelcome = header.findViewById<TextView>(R.id.side_tv_welcome)
 
         lifecycleScope.launch {
-            accountViewModel.user.collect{
-                sideName.text = it.userName
-                if(it.memberEmail.isNotEmpty()){
-                    Glide.with(applicationContext)
-                        .load(it.profileUrl)
-                        .into(sideImg)
-                    sideLogout.visibility = View.VISIBLE
-                    sideWelcome.text = "님 안녕하세요"
-                }else{
-                    sideLogout.visibility = View.GONE
-                    sideWelcome.text = "로그인이 필요합니다"
-                }
 
+            launch {
+                accountViewModel.user.collect{
+                    sideName.text = it.userName
+                    if(it.memberEmail != AccountViewModel.DEFAULT_EMAIL){
+                        Glide.with(applicationContext)
+                            .load(it.profileUrl)
+                            .into(sideImg)
+                        sideLogout.visibility = View.VISIBLE
+                        sideLogout.setOnClickListener {
+                            launch {
+                                manager.deleteToken()
+                                LoginUserManager.isWhileLogin = false
+                                accountViewModel.updateToken("")
+                                navController.popBackStack(R.id.loginFragment, true)
+                                navController.navigate(R.id.loginFragment)
+                            }
+                        }
+                        sideWelcome.text = "님 안녕하세요"
+                    }else{
+                        sideLogout.visibility = View.GONE
+                        sideWelcome.text = "로그인이 필요합니다"
+                    }
+                }
             }
+
+
+
+
         }
 
         if(supportActionBar!=null){
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu_hamburger)
-            supportActionBar!!.title = "abc"
-            supportActionBar!!.setHomeButtonEnabled(true)
+            supportActionBar!!.apply {
+                setDisplayHomeAsUpEnabled(true)
+                setHomeAsUpIndicator(R.drawable.menu_hamburger)
+                setDisplayShowTitleEnabled(false)
+                setHomeButtonEnabled(true)
+            }
+            lifecycleScope.launch{
+                mainActivityViewModel.pageTitle.collect{
+                    binding.toolbarTitle.text = it
+                }
+            }
         }
 
         binding.bottomNavigation.setOnItemSelectedListener {
@@ -159,6 +183,33 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_action, menu)
+        val menuItem = menu!!.findItem(R.id.delete_board)
+        val deleteTravel = menu.findItem(R.id.delete_travel)
+        menuItem.isVisible = false
+        deleteTravel.isVisible = false
+
+        menuItem.setOnMenuItemClickListener {
+            boardViewModel.deleteBoard()
+            navController.popBackStack()
+            false
+        }
+        deleteTravel.setOnMenuItemClickListener {
+            travelViewModel.deleteTravel()
+            navController.popBackStack()
+            false
+        }
+
+        lifecycleScope.launch {
+            boardViewModel.writer.collect{
+                menuItem.isVisible = it.memberEmail == accountViewModel.user.value.memberEmail
+            }
+        }
+        lifecycleScope.launch {
+            mainActivityViewModel.detailState.collect{
+                deleteTravel.isVisible = it.contains(DetailStateEnum.WatchingTravel)
+            }
+        }
+
         return true
     }
 

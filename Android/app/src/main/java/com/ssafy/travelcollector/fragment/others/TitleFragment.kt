@@ -37,7 +37,7 @@ class TitleFragment: BaseFragment<FragmentTitleBinding>(FragmentTitleBinding::bi
     private var ownState = true
 
     private fun initView(){
-
+        mainActivityViewModel.setPageTitle("칭호")
         lifecycleScope.launch {
             achievementViewModel.loadAchievement()
             accountViewModel.user.collect{

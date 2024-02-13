@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
@@ -7,6 +8,7 @@ import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.StoreRvItemBinding
 import com.ssafy.travelcollector.dto.Product
 
+private const val TAG = "StoreAdapter"
 class StoreAdapter : BaseAdapter<Product>() {
     inner class ProductHolder(private val binding: StoreRvItemBinding): BaseHolder(binding){
         override fun bindInfo(data: Product) {
@@ -15,6 +17,7 @@ class StoreAdapter : BaseAdapter<Product>() {
             Glide.with(binding.root)
                 .load(data.image)
                 .into(binding.productImg)
+            binding.btnPurchase.isEnabled = data.isPurchasable
             binding.btnPurchase.setOnClickListener {
                 eventListener.onClick(layoutPosition)
             }

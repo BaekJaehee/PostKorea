@@ -1,5 +1,6 @@
 package com.ssafy.travelcollector.viewModel
 
+import android.util.Log
 import androidx.collection.arraySetOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +20,8 @@ private const val TAG = "MainActivityViewModel"
 enum class DetailStateEnum(private val state: Int) {
     None(0),
     AddToTravel(1),
-    MiniGame(2)
+    MiniGame(2),
+    WatchingTravel(3)
 }
 
 class MainActivityViewModel : ViewModel() {
@@ -61,21 +63,19 @@ class MainActivityViewModel : ViewModel() {
         _geofenceList.update { newList }
     }
 
-    private val _detailState = MutableStateFlow(arraySetOf(DetailStateEnum.None))
+    private val _detailState = MutableStateFlow(mutableSetOf(DetailStateEnum.None))
     val detailState = _detailState.asStateFlow()
 
     fun addDetailState(states: ArrayList<DetailStateEnum>){
-        _detailState.update {
-            it.addAll(states)
-            it
-        }
+        val newSet = _detailState.value.toMutableSet()
+        newSet.addAll(states)
+        _detailState.update { newSet }
     }
 
     fun removeDetailState(state: DetailStateEnum){
-        _detailState.update {
-            if(it.contains(state)) it.remove(state)
-            it
-        }
+        val newSet = _detailState.value.toMutableSet()
+        if(newSet.contains(state)) newSet.remove(state)
+        _detailState.update { newSet }
     }
 
     private val _recommendedTheme = MutableStateFlow(arrayListOf<TravelTheme>())
@@ -124,4 +124,26 @@ class MainActivityViewModel : ViewModel() {
             }
         }
     }
+
+    private val _pageTitle = MutableStateFlow("")
+    val pageTitle = _pageTitle.asStateFlow()
+
+    fun setPageTitle(title: String){
+        _pageTitle.update { title }
+    }
+
+    private val _visitedHeritage = MutableStateFlow(setOf<Int>())
+    val visitedHeritage = _visitedHeritage.asStateFlow()
+
+    fun loadVisitedHeritage(){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.VISIT_SERVICE.getVisited(AccountViewModel.ACCESS_TOKEN)
+            }
+            if(res.code()/100 == 2){
+                _visitedHeritage.update { res.body()!!.map { it.visitResponseId }.toSet()}
+            }
+        }
+    }
+
 }

@@ -10,6 +10,7 @@ import com.ssafy.travelcollector.util.RetrofitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,18 +31,35 @@ class BoardViewModel: ViewModel() {
     private val _writer = MutableStateFlow(User())
     val writer = _writer.asStateFlow()
 
-    fun postBoard(title: String, content: String, images: ArrayList<MultipartBody.Part>){
+    private val _isTravelHeritageBoard = MutableStateFlow(false)
+    val isTravelHeritageBoard = _isTravelHeritageBoard.asStateFlow()
+
+    private val _searchTag = MutableStateFlow(listOf<String>())
+    val searchTag = _searchTag.asStateFlow()
+
+    fun postBoard(title: String, content: String, images: ArrayList<MultipartBody.Part>, tags: List<String>){
         viewModelScope.launch {
             val id = withContext(Dispatchers.IO){
                 RetrofitUtil.BOARD_SERVICE.postBoard(
-                    AccountViewModel.ACCESS_TOKEN, Board(title, content)
+                    AccountViewModel.ACCESS_TOKEN, Board(title, content, tags)
                 ).body()!!.id
             }
             if(images.isNotEmpty()){
                 RetrofitUtil.BOARD_SERVICE.uploadProfileImage(
                     id = id,
-                    images = images.toList()
+                    images = images.toList(),
                 )
+            }
+        }
+    }
+
+    fun deleteBoard(){
+        viewModelScope.launch {
+            val res = RetrofitUtil.BOARD_SERVICE.deleteBoard(
+                AccountViewModel.ACCESS_TOKEN, _boardDetail.value.id
+            )
+            if(res.code() / 100 == 2){
+                loadAllBoards()
             }
         }
     }
@@ -139,5 +157,48 @@ class BoardViewModel: ViewModel() {
         }
     }
 
+    fun initWriter(){
+        _writer.update { User() }
+    }
+
+    fun setIsHeritageBoard(isHeritageBoard: Boolean){
+        _isTravelHeritageBoard.update { isHeritageBoard }
+    }
+
+    fun setSearchBoardTags(tags: List<String>){
+        _searchTag.update { tags }
+    }
+
+    fun searchBoardsByTags(tags: List<String>){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.BOARD_SERVICE.searchByTag(tags)
+            }
+            if(res.code()/100 == 2){
+                res.body()?.let{ ArrayList(it) }?.let{ setCurBoardList(it) }
+            }
+        }
+    }
+
+    fun searchByWord(word: String){
+        viewModelScope.launch {
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.BOARD_SERVICE.searchByKeyword(word)
+            }
+            val res2 = withContext(Dispatchers.IO){
+                RetrofitUtil.BOARD_SERVICE.searchByTag(listOf(word))
+            }
+            if(res.code()/100 == 2 && res2.code()/100 == 2){
+                val allList = mutableListOf<Board>()
+                allList.apply {
+                    addAll(res.body()!!)
+                    addAll(res2.body()!!)
+                }
+                val newList = allList.distinctBy { it.id }
+                setCurBoardList(ArrayList(newList))
+            }
+
+        }
+    }
 
 }

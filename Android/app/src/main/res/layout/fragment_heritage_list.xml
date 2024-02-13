@@ -18,76 +18,8 @@
         android:background="@drawable/rounded_rectangle_white"
         app:queryHint="검색어를 입력하세요"
         app:queryBackground="@color/white"
-        android:padding="5dp"
-        />
+        android:padding="5dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="5dp"
-        >
-
-        <TextView
-            android:id="@+id/heritage_list_tv_search_result_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="결과 00건"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            />
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            />
-
-        <LinearLayout
-            android:id="@+id/heritage_list_btn_filter_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:text="정렬 옵션" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/filter"
-                android:layout_gravity="center"
-                />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!--        <LinearLayout-->
-    <!--            android:id="@+id/heritage_list_btn_add_tag"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:orientation="horizontal">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:src="@drawable/add"-->
-    <!--                android:layout_gravity="center"-->
-    <!--                />-->
-
-    <!--            <TextView-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_marginRight="10dp"-->
-    <!--                android:textSize="15sp"-->
-    <!--                android:textStyle="bold"-->
-    <!--                android:text="태그 추가" />-->
-    <!--        </LinearLayout>-->
     
     <HorizontalScrollView
         android:layout_width="match_parent"

@@ -6,8 +6,7 @@
     tools:context=".fragment.account.SignUpFragment"
     android:orientation="vertical"
     android:background="@color/background"
-    android:gravity="center"
-    >
+    android:gravity="center">
 
     <TextView
         android:layout_width="match_parent"
@@ -18,13 +17,35 @@
         android:layout_margin="20dp"
         />
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="e-mail"
-        android:textSize="20sp"
-        android:layout_marginStart="20dp"
-        />
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="30dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="e-mail"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/sign_up_tv_alert_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이메일 형식이 아닙니다"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+
+    </LinearLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -37,18 +58,39 @@
             android:id="@+id/sign_up_et_e_mail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/user_info_form"
-            />
+            android:background="@drawable/user_info_form" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="pw"
-        android:textSize="20sp"
-        android:layout_marginStart="20dp"
-        />
+        android:layout_marginHorizontal="30dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pw"
+            android:textSize="20sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/sign_up_tv_alert_pw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4글자 이상이어야 합니다"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+
+    </LinearLayout>
+
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -62,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/user_info_form"
+            android:inputType="textPassword"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -85,6 +128,7 @@
             android:id="@+id/sign_up_et_pw2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:background="@drawable/user_info_form"
             />
 

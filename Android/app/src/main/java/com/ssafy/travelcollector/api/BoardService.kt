@@ -12,6 +12,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface BoardService {
     @POST("boards")
@@ -39,5 +40,14 @@ interface BoardService {
         @Path("boardId") bId: Int,
         @Path("commentId") cId: Int
     ): Response<Any>
+
+    @DELETE("boards/{boardId}")
+    suspend fun deleteBoard(@Header("Authorization") token: String, @Path("boardId") bId: Int): Response<Any>
+
+    @GET("boards/searchByTags")
+    suspend fun searchByTag(@Query("tags") tags: List<String>): Response<List<Board>>
+
+    @GET("boards/searchKeyword")
+    suspend fun searchByKeyword(@Query("keyword") keyword: String): Response<List<Board>>
 
 }
