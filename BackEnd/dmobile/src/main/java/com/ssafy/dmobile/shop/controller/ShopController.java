@@ -1,5 +1,7 @@
 package com.ssafy.dmobile.shop.controller;
 
+import com.ssafy.dmobile.exception.CustomException;
+import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
@@ -103,7 +105,8 @@ public class ShopController {
 
         if (isDuplicatePurchase) {
             // 중복 구매인 경우
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Duplicate purchase is not allowed");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Duplicate purchase is not allowed");
+            throw new CustomException(ExceptionType.PRODUCT_DUPLICATE_EXCEPTION);
         }
         // 구매 True False (member_id, product_id)
         boolean purchaseResult = shopService.purchaseProduct(memberId, productId);
@@ -140,7 +143,8 @@ public class ShopController {
             } else {
 //                List<Shop> product = shopRepository.findByIsPurchasable(true);
 //                return ResponseEntity.ok().body(product);
-                return ResponseEntity.ok().body("No enough point");
+//                return ResponseEntity.ok().body("No enough point");
+                throw new CustomException(ExceptionType.PRODUCT_NOT_FOUND_EXCEPTION);
             }
         } catch (Exception e) {
             e.printStackTrace();
