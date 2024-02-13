@@ -138,8 +138,9 @@ public class ShopController {
                 return ResponseEntity.ok().body(String.format("%s Purchased Successfully", productId));
 
             } else {
-                List<Shop> product = shopRepository.findAll();
-                return ResponseEntity.ok().body(product);
+//                List<Shop> product = shopRepository.findByIsPurchasable(true);
+//                return ResponseEntity.ok().body(product);
+                return ResponseEntity.ok().body("No enough point");
             }
         } catch (Exception e) {
             e.printStackTrace();
