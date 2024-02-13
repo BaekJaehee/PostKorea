@@ -3,8 +3,12 @@ package com.ssafy.dmobile.achievements.service;
 import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
 import com.ssafy.dmobile.achievements.entity.achieve.AchieveMember;
 import com.ssafy.dmobile.achievements.entity.achieve.AchieveMemberKey;
+import com.ssafy.dmobile.achievements.entity.mapper.RelicTypeMappingInfo;
+import com.ssafy.dmobile.achievements.entity.mapper.SidoAchieveMappingInfo;
+import com.ssafy.dmobile.achievements.entity.visit.dto.MemberAchieveResponseDto;
 import com.ssafy.dmobile.achievements.repository.AchieveMemberRepository;
 import com.ssafy.dmobile.achievements.repository.AchieveRepository;
+import com.ssafy.dmobile.achievements.repository.MemberRelicRepository;
 import com.ssafy.dmobile.exception.CustomException;
 import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.repository.MemberRepository;
@@ -14,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class AchieveMemberService {
 
     public final MemberRepository memberRepository;
+    public final MemberRelicRepository memberRelicRepository;
     public final DetailDataRepository detailDataRepository;
     public final AchieveRepository achieveRepository;
     public final AchieveMemberRepository achieveMemberRepository;
@@ -42,16 +48,68 @@ public class AchieveMemberService {
     }
 
     // 개별 업적의 정보 조회
-    public Achieve getAchieveInfo(Long achieveId) {
-        return achieveRepository.findById(achieveId).orElseThrow(
-                () -> new CustomException(ExceptionType.ACHIEVE_NOT_FOUND_EXCEPTION)
-        );
+    public MemberAchieveResponseDto getAchieveInfoInMember(Long achieveId, Long memberId) {
+
+        Achieve achieve = achieveRepository.getReferenceById(achieveId);
+        int percent = 0;
+
+        if (achieveId < 69) {
+            String sidoCode = SidoAchieveMappingInfo.findSidoCodeByAchieveId(achieveId);
+
+            // 해당 sidoCode를 지닌 relic의 보유갯수 가져오기
+            int cnt = memberRelicRepository.countVisitedCtcd(memberId, sidoCode);
+
+            Map<Integer, Integer> achieveIdToCount = Map.of(
+                    1, 1,
+                    2, 10,
+                    3, 30,
+                    4, 50
+            );
+            // achieve의 취득 조건과 비교
+            percent = cnt / achieveIdToCount.get(achieveId.intValue() % 4) * 100;
+            if(percent > 100) percent = 100;
+
+        } else {
+            String relicTypeCode = RelicTypeMappingInfo.findRelicTypeCodeByAchieveId(achieveId);
+
+            int cnt = memberRelicRepository.countVisitedKdcd(memberId, relicTypeCode);
+            Map<Integer, Integer> achieveIdToCount = Map.of(
+                    1, 1,
+                    2, 10,
+                    3, 30,
+                    4, 50
+            );
+            percent = cnt / achieveIdToCount.get(achieveId.intValue() % 4) * 100;
+            if(percent > 100) percent = 100;
+        }
+
+        try {
+            AchieveMemberKey key = new AchieveMemberKey();
+            key.setMemberId(memberId);
+            key.setAchieveId(achieveId);
+
+            AchieveMember am = achieveMemberRepository.getReferenceById(key);
+
+            return MemberAchieveResponseDto.builder()
+                    .achieveName(achieve.getAchieveName())
+                    .achieveDesc(achieve.getAchieveDesc())
+                    .achieveDate(am.getAchieveDate())
+                    .achieveRelicName(am.getRelicName())
+                    .achievePercentage(percent).build();
+        } catch (Exception e) {
+            return MemberAchieveResponseDto.builder()
+                    .achieveName(achieve.getAchieveName())
+                    .achieveDesc(achieve.getAchieveDesc())
+                    .achievePercentage(percent)
+                    .build();
+        }
     }
 
     // 플레이어가 보유한 업적 조회
 //    public List<Achieve> getAchievesInMember(Long memberId) {
 //        return achieveMemberRepository.findByAchievesOwnedByMember(memberId);
 //    }
+
     public List<AchieveMember> getAchieveMembers(Long memberId) {
         return achieveMemberRepository.findByMemberId(memberId);
     }

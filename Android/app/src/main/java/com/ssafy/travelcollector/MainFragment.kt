@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.adapter.main.MainHeritageAdapter
 import com.ssafy.travelcollector.adapter.main.MainPostingAdapter
@@ -47,57 +49,63 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
         mainActivityViewModel.setPageTitle("")
 
         lifecycleScope.launch {
-
             launch {
                 travelViewModel.loadOnGoingTravel()
                 travelViewModel.loadUserTravelList()
             }
 
             launch {
-                travelViewModel.onGoingTravel.collect{ travel ->
-                    if(travel.id!=-1){
-                        mainActivityViewModel.createGeofenceList(
-                            travel.heritageList
-                        )
-                        setMyTravel(travel)
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    travelViewModel.onGoingTravel.collect{ travel ->
+                        if(travel.id!=-1){
+                            mainActivityViewModel.createGeofenceList(
+                                travel.heritageList
+                            )
+                            setMyTravel(travel)
+                        }
                     }
                 }
             }
 
             launch {
-                travelViewModel.userTravelList.collect{lst->
-                    if(travelViewModel.onGoingTravel.value.id == -1 && lst.isNotEmpty()){
-                        val first = lst[0]
-                        setMyTravel(first)
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    travelViewModel.userTravelList.collect{lst->
+                        if(travelViewModel.onGoingTravel.value.id == -1 && lst.isNotEmpty()){
+                            val first = lst[0]
+                            setMyTravel(first)
+                        }
                     }
                 }
             }
 
             launch{
-                travelViewModel.completedTravelList.collect{ lst->
-                    if(travelViewModel.onGoingTravel.value.id == -1
-                        && travelViewModel.userTravelList.value.isEmpty()){
-                        if(lst.isNotEmpty()){
-                            val travel = lst[Random.nextInt(lst.size)]
-                            setMyTravel(travel)
-                        }else{
-                            binding.mainCurTravelView.visibility = View.GONE
-                            binding.mainTvAltText.visibility = View.VISIBLE
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    travelViewModel.completedTravelList.collect{ lst->
+                        if(travelViewModel.onGoingTravel.value.id == -1
+                            && travelViewModel.userTravelList.value.isEmpty()){
+                            if(lst.isNotEmpty()){
+                                val travel = lst[Random.nextInt(lst.size)]
+                                setMyTravel(travel)
+                            }else{
+                                binding.mainCurTravelView.visibility = View.GONE
+                                binding.mainTvAltText.visibility = View.VISIBLE
+                            }
                         }
                     }
                 }
-
-            }
-
-
-
-            launch {
-                heritageViewModel.searchHeritageListRandom(null, null, null, null)
             }
 
             launch {
-                boardViewModel.setSearchBoardTags(listOf())
-                boardViewModel.loadAllBoards()
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    heritageViewModel.searchHeritageListRandom(null, null, null, null)
+                }
+            }
+
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    boardViewModel.setSearchBoardTags(listOf())
+                    boardViewModel.loadAllBoards()
+                }
             }
 
         }
@@ -138,6 +146,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
     @SuppressLint("SetTextI18n")
     private fun setMyTravel(travel: TravelWithHeritageList){
+        Log.d(TAG, "setMyTravel: $travel")
         binding.mainCurTravelView.visibility = View.VISIBLE
         binding.mainTvAltText.visibility = View.GONE
         binding.mainOli.setImages(ArrayList(travel.heritageList.map{it.imageUrl}))

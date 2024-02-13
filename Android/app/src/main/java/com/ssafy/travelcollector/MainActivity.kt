@@ -29,7 +29,9 @@ import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import com.ssafy.travelcollector.config.ApplicationClass
 import com.ssafy.travelcollector.config.BaseActivity
+import com.ssafy.travelcollector.config.LoginUserManager
 import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
 import com.ssafy.travelcollector.config.geofence.GeofenceManager
 import com.ssafy.travelcollector.databinding.ActivityMainBinding
@@ -46,6 +48,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private lateinit var sideImg: CircleImageView
     private lateinit var sideName: TextView
     private lateinit var sideLogout: Button
+
+    private val manager: LoginUserManager by lazy{ LoginUserManager(ApplicationClass.applicationContext())}
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,6 +118,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                         .load(it.profileUrl)
                         .into(sideImg)
                     sideLogout.visibility = View.VISIBLE
+                    sideLogout.setOnClickListener {
+                        launch {
+                            manager.deleteToken()
+                            LoginUserManager.isWhileLogin = false
+                            accountViewModel.updateToken("")
+                            navController.popBackStack(R.id.loginFragment, true)
+                            navController.navigate(R.id.loginFragment)
+                        }
+                    }
                     sideWelcome.text = "님 안녕하세요"
                 }else{
                     sideLogout.visibility = View.GONE

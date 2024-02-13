@@ -32,6 +32,11 @@ class AccountViewModel: ViewModel(){
         const val DEFAULT_EMAIL: String = "x@x"
     }
 
+    fun updateToken(token: String){
+        _accessToken.update { "Bearer $token" }
+        ACCESS_TOKEN = "Bearer $token"
+    }
+
     fun login(id: String, pwd: String){
         viewModelScope.launch {
             val response = withContext(Dispatchers.IO){
@@ -40,9 +45,12 @@ class AccountViewModel: ViewModel(){
                 )
             }
             loginResponseCode = response.code()
-            val token = response.body()?.get("access_token").toString()
-            _accessToken.update { "Bearer $token" }
-            ACCESS_TOKEN = "Bearer $token"
+            if(response.code()/100 == 2){
+                val token = response.body()?.get("access_token").toString()
+                updateToken(token)
+            }
+
+
         }
     }
 
@@ -51,9 +59,12 @@ class AccountViewModel: ViewModel(){
             val response = withContext(Dispatchers.IO){
                 RetrofitUtil.USER_SERVICE.getUserInfo(token)
             }
-            _user.update {
-                response.body()!!
+            if(response.code()/100 == 2){
+                _user.update {
+                    response.body()!!
+                }
             }
+
         }
     }
 
