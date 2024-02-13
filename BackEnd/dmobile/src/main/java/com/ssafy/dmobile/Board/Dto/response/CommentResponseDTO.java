@@ -15,6 +15,9 @@ public class CommentResponseDTO {
     private String content;
     private Long createdDate;
     private Long memberId;
+    private String memberName;
+    private String memberAchieve;
+    private String memberProfileUrl;
     private Long boardId;
 
     public CommentResponseDTO(Comment comment) {
@@ -22,6 +25,9 @@ public class CommentResponseDTO {
         this.content = comment.getContent();
         this.createdDate = comment.getCreatedDate();
         this.memberId = comment.getMember().getId();
+        this.memberName = comment.getMember().getName();
+        this.memberAchieve = comment.getMember().getAchieve();
+        this.memberProfileUrl = comment.getMember().getProfileUrl();
         this.boardId = comment.getBoard().getBoardId();
     }
 
