@@ -1,13 +1,19 @@
 package com.ssafy.dmobile.relic.controller;
 
+import com.ssafy.dmobile.member.entity.Member;
+import com.ssafy.dmobile.member.repository.MemberRepository;
+import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.relic.service.DetailDataService;
 import com.ssafy.dmobile.relic.service.LocationService;
+import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +29,9 @@ public class RelicController {
     // RequiredArgsConstructor 쓸때는 final 필요
     private final DetailDataRepository detailDataRepository;
     private final DetailDataService detailDataService;
+    private final AuthTokensGenerator authTokensGenerator;
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/list")
     @Operation(summary = "목록 보기", description = "전체 목록 보기")
@@ -155,6 +164,36 @@ public class RelicController {
         }
 
         return ResponseEntity.ok().body(randomResult);
+    }
+
+    @PostMapping("/point")
+    @Operation(summary = "미니게임 완료 후 포인트 획득")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<?> getPoint(@RequestHeader("Authorization") String token, @RequestParam int points) {
+        // 토큰에서 memberId 추출
+        Long memberId= authTokensGenerator.extractMemberId(token);
+
+        // 현재 로그인한 유저 정보 가져오기
+        Member loggedInMember = memberService.getMemberById(memberId);
+
+        // 로그인이 되어있지 않은 경우 또는 유저 정보가 존재하지 않는 경우
+        if (loggedInMember == null) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", 1);
+            response.put("msg", "unauthorized");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // 포인트 추가
+        loggedInMember.setPoint(loggedInMember.getPoint() + points);
+
+        // 저장
+        memberRepository.save(loggedInMember);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("msg", "Points added successfully");
+        response.put("total point: ", loggedInMember.getPoint());
+        return ResponseEntity.ok().body(response);
     }
 
 
