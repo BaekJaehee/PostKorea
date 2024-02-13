@@ -4,7 +4,6 @@ import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
 import com.ssafy.dmobile.achievements.entity.achieve.AchieveMember;
 import com.ssafy.dmobile.achievements.service.AchieveMemberService;
 import com.ssafy.dmobile.member.service.MemberService;
-import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import com.ssafy.dmobile.achievements.entity.visit.MemberRelic;
 import com.ssafy.dmobile.achievements.entity.visit.dto.MemberAchieveResponseDto;
@@ -134,11 +133,16 @@ public class AchievementsController {
     }
 
     @GetMapping("/achieve-info/{achieveId}")
-    @Operation(summary = "업적 상세 조회", description = "achieveId를 받아 해당 업적의 상세 정보를 출력합니다.")
-    public ResponseEntity<?> getAchieveInfo(@PathVariable Long achieveId) {
+    @Operation(summary = "업적 상세 조회", description = "achieveId를 받아 해당 업적의 상세 정보를 출력합니다." +
+            "<br>해당 업적의 진행도를 함께 조회합니다.")
+    @SecurityRequirement(name = "Authorization")
+    public ResponseEntity<?> getAchieveInfo(
+            @PathVariable Long achieveId, @RequestHeader("Authorization") String token) {
 
-        Achieve achieve = achieveMemberService.getAchieveInfo(achieveId);
-        return ResponseEntity.ok(achieve);
+        Long memberId = authTokensGenerator.extractMemberId(token);
+
+        MemberAchieveResponseDto dto = achieveMemberService.getAchieveInfoInMember(achieveId, memberId);
+        return ResponseEntity.ok(dto);
     }
 
     @PutMapping("/title/{achieveId}")
