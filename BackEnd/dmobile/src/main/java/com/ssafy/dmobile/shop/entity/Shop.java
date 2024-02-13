@@ -22,6 +22,8 @@ public class Shop {
     private String productExplanation;
     @Column(name = "is_purchasable")
     private Boolean isPurchasable;
+    @Column(name = "product_acquisition")
+    private String productAcquisition;
 
     // 컨트롤러에서 접근하기 위함
     public boolean getIsPurchasable() {
