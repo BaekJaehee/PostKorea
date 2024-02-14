@@ -101,6 +101,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                     }
                 }
             } else {
+                life = 4
                 var count = 0
                 for (i in era.keys){
                     if (ccceName.contains(i)){
@@ -145,8 +146,10 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                             }
                         }
                     }
+                    if (count == 0) {
+                        life = 1
+                    }
                 }
-                life = 4
             }
         }
     }
@@ -172,6 +175,11 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         binding.miniGameTvRemainingTries.text = "남은 기회 : $life"
         binding.miniGameTvYearRange.visibility = View.VISIBLE
         binding.miniGameTextInputLayout.visibility = View.VISIBLE
+
+        if (life == 1){
+            succeedGuessingYear()
+            binding.miniGameTvStart.text = "연도 불명확"
+        }
     }
 
     private fun onSubmitYear(){
