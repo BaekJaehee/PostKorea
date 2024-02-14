@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -10,19 +11,20 @@ import com.ssafy.travelcollector.databinding.FragmentMiniGame2Binding
 import okhttp3.internal.toImmutableList
 
 
+private const val TAG = "MiniGameFragment"
+
 class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGame2Binding::bind, R.layout.fragment_mini_game2) {
 
     private var heritageSplitEra : List<String> = ArrayList()
     private var year : Int? = null
-    private var year_start : Int = 0
-    private var year_end : Int = 2023
+    private var year_start : Int? = null
+    private var year_end : Int? = null
     private var myAnswer : Int? = null
     private var isEnd : Boolean = false
-    private var life = 10
+    private var life = 15
     private var start = 0
     private var end = 2023
-    private var era = mapOf("구석기" to 1, "신석기" to 2, "석기" to 2, "청동기" to 3, "철기" to 4, "선사" to 4, "삼한" to 4,
-        "삼국" to 5, "신라" to 5, "백제" to 5, "고구려" to 5, "통일신라" to 6, "후삼국" to 7, "고려" to 8, "조선" to 9,)
+    private var era = mapOf("삼국" to arrayOf(0, 668), "신라" to arrayOf(0, 668), "백제" to arrayOf(0, 660), "고구려" to arrayOf(0, 668), "통일신라" to arrayOf(668, 935), "고려" to arrayOf(936, 1392), "조선" to arrayOf(1392, 1897), "대한제국" to arrayOf(1897, 1910))
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,6 +40,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             var handled = false
             if (action == EditorInfo.IME_ACTION_DONE){
                 onSubmitYear()
+                binding.miniGameEtAnswer.text = null
                 handled = true
             }
             handled
@@ -66,20 +69,24 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                     val cen2 = heritageSplitEra[1].split(",")[1].split("세기")[0].trim().toInt()
                     year_start = (cen1 - 1) * 100 + 1
                     year_end = cen2 * 100
+                    life = 4
                 } else {
                     val cen = heritageSplitEra[1].split("세기")[0].trim().toInt()
                     year_start = (cen - 1) * 100 + 1
                     year_end = cen * 100
+                    life = 6
                 }
             } else if (!heritageSplitEra[1].contains("세기") && heritageSplitEra[1].contains("~")){
                 year_start = heritageSplitEra[1].split("~")[0].trim().toInt()
                 year_start = heritageSplitEra[1].split("~")[1].trim().toInt()
+                life = 8
             } else if (heritageSplitEra[1].contains("세기") && heritageSplitEra[1].contains("~")){
                 val cenList = heritageSplitEra[1].split("~")
                 val cen1 = cenList[0].split("세기")[0].trim().toInt()
                 val cen2 = cenList[1].split("세기")[0].trim().toInt()
                 year_start = (cen1 - 1) * 100 + 1
                 year_end = cen2 * 100
+                life = 4
             }
         } else {
             if (ccceName.contains("세기")){
@@ -89,11 +96,56 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                         val cen = it.split("세기")[0].trim().toInt()
                         year_start = (cen - 1) * 100 + 1
                         year_end = cen * 100
+                        life = 6
                     }
                 }
             } else {
-                heritageSplitEra = ccceName.split(" ")
-
+                var count = 0
+                for (i in era.keys){
+                    if (ccceName.contains(i)){
+                        count += 1
+                    }
+                }
+                if (ccceName.contains("통일신라")) {
+                    if (count == 2){
+                        year_start = era["통일신라"]!!.get(0)
+                        year_end = era["통일신라"]!!.get(1)
+                    } else if (count > 2){
+                        for (i in era.keys) {
+                            if (i == "신라") continue
+                            if (ccceName.contains(i)){
+                                if (year_start == null){
+                                    year_start = era[i]!!.get(1) - 100
+                                    year_end = era[i]!!.get(1)
+                                } else if (year_start != null){
+                                    year_end = era[i]!!.get(0) + 100
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (count == 1){
+                        for (i in era.keys){
+                            if (ccceName.contains(i)){
+                                year_start = era[i]?.get(0)
+                                year_end = era[i]?.get(1)
+                            }
+                        }
+                    }
+                    if (count > 1){
+                        for (i in era.keys) {
+                            if (ccceName.contains(i)){
+                                if (year_start == null){
+                                    year_start = era[i]!!.get(1) - 100
+                                    year_end = era[i]!!.get(1)
+                                } else if (year_start != null){
+                                    year_end = era[i]!!.get(0) + 100
+                                }
+                            }
+                        }
+                    }
+                }
+                life = 4
             }
         }
     }
@@ -114,8 +166,9 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             .into(binding.miniGameIvHeritage) // 이미지를 넣을 뷰
 
         binding.miniGameTvUpDown.visibility = View.VISIBLE
-        binding.miniGameTvRemainingTries.visibility = View.VISIBLE
         binding.miniGameTvMyAnswer.visibility = View.VISIBLE
+        binding.miniGameTvRemainingTries.visibility = View.VISIBLE
+        binding.miniGameTvRemainingTries.text = "남은 기회 : $life"
         binding.miniGameTvYearRange.visibility = View.VISIBLE
         binding.miniGameTextInputLayout.visibility = View.VISIBLE
     }
@@ -157,13 +210,13 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     }
 
     private fun yearRangeUpDownCheck() {
-        if (myAnswer!! in year_start..year_end) {
+        if (myAnswer!! in year_start!!..year_end!!) {
             succeedGuessingYear()
-        } else if (myAnswer!! > year_end) {
+        } else if (myAnswer!! > year_end!!) {
             binding.miniGameTvUpDown.text = "Down"
             life -= 1
             end = myAnswer!! - 1
-        } else if (myAnswer!! < year_start) {
+        } else if (myAnswer!! < year_start!!) {
             binding.miniGameTvUpDown.text = "Up"
             life -= 1
             start = myAnswer!! + 1
@@ -187,6 +240,8 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         binding.miniGameTvMyAnswer.visibility = View.GONE
         binding.miniGameTvYearRange.visibility = View.GONE
         binding.miniGameTextInputLayout.visibility = View.GONE
+
+        heritageViewModel.editPoints(life*10)
 
         isEnd = true
     }

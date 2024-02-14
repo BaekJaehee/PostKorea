@@ -10,7 +10,9 @@ import com.ssafy.dmobile.relic.service.LocationService;
 import com.ssafy.dmobile.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 // rest api로 통신
 @RequestMapping("/relic")
 @RequiredArgsConstructor
+@Tag(name = "Relic", description = "문화재 관련 api")
 public class RelicController {
 
     // RequiredArgsConstructor 쓸때는 final 필요
@@ -36,7 +39,7 @@ public class RelicController {
     @GetMapping("/list")
     @Operation(summary = "목록 보기", description = "전체 목록 보기")
     public ResponseEntity<?> getRelic() {
-        int limit = 10;
+        int limit = 20;
         Pageable pageable = PageRequest.of(0, limit);
         List<DetailData> detailData = detailDataRepository.findDataByLimit(pageable);
         return ResponseEntity.ok().body(detailData);
@@ -44,14 +47,30 @@ public class RelicController {
 
     @GetMapping("/find")    // 포함되는 이름이 있으면 반환
     @Operation(summary = "이름 검색", description = "이름으로 검색해서 포함되는 문자가 있는 행 반환")
-    public ResponseEntity<List<DetailData>> findData(@RequestParam String name) {
-        List<DetailData> result = detailDataRepository.findByName(name);
-        return ResponseEntity.ok().body(result);
+    public ResponseEntity<?> findData(@RequestParam String name) {
+        try {
+            List<DetailData> result = detailDataRepository.findByName(name);
+            if (result.isEmpty()) {
+                // 검색 결과가 없는 경우
+                Map<String, Object> response = new HashMap<>();
+                response.put("code", HttpStatus.NOT_FOUND.value());
+                response.put("msg", "검색 결과가 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                return ResponseEntity.ok().body(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("msg", "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/search")
     @Operation(summary = "조건 검색", description = "시/도, 시/군/구, 시대, 분류를 파라미터로 검색해 해당하는 행 반환")
-    public ResponseEntity<List<DetailData>> searchData(
+    public ResponseEntity<?> searchData(
             @RequestParam(required = false) String region1,
             @RequestParam(required = false) String region2,
             @RequestParam(required = false) String era,
@@ -59,26 +78,56 @@ public class RelicController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit) {
         // 임의로 10개씩 나오게 설정
+        try {
+            String mappingRegion1 = detailDataService.mappingRegion(region1);
 
-        String mappingRegion1 = detailDataService.mappingRegion(region1);
+    //        System.out.println(region1 + mappingRegion1 + region2 + ccceName + mcodeName);
 
-//        System.out.println(region1 + mappingRegion1 + region2 + ccceName + mcodeName);
+            PageRequest pageRequest = PageRequest.of(page, limit);
 
-        PageRequest pageRequest = PageRequest.of(page, limit);
-
-        List<DetailData> result = detailDataRepository.findbyTags(
-            region1, mappingRegion1, region2, era, category, pageRequest
-        );
-        // pageRequest 파라미터에 추가
-
-        return ResponseEntity.ok().body(result);
+            List<DetailData> result = detailDataRepository.findbyTags(
+                region1, mappingRegion1, region2, era, category, pageRequest
+            );
+            if (result.isEmpty()) {
+                // 테이블에 id값이 없는 경우
+                Map<String, Object> response = new HashMap<>();
+                response.put("code", HttpStatus.NOT_FOUND.value());
+                response.put("msg", "검색 결과가 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                return ResponseEntity.ok().body(result);
+            }
+            // pageRequest 파라미터에 추가
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("msg", "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/detail/{id}")
     @Operation(summary = "상세보기", description = "문화재 이미지, 내용 등 상세보기")
-    public ResponseEntity<DetailData> getDetail(@PathVariable Long id) {
-        DetailData detailData = detailDataRepository.findByItemId(id);
-        return ResponseEntity.ok().body(detailData);
+    public ResponseEntity<?> getDetail(@PathVariable Long id) {
+        try {
+            DetailData detailData = detailDataRepository.findByItemId(id);
+            if (detailData == null) {
+                // 검색 결과가 없는 경우
+                Map<String, Object> response = new HashMap<>();
+                response.put("code", HttpStatus.NOT_FOUND.value());
+                response.put("msg", "해당하는 문화재가 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            } else {
+                return ResponseEntity.ok().body(detailData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object> response = new HashMap<>();
+            response.put("code", HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.put("msg", "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @GetMapping("/random/{relicId}")

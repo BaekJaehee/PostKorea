@@ -60,4 +60,18 @@ public class MemberManageController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/check/{email}")
+    @Operation(summary = "사용자 확인용 API", description = "해당 이메일이 가입되어있는지 확인힙나디. 관리자만 가능합니다.")
+    public ResponseEntity<?> checkEmailIsExist(
+            @PathVariable String email) {
+
+        memberService.findByMemberEmail(email);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", 0);
+        response.put("msg", "succeed");
+
+        return ResponseEntity.ok(response);
+    }
 }
