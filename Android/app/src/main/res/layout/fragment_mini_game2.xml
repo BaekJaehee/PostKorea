@@ -63,7 +63,6 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="24sp"
-            android:text="남은 기회 : 10"
             android:visibility="gone"/>
 
         <TextView

@@ -1,6 +1,7 @@
 package com.ssafy.travelcollector
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -10,12 +11,14 @@ import com.ssafy.travelcollector.databinding.FragmentMiniGame2Binding
 import okhttp3.internal.toImmutableList
 
 
+private const val TAG = "MiniGameFragment"
+
 class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGame2Binding::bind, R.layout.fragment_mini_game2) {
 
     private var heritageSplitEra : List<String> = ArrayList()
     private var year : Int? = null
-    private var year_start : Int = 0
-    private var year_end : Int = 2023
+    private var year_start : Int? = null
+    private var year_end : Int? = null
     private var myAnswer : Int? = null
     private var isEnd : Boolean = false
     private var life = 15
@@ -37,6 +40,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             var handled = false
             if (action == EditorInfo.IME_ACTION_DONE){
                 onSubmitYear()
+                binding.miniGameEtAnswer.text = null
                 handled = true
             }
             handled
@@ -96,29 +100,47 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                     }
                 }
             } else {
-                val temp = mutableListOf<String>()
+                var count = 0
                 for (i in era.keys){
-                    if (temp.size == 1 && temp[0] == "신라" && i == "통일신라") {
-                        temp[0] = i
-                    } else {
-                        temp.add(i)
+                    if (ccceName.contains(i)){
+                        count += 1
                     }
                 }
-                if (temp.size == 1) {
-                    for (i in era.keys) {
-                        if (ccceName.contains(i)){
-                            year_start = era[i]!!.get(0)
-                            year_end = era[i]!!.get(1)
+                if (ccceName.contains("통일신라")) {
+                    if (count == 2){
+                        year_start = era["통일신라"]!!.get(0)
+                        year_end = era["통일신라"]!!.get(1)
+                    } else if (count > 2){
+                        for (i in era.keys) {
+                            if (i == "신라") continue
+                            if (ccceName.contains(i)){
+                                if (year_start == null){
+                                    year_start = era[i]!!.get(1) - 100
+                                    year_end = era[i]!!.get(1)
+                                } else if (year_start != null){
+                                    year_end = era[i]!!.get(0) + 100
+                                }
+                            }
                         }
                     }
-                } else if (temp.size == 2) {
-                    for (i in era.keys) {
-                        if (ccceName.contains(i)){
-                            if (year_start == null){
-                                year_start = era[i]!!.get(1) - 100
-                                year_end = era[i]!!.get(1)
-                            } else if (year_start != null){
-                                year_end = era[i]!!.get(0) + 100
+                } else {
+                    if (count == 1){
+                        for (i in era.keys){
+                            if (ccceName.contains(i)){
+                                year_start = era[i]?.get(0)
+                                year_end = era[i]?.get(1)
+                            }
+                        }
+                    }
+                    if (count > 1){
+                        for (i in era.keys) {
+                            if (ccceName.contains(i)){
+                                if (year_start == null){
+                                    year_start = era[i]!!.get(1) - 100
+                                    year_end = era[i]!!.get(1)
+                                } else if (year_start != null){
+                                    year_end = era[i]!!.get(0) + 100
+                                }
                             }
                         }
                     }
@@ -144,8 +166,9 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             .into(binding.miniGameIvHeritage) // 이미지를 넣을 뷰
 
         binding.miniGameTvUpDown.visibility = View.VISIBLE
-        binding.miniGameTvRemainingTries.visibility = View.VISIBLE
         binding.miniGameTvMyAnswer.visibility = View.VISIBLE
+        binding.miniGameTvRemainingTries.visibility = View.VISIBLE
+        binding.miniGameTvRemainingTries.text = "남은 기회 : $life"
         binding.miniGameTvYearRange.visibility = View.VISIBLE
         binding.miniGameTextInputLayout.visibility = View.VISIBLE
     }
@@ -187,13 +210,13 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     }
 
     private fun yearRangeUpDownCheck() {
-        if (myAnswer!! in year_start..year_end) {
+        if (myAnswer!! in year_start!!..year_end!!) {
             succeedGuessingYear()
-        } else if (myAnswer!! > year_end) {
+        } else if (myAnswer!! > year_end!!) {
             binding.miniGameTvUpDown.text = "Down"
             life -= 1
             end = myAnswer!! - 1
-        } else if (myAnswer!! < year_start) {
+        } else if (myAnswer!! < year_start!!) {
             binding.miniGameTvUpDown.text = "Up"
             life -= 1
             start = myAnswer!! + 1
