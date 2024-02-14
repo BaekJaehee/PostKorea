@@ -8,7 +8,7 @@
 #    key-store-type: PKCS12
 spring:
   datasource:
-    url: jdbc:mariadb://i10d102.p.ssafy.io:3306/project
+    url: jdbc:mariadb://i10d102.p.ssafy.io:3306/final
     username: d102
     password: "0125"
     # 개인용 데이터베이스 환경에 맞추어 셋업 필요

@@ -28,6 +28,8 @@ public interface BoardService {
     // BoardService.java
     List<BoardResponseDTO> findBoardsByTag(List<String> tags);
 
+    // 태그 and 연산
+    List<BoardResponseDTO> findBoardsByTagsAnd(List<String> tags);
 
     // throws IOException : 예외처리를 강제하는 코드
 //    String uploadBoardImage(Long boardId, MultipartFile file, Long imageId) throws IOException;
