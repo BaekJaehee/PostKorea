@@ -31,7 +31,7 @@ public class Board {
     private String title;
 
     // post_content(내용)
-    @Column(name = "baord_content", nullable = false)
+    @Column(name = "board_content", nullable = false)
     private String content;
 
     // User(유저 ID)
