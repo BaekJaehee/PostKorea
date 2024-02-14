@@ -45,5 +45,5 @@ interface HeritageService {
     ): Response<List<Heritage>>
 
     @PUT("relic/point")
-    suspend fun editPoints(@Header("Authorization") token: String, @Body points: Int): Response<Any>
+    suspend fun editPoints(@Header("Authorization") token: String, @Query("points") points: Int): Response<Any>
 }
