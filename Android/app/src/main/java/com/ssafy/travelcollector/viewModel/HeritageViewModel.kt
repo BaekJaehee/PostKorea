@@ -104,12 +104,18 @@ class HeritageViewModel: ViewModel() {
         }
     }
 
-    fun editPoints(points : Int){
+    fun editPoints(points : Int, callback: ()->Unit){
         viewModelScope.launch{
-            RetrofitUtil.HERITAGE_SERVICE.editPoints(
+            val res = RetrofitUtil.HERITAGE_SERVICE.editPoints(
                 AccountViewModel.ACCESS_TOKEN, points
             )
+            if(res.code()/100 == 2){
+                callback()
+            }
+
         }
     }
+
+
 
 }

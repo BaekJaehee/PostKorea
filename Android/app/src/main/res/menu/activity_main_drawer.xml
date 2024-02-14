@@ -4,15 +4,6 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_watchlist"
-            android:icon="@drawable/heart"
-            android:title="관심 목록"/>
-
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/camara_figma"
-            android:title="카메라" />
 
         <item
             android:id="@+id/nav_store"
