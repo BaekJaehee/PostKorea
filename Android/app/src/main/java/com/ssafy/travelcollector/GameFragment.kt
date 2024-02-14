@@ -7,14 +7,17 @@ import com.ssafy.travelcollector.databinding.FragmentGameBinding
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.dto.Heritage
+import com.ssafy.travelcollector.viewModel.AccountViewModel
 import kotlinx.coroutines.launch
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
+import com.ssafy.travelcollector.databinding.FragmentStoreBinding
 
 private const val TAG = "GameFragment"
 
@@ -197,7 +200,8 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvQuestionNumber.visibility = View.GONE
         binding.gameTvNext.text = "맞은 문제 : $correctAnswers / 10"
 
-        heritageViewModel.editPoints(correctAnswers*10)
+        val bindingStore = FragmentStoreBinding.inflate(layoutInflater)
+        bindingStore.storeBtnPts.text = "보유 pts : ${accountViewModel.user.value.point}"
     }
 
     override fun onClick(view: View?) {
@@ -231,6 +235,9 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                 } else {
                     if (selectedOption != null) {
                         onSubmit(selectedOption!!)
+                        heritageViewModel.editPoints(correctAnswers*10){
+                            accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
+                        }
                     } else {
                         if (isSubmit){
                             end()
