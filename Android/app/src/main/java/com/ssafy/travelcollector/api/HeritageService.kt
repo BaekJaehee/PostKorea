@@ -2,7 +2,10 @@ package com.ssafy.travelcollector.api
 
 import com.ssafy.travelcollector.dto.Heritage
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -41,4 +44,6 @@ interface HeritageService {
         @Query("name") name: String?,
     ): Response<List<Heritage>>
 
+    @PUT("relic/point")
+    suspend fun editPoints(@Header("Authorization") token: String, @Body points: Int): Response<Any>
 }
