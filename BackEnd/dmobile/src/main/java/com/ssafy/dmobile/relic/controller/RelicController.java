@@ -209,7 +209,7 @@ public class RelicController {
         return ResponseEntity.ok().body(randomResult);
     }
 
-    @PostMapping("/point")
+    @PutMapping("/point")
     @Operation(summary = "미니게임 완료 후 포인트 획득")
     @SecurityRequirement(name = "Authorization")
     public ResponseEntity<?> getPoint(@RequestHeader("Authorization") String token, @RequestParam int points) {
