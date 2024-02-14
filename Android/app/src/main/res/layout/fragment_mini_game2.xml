@@ -53,7 +53,7 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="32sp"
-            android:text="정답 / Up / Down"
+            android:text="문화재 Up Down 게임"
             android:visibility="gone"/>
 
         <TextView
@@ -72,7 +72,6 @@
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="24sp"
-            android:text="내 제출 : 년"
             android:visibility="gone"/>
 
         <TextView
