@@ -250,4 +250,9 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    public Member findByMemberEmail(String email) {
+        return memberRepository.findByEmail(email).orElseThrow(
+                () -> new CustomException(ExceptionType.MEMBER_NOT_FOUND_EXCEPTION)
+        );
+    }
 }
