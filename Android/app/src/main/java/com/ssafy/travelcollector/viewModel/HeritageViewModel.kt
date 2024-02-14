@@ -103,4 +103,13 @@ class HeritageViewModel: ViewModel() {
             }
         }
     }
+
+    fun editPoints(points : Int){
+        viewModelScope.launch{
+            RetrofitUtil.HERITAGE_SERVICE.editPoints(
+                AccountViewModel.ACCESS_TOKEN, points
+            )
+        }
+    }
+
 }

@@ -241,6 +241,8 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         binding.miniGameTvYearRange.visibility = View.GONE
         binding.miniGameTextInputLayout.visibility = View.GONE
 
+        heritageViewModel.editPoints(life*10)
+
         isEnd = true
     }
 

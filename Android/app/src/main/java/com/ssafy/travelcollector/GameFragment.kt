@@ -196,6 +196,8 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvQuestionLower.text = "획득한 포인트 : ${correctAnswers*10}"
         binding.gameTvQuestionNumber.visibility = View.GONE
         binding.gameTvNext.text = "맞은 문제 : $correctAnswers / 10"
+
+        heritageViewModel.editPoints(correctAnswers*10)
     }
 
     override fun onClick(view: View?) {
