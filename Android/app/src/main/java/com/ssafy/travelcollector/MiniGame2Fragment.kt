@@ -55,7 +55,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
 
     private fun initiate(){
         val ccceName = heritageViewModel.curHeritage.value.era
-        if (ccceName.contains("(")){
+        if (ccceName!!.contains("(")){
             heritageSplitEra = ccceName.split("(")
             if (!heritageSplitEra[1].contains("세기") && !heritageSplitEra[1].contains("~")){
                 val year_string = heritageSplitEra[1].split(")")[0].trim()

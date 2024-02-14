@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@color/brown1">
+
+    <ImageView
+        android:id="@+id/product_detail_img"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        tools:src ="@drawable/bulguksa" />
+
+    <TextView
+        android:id="@+id/product_detail_title"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="금동관장식"
+        android:textColor="@color/orange"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:layout_marginVertical="16dp"/>
+
+    <TextView
+        android:id="@+id/product_detail_desc"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="전라북도 익산시 팔봉면 석왕리 쌍릉 돌방[石室] 내에 안치되어 있던 목판에 사용된 장식금구. 이 금구와 형태가 거의 같은 것이 부여 능산리에서 출토되었는데 연꽃무늬를 새겨 장식하고 있다. 능산리의 출토품은 테두리에 음각선을 돌렸고, 아랫부분의 목관에 삽입되는 부분에는 둥근 구멍이 있는 직사각형 금구가 달려 있다. 이로 보아 이 장식은 원래 능산리 고분에서 출토된 것과 같을 것으로 추정된다"/>
+
+    <Button
+        android:id="@+id/product_detail_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="확인"
+        android:backgroundTint="@color/brown3"/>
+
+</LinearLayout>

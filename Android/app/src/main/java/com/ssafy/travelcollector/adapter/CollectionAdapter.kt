@@ -37,7 +37,7 @@ class CollectionAdapter : BaseAdapter<Product>(){
                 binding.collectionIvImage.background.colorFilter = null
             }
             binding.root.setOnClickListener {
-                clickListener.onClick(data.acquisition, data.date != null , layoutPosition)
+                clickListener.onClick(data, layoutPosition)
             }
             binding.root.setBackgroundColor(binding.root.resources.getColor(
                 if(selectedIdx==layoutPosition) R.color.gold else com.kakao.sdk.friend.R.color.transparent)
@@ -54,7 +54,7 @@ class CollectionAdapter : BaseAdapter<Product>(){
     }
 
     interface ClickListener{
-        fun onClick(acquisition: String, own: Boolean, position: Int)
+        fun onClick(data: Product, position: Int)
     }
 
     lateinit var clickListener: ClickListener
