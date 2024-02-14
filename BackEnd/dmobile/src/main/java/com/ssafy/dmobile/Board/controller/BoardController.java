@@ -142,7 +142,7 @@ public class BoardController {
         return ResponseEntity.ok().body("Images uploaded successfully to board with ID: " + boardId);
     }
 
-    @Operation(summary = "태그로 게시판 검색", description = "여러 태그로 게시판을 검색합니다.")
+    @Operation(summary = "태그(or)로 게시판 검색", description = "여러 태그(or)로 게시판을 검색합니다.")
     @GetMapping("/searchByTags")
     public ResponseEntity<List<BoardResponseDTO>> findBoardsByTag(@RequestParam List<String> tags) {
         List<BoardResponseDTO> boards = boardService.findBoardsByTag(tags);
@@ -153,6 +153,13 @@ public class BoardController {
     @GetMapping("/searchKeyword")
     public ResponseEntity<List<BoardResponseDTO>> searchBoards(@RequestParam String keyword) {
         List<BoardResponseDTO> boards = boardService.searchBoards(keyword);
+        return ResponseEntity.ok(boards);
+    }
+
+    @Operation(summary = "태그(and)로 게시판 검색", description = "하나 이상의 태그(and)로 게시판을 검색합니다.")
+    @GetMapping("/searchByTagsAnd")
+    public ResponseEntity<List<BoardResponseDTO>> findBoardsByTagsAnd(@RequestParam List<String> tags) {
+        List<BoardResponseDTO> boards = boardService.findBoardsByTagsAnd(tags);
         return ResponseEntity.ok(boards);
     }
 }

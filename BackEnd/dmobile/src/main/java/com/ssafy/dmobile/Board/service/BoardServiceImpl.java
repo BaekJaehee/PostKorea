@@ -274,4 +274,15 @@ public class BoardServiceImpl implements BoardService {
         List<Board> boards = boardRepository.findByTitleContainingOrContentContaining(keyword, keyword);
         return boards.stream().map(BoardResponseDTO::new).collect(Collectors.toList());
     }
+
+    @Override
+    public List<BoardResponseDTO> findBoardsByTagsAnd(List<String> tags) {
+        // CustomBoardRepository에서 정의한 메소드를 사용하여 게시글 검색
+        List<Board> boards = customBoardRepository.findBoardsByTagsAnd(tags);
+
+        // 검색된 게시글을 BoardResponseDTO 리스트로 변환
+        return boards.stream()
+                .map(BoardResponseDTO::new)
+                .collect(Collectors.toList());
+    }
 }
