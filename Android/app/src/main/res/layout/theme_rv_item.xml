@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_corner_black_stroke_item"
     android:paddingVertical="16dp"
-    android:paddingRight="16dp">
+    android:paddingRight="16dp"
+    android:layout_marginVertical="8dp">
 
     <com.ssafy.travelcollector.customView.OverlapImages
         android:id="@+id/theme_rv_item_images"
@@ -39,7 +40,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:background="@drawable/heart_unclicked"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

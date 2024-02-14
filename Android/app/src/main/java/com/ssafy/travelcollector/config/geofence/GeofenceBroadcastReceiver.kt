@@ -29,16 +29,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
             geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL
             ) {
 
-            // Get the geofences that were triggered. A single event can trigger
-            // multiple geofences.
             val triggeringGeofences = geofencingEvent.triggeringGeofences
-
-            val transitionMsg = when(geofenceTransition) {
-                Geofence.GEOFENCE_TRANSITION_ENTER -> "Enter"
-                Geofence.GEOFENCE_TRANSITION_EXIT -> "Exit"
-                Geofence.GEOFENCE_TRANSITION_DWELL -> "Dwell"
-                else -> "-"
-            }
 
             val transitionCallback:(id: String)->Unit = {
                 id ->

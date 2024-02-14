@@ -7,7 +7,10 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -40,9 +43,9 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
-        initView()
 
+        initView()
+        initAdapter()
     }
 
     private fun initView(){
@@ -51,12 +54,14 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
 
         lifecycleScope.launch{
             launch {
+                boardViewModel.loadDetailBoard()
+
                 boardViewModel.boardDetail.collect{
                     binding.heritagePostTvTitle.text = it.title
                     binding.heritagePostText.text = it.content
                     binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
                     imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
-                    boardViewModel.loadComments(it.id)
+                    boardViewModel.setComments(ArrayList(it.comments))
                 }
             }
             launch {
@@ -69,6 +74,18 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
             }
 
         }
+
+//        lifecycleScope.launch{
+//            boardViewModel.boardDetail.collect{
+//                Log.d(TAG, "initView: $it")
+////                binding.heritagePostTvTitle.text = it.title
+////                binding.heritagePostText.text = it.content
+////                binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
+////                imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
+////                        boardViewModel.loadComments(it.id)
+//            }
+//
+//        }
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -84,6 +101,10 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         }
         binding.heritagePostBtnShowAllComments.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+
+        binding.heritagePostProfileImg.setOnClickListener{
+            findNavController().navigate(R.id.profileFragment)
         }
     }
 
@@ -123,11 +144,5 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         }
         binding.heritagePostEtComment.setText("")
     }
-
-
-    override fun onDestroyView() {
-        boardViewModel.initWriter()
-        super.onDestroyView()
-    }
-
+    
 }

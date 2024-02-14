@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.SearchView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.BoardAdapter
@@ -34,6 +36,8 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
             }
         }
 
+
+
         binding.boardListAddPost.setOnClickListener{
             boardViewModel.setIsHeritageBoard(false)
             findNavController().navigate(R.id.travelPostEditFragment)
@@ -54,17 +58,25 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
     private fun initAdapter(){
         lifecycleScope.launch{
-            boardViewModel.boardList.collect{
-                boardAdapter.submitList(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    boardViewModel.setSearchBoardTags(listOf())
+                    boardViewModel.loadAllBoards()
+                }
+
+                launch {
+                    boardViewModel.boardList.collect{
+                        boardAdapter.submitList(it)
+                    }
+                }
             }
+
         }
 
         boardAdapter.clickListener = object : BoardAdapter.ClickListener{
-            override fun onClick(position: Int) {
-                boardViewModel.loadDetailBoard(
-                    boardAdapter.currentList[position].id
-                )
-                findNavController().navigate(R.id.action_boardListFragment_to_boardPostFragment)
+            override fun onClick(id: Int) {
+                boardViewModel.setCurPostingId(id)
+                findNavController().navigate(R.id.boardPostFragment)
             }
 
         }

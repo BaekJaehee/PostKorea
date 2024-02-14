@@ -15,8 +15,8 @@ class ThemeAdapter : BaseAdapter<TravelTheme>() {
     inner class TravelThemHolder(private val binding: ThemeRvItemBinding): BaseHolder(binding){
         override fun bindInfo(data: TravelTheme) {
             binding.themeRvItemTitle.text = data.title
-            binding.themeRvItemHeartClicked.visibility = if(data.isBookMarked) View.VISIBLE else View.GONE
-            binding.themeRvItemHeartUnclicked.visibility = if(data.isBookMarked) View.GONE else View.VISIBLE
+//            binding.themeRvItemHeartClicked.visibility = if(data.isBookMarked) View.VISIBLE else View.GONE
+//            binding.themeRvItemHeartUnclicked.visibility = if(data.isBookMarked) View.GONE else View.VISIBLE
 
             binding.root.setOnClickListener{
                 clickListener.onItemClick(layoutPosition)

@@ -9,15 +9,13 @@
     android:gravity="center"
     >
 
-    <TextView
+    <ImageView
         android:id="@+id/login_tv_logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로고"
-        android:textSize="50sp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:gravity="center"
-        android:layout_margin="20dp"
-        />
+        android:src="@drawable/post_korea_logo"
+        android:layout_margin="20dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="250dp"
@@ -32,7 +30,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/user_info_form"
             android:hint="email"
-            />
+            android:singleLine="true" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
