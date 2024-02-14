@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentMiniGame2Binding
+import com.ssafy.travelcollector.viewModel.AccountViewModel
 import okhttp3.internal.toImmutableList
 
 
@@ -242,6 +243,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         binding.miniGameTextInputLayout.visibility = View.GONE
 
         heritageViewModel.editPoints(life*10)
+        accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
 
         isEnd = true
     }
