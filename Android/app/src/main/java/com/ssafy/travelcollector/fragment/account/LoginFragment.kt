@@ -42,7 +42,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                 manager.getIsLogin().collectLatest{
                     if(it){
                         LoginUserManager.isWhileLogin = true
-                        Log.d(TAG, "onViewCreated: login o")
                         manager.getToken().collectLatest{ info->
                             if(info[0].isNotEmpty() && info[1].isNotEmpty()){
                                 Log.d(TAG, "onViewCreated: aaa")
@@ -58,17 +57,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
 
             launch {
                 accountViewModel.accessToken.collect{
-                    Log.d(TAG, "onViewCreated: $it")
                     if(it.isNotEmpty() && it!="Bearer " && it!= "null" && accountViewModel.loginResponseCode / 100 == 2){
                         lifecycleScope.launch {
-                            Log.d(TAG, "onViewCreated: dddddd")
                             accountViewModel.getInfo(it)
                             findNavController().navigate(R.id.mainFragment)
                         }
                     }else{
                         if(accountViewModel.loginResponseCode / 100 != 2){
                             Log.d(TAG, "onViewCreated: $it \n ${accountViewModel.loginResponseCode}")
-                            showToast("잘못됐습니다")
+//                            showToast("잘못됐습니다")
                         }
                         manager.deleteToken()
                     }

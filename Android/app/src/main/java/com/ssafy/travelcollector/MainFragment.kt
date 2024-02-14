@@ -46,7 +46,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
     @SuppressLint("SetTextI18n")
     private fun initView(){
-        mainActivityViewModel.setPageTitle("")
+        mainActivityViewModel.setPageTitle("POST KOREA")
 
         lifecycleScope.launch {
             launch {
@@ -59,14 +59,12 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
             }
 
             launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    travelViewModel.onGoingTravel.collect{ travel ->
-                        if(travel.id!=-1){
-                            mainActivityViewModel.createGeofenceList(
-                                travel.heritageList
-                            )
-                            setMyTravel(travel)
-                        }
+                travelViewModel.onGoingTravel.collect{ travel ->
+                    if(travel.id!=-1){
+                        mainActivityViewModel.createGeofenceList(
+                            travel.heritageList
+                        )
+                        setMyTravel(travel)
                     }
                 }
             }
@@ -105,13 +103,14 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
                         heritageViewModel.searchHeritageListRandom(null, null, null, null)
                     }
                 }
-
             }
 
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED){
-                    boardViewModel.setSearchBoardTags(listOf())
-                    boardViewModel.loadAllBoards()
+                    launch {
+                        boardViewModel.setSearchBoardTags(listOf())
+                        boardViewModel.loadAllBoards()
+                    }
                 }
             }
 
@@ -128,7 +127,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
     private fun initAdapter(){
         mainBoardAdapter.clickListener = object : MainPostingAdapter.IClickListener{
             override fun onClick(id: Int) {
-                boardViewModel.loadDetailBoard(id)
+                boardViewModel.setCurPostingId(id)
                 findNavController().navigate(R.id.boardPostFragment)
             }
         }

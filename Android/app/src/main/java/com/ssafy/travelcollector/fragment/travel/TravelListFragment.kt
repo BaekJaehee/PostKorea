@@ -90,6 +90,17 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
                 }
             }
         }
+
+        binding.travelListViewOngoing.setOnClickListener {
+            travelViewModel.apply {
+                val curTravel = travelViewModel.onGoingTravel.value
+                setTravelPlanHeritageList(curTravel.heritageList)
+                setUserTravel(curTravel)
+                setUserTravelId(curTravel.id)
+                findNavController().navigate(R.id.travelPlanFragment)
+            }
+        }
+
         travelAdapter.clickListener = object : TravelAdapter.ClickListener{
             override fun onClick(position: Int, state: Boolean) {
                 val curTravel: TravelWithHeritageList

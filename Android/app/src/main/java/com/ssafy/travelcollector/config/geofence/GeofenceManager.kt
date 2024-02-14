@@ -36,9 +36,13 @@ object GeofenceManager {
 
     @SuppressLint("MissingPermission")
     fun addGeofences(lst: List<Geofence>){
-        geofencingClient.addGeofences(getGeofencingRequest(lst), geofencePendingIntent).run{
+        geofencingClient.addGeofences(getGeofencingRequest(lst), PendingIntent.getBroadcast(
+            ApplicationClass.applicationContext(),
+            100,
+            Intent(ApplicationClass.applicationContext(), GeofenceBroadcastReceiver::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE )).run{
             addOnSuccessListener {
-                Log.d(TAG, "addGeofences: $it")
+                Log.d(TAG, "addGeofences")
                 Toast.makeText(ApplicationClass.applicationContext(), "add success", Toast.LENGTH_SHORT).show()
             }
             addOnFailureListener {
@@ -47,11 +51,11 @@ object GeofenceManager {
         }
     }
 
-    private fun removeGeofences(){
-        geofencingClient.removeGeofences(geofencePendingIntent).run{
-            addOnSuccessListener {  }
-        }
-    }
+//    private fun removeGeofences(){
+//        geofencingClient.removeGeofences(geofencePendingIntent).run{
+//            addOnSuccessListener {  }
+//        }
+//    }
 
     interface GeofenceCallback{
         fun onEnter(id: String)

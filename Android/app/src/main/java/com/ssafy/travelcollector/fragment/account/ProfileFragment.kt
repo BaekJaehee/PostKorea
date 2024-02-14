@@ -32,10 +32,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     @SuppressLint("SetTextI18n")
     private fun initView(){
         mainActivityViewModel.setPageTitle("프로필")
+
         galleryLauncher.pictureCallbackListener = object : GalleryLauncher.PictureCallbackListener{
             override fun onGetData(data: Uri) {
                 Glide.with(requireContext())
                     .load(data)
+                    .fallback(R.drawable.profile)
                     .into(binding.profileImage)
                 lifecycleScope.launch {
                     accountViewModel.editProfileImg(data, requireContext())
@@ -43,10 +45,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             }
         }
 
+        val isOwnerProfile = boardViewModel.writer.value.memberEmail == accountViewModel.user.value.memberEmail
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 launch {
-                    accountViewModel.user.collect{
+                    if(isOwnerProfile){
+                        accountViewModel.user.collect{
+                            Glide.with(requireContext())
+                                .load(it.profileUrl)
+                                .into(binding.profileImage)
+                            binding.profileTvName.text = it.userName
+                            binding.profileTvTitle.text = "-${it.title?:""}-"
+                        }
+                    }else{
+                        val it = boardViewModel.writer.value
                         Glide.with(requireContext())
                             .load(it.profileUrl)
                             .into(binding.profileImage)
@@ -57,9 +70,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             }
         }
 
+
+
+        binding.profileCamera.visibility = if(isOwnerProfile) View.VISIBLE else View.GONE
+        binding.profileBtnChangePersonalInfo.visibility = if(isOwnerProfile) View.VISIBLE else View.GONE
+        binding.profileBtnAchievement.visibility = if(isOwnerProfile) View.VISIBLE else View.GONE
+        binding.profileBtnCollection.visibility = if(isOwnerProfile) View.VISIBLE else View.GONE
+
         binding.profileCamera.setOnClickListener{
             galleryLauncher.launch()
         }
+
+
+
         binding.profileBtnChangePersonalInfo.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_changeUserInfoFragment)
         }

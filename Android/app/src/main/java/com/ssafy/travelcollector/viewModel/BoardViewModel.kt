@@ -25,6 +25,7 @@ class BoardViewModel: ViewModel() {
     private val _boardDetail = MutableStateFlow(Board())
     val boardDetail = _boardDetail.asStateFlow()
 
+
     private val _comments = MutableStateFlow(arrayListOf<Comment>())
     val comments = _comments.asStateFlow()
 
@@ -36,6 +37,12 @@ class BoardViewModel: ViewModel() {
 
     private val _searchTag = MutableStateFlow(listOf<String>())
     val searchTag = _searchTag.asStateFlow()
+
+    private val _postingId = MutableStateFlow(-1)
+    val postingId = _postingId.asStateFlow()
+    fun setCurPostingId(id: Int){
+        Log.d(TAG, "setCurPostingId: adfd")
+        _postingId.update { id }}
 
     fun postBoard(title: String, content: String, images: ArrayList<MultipartBody.Part>, tags: List<String>){
         viewModelScope.launch {
@@ -78,14 +85,17 @@ class BoardViewModel: ViewModel() {
         _boardList.update { ArrayList(newList) }
     }
 
-    fun loadDetailBoard(id: Int){
+    fun loadDetailBoard(){
         viewModelScope.launch {
             val res = withContext(Dispatchers.IO){
-                RetrofitUtil.BOARD_SERVICE.getBoardDetail(id)
+                RetrofitUtil.BOARD_SERVICE.getBoardDetail(postingId.value)
             }
             if(res.code()/100 == 2){
+                Log.d(TAG, "loadDetailBoard ok: $res")
                 setCurDetailBoard(res.body()!!)
                 loadWriter(res.body()!!.writer)
+            }else{
+                Log.d(TAG, "loadDetailBoard x: $res")
             }
         }
     }
@@ -102,7 +112,8 @@ class BoardViewModel: ViewModel() {
                 )
             }
             if(res.code()/100 == 2){
-                loadComments(boardId)
+                loadDetailBoard()
+//                loadComments(boardId)
             }
         }
     }
@@ -115,7 +126,8 @@ class BoardViewModel: ViewModel() {
                 )
             }
             if(res.code()/100 == 2){
-                loadComments(boardId)
+                loadDetailBoard()
+//                loadComments(boardId)
             }
         }
     }
@@ -141,7 +153,6 @@ class BoardViewModel: ViewModel() {
             }
         }
     }
-
     fun setComments(list: ArrayList<Comment>){
         _comments.update { list }
     }
@@ -152,9 +163,13 @@ class BoardViewModel: ViewModel() {
                 RetrofitUtil.USER_SERVICE.getUserInfoById(writerId)
             }
             if(res.code()/100 == 2){
-                _writer.update { res.body()!! }
+                setWriter(res.body()!!)
             }
         }
+    }
+
+    fun setWriter(user:User){
+        _writer.update { user }
     }
 
     fun initWriter(){

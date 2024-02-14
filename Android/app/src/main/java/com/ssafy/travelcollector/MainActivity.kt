@@ -40,7 +40,7 @@ import com.ssafy.travelcollector.viewModel.DetailStateEnum
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.launch
 
-private const val TAG = "MainActivity"
+private const val TAG = "MainActivityaa"
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
 
     private lateinit var navController: NavController
@@ -61,10 +61,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initGeofence(){
         GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
             override fun onEnter(id: String) {
+                showToast("enter")
+                Log.d(TAG, "onEnter: ")
                 mainActivityViewModel.addGameEnableHeritage(id.toInt())
             }
 
             override fun onDwell(id: String) {
+                showToast("dwell")
+                Log.d(TAG, "onDwell: ")
                 mainActivityViewModel.addVisitedHeritage(id.toInt()){
                     achievementViewModel.loadAchievement()
                     mainActivityViewModel.loadVisitedHeritage()
@@ -72,6 +76,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             override fun onExit(id: String) {
+                showToast("exit")
+                Log.d(TAG, "onExit: ")
                 mainActivityViewModel.removeGameEnableHeritage(id.toInt())
             }
         }
@@ -173,6 +179,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                     true
                 }
                 R.id.navigation_page_4->{
+                    boardViewModel.setWriter(accountViewModel.user.value)
                     navController.navigate(R.id.profileFragment)
                     true
                 }

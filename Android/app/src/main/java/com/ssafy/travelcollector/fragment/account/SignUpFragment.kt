@@ -96,7 +96,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
 
     private fun isValidInformation(): Boolean {
         return (binding.signUpEtEMail.text!!.isNotEmpty()
-                && StringUtil.emailCheck(binding.signUpEtEMail.toString())
+                && StringUtil.emailCheck(binding.signUpEtEMail.text.toString())
                 && binding.signUpEtPw.text!!.length >=4
                 && (binding.signUpEtPw2.text.toString() == binding.signUpEtPw.text!!.toString())
                 && binding.signUpEtName.text!!.isNotEmpty()

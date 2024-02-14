@@ -1,6 +1,8 @@
 package com.ssafy.travelcollector.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.ssafy.travelcollector.config.BaseAdapter
 import com.ssafy.travelcollector.databinding.BoardPostRvItemBinding
@@ -14,8 +16,9 @@ class BoardAdapter : BaseAdapter<Board>() {
             binding.boardPostTitle.text = data.title
             binding.boardPostDate.text = TimeConverter.timeMilliToDateString(data.date)
             binding.root.setOnClickListener {
-                clickListener.onClick(layoutPosition)
+                clickListener.onClick(data.id)
             }
+            binding.photoIcon.visibility = if(data.images.isNotEmpty()) View.VISIBLE else View.GONE
         }
     }
 
@@ -28,7 +31,7 @@ class BoardAdapter : BaseAdapter<Board>() {
     }
 
     interface ClickListener{
-        fun onClick(position: Int)
+        fun onClick(id: Int)
     }
 
     lateinit var clickListener: ClickListener

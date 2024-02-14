@@ -49,7 +49,7 @@ class MainActivityViewModel : ViewModel() {
         for(heritage in list){
             val geofence = Geofence.Builder()
                 .setRequestId(heritage.id.toString())
-                .setCircularRegion(heritage.lat.toDouble(), heritage.lng.toDouble(), 20f)
+                .setCircularRegion(heritage.lat.toDouble(), heritage.lng.toDouble(), 50f)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setLoiteringDelay(10000)
                 .setTransitionTypes(

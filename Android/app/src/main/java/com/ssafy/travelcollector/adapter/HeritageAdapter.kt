@@ -46,9 +46,10 @@ class HeritageAdapter(val isPlanning: Boolean = false) : BaseAdapter<Heritage>()
                             eventListener.onStartDrag(this)
                         false
                     }
+                    binding.root.setBackgroundColor(binding.root.resources.getColor(com.kakao.sdk.friend.R.color.transparent))
                 }else{
                     binding.touchIcon.visibility = View.GONE
-                    binding.btnMiniGame.visibility = View.VISIBLE
+                    binding.root.setBackgroundColor(binding.root.resources.getColor(R.color.gold))
                 }
             }else{
                 binding.touchIcon.visibility = View.GONE

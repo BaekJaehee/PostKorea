@@ -86,6 +86,7 @@ object SNSAuth{
                 val userId = result.profile?.id
                 Log.d(TAG, "onSuccess: $result")
                 Log.d(TAG, "onSuccessId: $userId")
+
                 loginCallBack.onSignUp(User(
                     memberEmail = result.profile?.email!!,
                     userNickname = result.profile?.nickname!!,
