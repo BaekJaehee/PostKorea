@@ -61,7 +61,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
 
             launch{
                 val category = heritageViewModel.curHeritage.value.category
-                val limit = 100
+                val limit = 200
                 heritageViewModel.searchHeritageListForGame(category, limit)
                 heritageViewModel.curHeritageList.collect{
                     it.shuffle()
