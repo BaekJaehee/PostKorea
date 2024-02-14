@@ -25,7 +25,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     private var life = 15
     private var start = 0
     private var end = 2023
-    private var era = mapOf("삼국" to arrayOf(0, 668), "신라" to arrayOf(0, 668), "백제" to arrayOf(0, 660), "고구려" to arrayOf(0, 668), "통일신라" to arrayOf(668, 935), "고려" to arrayOf(936, 1392), "조선" to arrayOf(1392, 1897), "대한제국" to arrayOf(1897, 1910))
+    private var era = mapOf("삼국" to arrayOf(0, 668), "신라" to arrayOf(0, 668), "백제" to arrayOf(0, 660), "고구려" to arrayOf(0, 668), "통일신라" to arrayOf(668, 892), "후삼국" to arrayOf(892, 936), "고려" to arrayOf(936, 1392), "조선" to arrayOf(1392, 1897), "대한제국" to arrayOf(1897, 1910), "일제" to arrayOf(1910, 1945), "현대" to arrayOf(1945, 2024))
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -118,6 +118,23 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                             if (ccceName.contains(i)){
                                 if (year_start == null){
                                     year_start = era[i]!!.get(1) - 100
+                                    year_end = era[i]!!.get(1)
+                                } else if (year_start != null){
+                                    year_end = era[i]!!.get(0) + 100
+                                }
+                            }
+                        }
+                    }
+                } else if (ccceName.contains("후삼국")) {
+                    if (count == 2){
+                        year_start = era["후삼국"]!!.get(0)
+                        year_end = era["후삼국"]!!.get(1)
+                    } else if (count > 2){
+                        for (i in era.keys) {
+                            if (i == "삼국") continue
+                            if (ccceName.contains(i)){
+                                if (year_start == null){
+                                    year_start = era[i]!!.get(1) - 50
                                     year_end = era[i]!!.get(1)
                                 } else if (year_start != null){
                                     year_end = era[i]!!.get(0) + 100
