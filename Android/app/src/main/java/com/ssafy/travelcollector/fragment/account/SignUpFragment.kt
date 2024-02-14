@@ -76,7 +76,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
                             User(
                                 memberEmail = binding.signUpEtEMail.text.toString(),
                                 memberPwd = binding.signUpEtPw.text.toString(),
-                                userNickname = binding.signUpEtName.text.toString()
+                                userName = binding.signUpEtName.text.toString()
                             )
                         )
                     }

@@ -23,7 +23,7 @@ interface TravelService {
         @Header("Authorization") token: String,
         @Path("planId") travelId: Int,
         @Body travelList: List<Int>
-    )
+    ): Response<Any>
 
     @HTTP(method = "DELETE", path = "explore-plans/manage/{planId}/bulk-delete", hasBody = true)
     suspend fun deleteHeritageListToTravelPlan(
@@ -39,6 +39,14 @@ interface TravelService {
         @Query("visited") visited: Boolean,
         @Body travelList: List<Int>
     )
+
+    @PUT("explore-plans/{planId}")
+    suspend fun updateTravel(
+        @Header("Authorization") token: String,
+        @Path("planId") travelId: Int,
+        @Body travel: TravelWithHeritageList
+    ): Response<Any>
+
 
     @GET("explore-plans/upcoming")
     suspend fun getUpcomingTravelList(@Header("Authorization") token: String): Response<List<TravelPlanResponse>>

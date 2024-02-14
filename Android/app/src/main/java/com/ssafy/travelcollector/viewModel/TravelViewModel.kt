@@ -75,13 +75,22 @@ class TravelViewModel: ViewModel() {
                 ).code()
             }
             if(response/100 == 2){
-                RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
+                val addRes = RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
                     token = AccountViewModel.ACCESS_TOKEN,
                     travelId = userTravelId.value,
                     travelList = heritageIdList
                 )
+                val updateRes = RetrofitUtil.TRAVEL_SERVICE.updateTravel(
+                    token = AccountViewModel.ACCESS_TOKEN,
+                    travelId = userTravelId.value,
+                    travel = newTravel
+                )
+                if(addRes.code()/100 == 2 && updateRes.code()/100 == 2){
+                    loadUserTravelList()
+                    loadOnGoingTravel()
+                }
             }
-            loadUserTravelList()
+
         }
     }
 

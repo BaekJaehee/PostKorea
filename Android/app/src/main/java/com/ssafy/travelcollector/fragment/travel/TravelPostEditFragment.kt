@@ -98,7 +98,8 @@ class TravelPostEditFragment : BaseFragment<FragmentTravelPostEditBinding>(Fragm
                 }
 
                 val words = binding.travelPostEditEtContent.text.toString().trim().split("\n", " ")
-                val tags = words.filter{it[0]=='#'}.toMutableList()
+                Log.d(TAG, "initAdapter: $words")
+                val tags = words.filter{ it.isNotEmpty() && it[0]=='#' }.toMutableList()
                 tags.add("#email=${accountViewModel.user.value.memberEmail}")
                 if(boardViewModel.isTravelHeritageBoard.value)
                     tags.add("#heritage=${heritageViewModel.curHeritage.value.id}")

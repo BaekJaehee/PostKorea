@@ -216,4 +216,13 @@ class BoardViewModel: ViewModel() {
         }
     }
 
+    fun searchUserHeritagePost(tags: List<String>){
+        viewModelScope.launch {
+            val res = RetrofitUtil.BOARD_SERVICE.searchUserHeritagePost(tags)
+            if(res.code()/100 == 2){
+                setCurBoardList(ArrayList(res.body()!!))
+            }
+        }
+    }
+
 }

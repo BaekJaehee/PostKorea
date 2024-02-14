@@ -108,7 +108,6 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED){
                     launch {
-                        boardViewModel.setSearchBoardTags(listOf())
                         boardViewModel.loadAllBoards()
                     }
                 }
@@ -120,6 +119,7 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
             findNavController().navigate(R.id.boardPostFragment)
         }
         binding.mainTvBtnBoardShowAll.setOnClickListener {
+            boardViewModel.setSearchBoardTags(arrayListOf())
             findNavController().navigate(R.id.action_mainFragment_to_boardListFragment)
         }
     }

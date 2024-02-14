@@ -24,7 +24,7 @@ class ChangeUserInfoFragment : BaseFragment<FragmentChangeUserInfoBinding>(Fragm
 
     private fun initView(){
         binding.changeUserInfoEmail.text = accountViewModel.user.value.memberEmail
-        binding.changeUserInfoEtNickname.setText(accountViewModel.user.value.userNickname)
+        binding.changeUserInfoEtNickname.setText(accountViewModel.user.value.userName)
         binding.changeUserInfoBtnSubmit.setOnClickListener {
             lifecycleScope.launch {
                 val curPwd = binding.changeUserInfoCurrentPw.text.toString()

@@ -54,6 +54,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                         accountViewModel.user.collect{
                             Glide.with(requireContext())
                                 .load(it.profileUrl)
+                                .fallback(R.drawable.profile)
                                 .into(binding.profileImage)
                             binding.profileTvName.text = it.userName
                             binding.profileTvTitle.text = "-${it.title?:""}-"
@@ -62,6 +63,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                         val it = boardViewModel.writer.value
                         Glide.with(requireContext())
                             .load(it.profileUrl)
+                            .fallback(R.drawable.profile)
                             .into(binding.profileImage)
                         binding.profileTvName.text = it.userName
                         binding.profileTvTitle.text = "-${it.title?:""}-"
