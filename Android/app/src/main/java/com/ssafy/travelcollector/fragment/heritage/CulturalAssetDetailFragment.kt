@@ -35,6 +35,8 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
 
     private fun initView(){
 
+        mainActivityViewModel.setPageTitle("문화재 상세")
+
         lifecycleScope.launch{
             launch {
                heritageViewModel.curHeritage.collect{

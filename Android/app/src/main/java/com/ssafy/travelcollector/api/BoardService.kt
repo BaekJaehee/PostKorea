@@ -47,6 +47,9 @@ interface BoardService {
     @GET("boards/searchByTags")
     suspend fun searchByTag(@Query("tags") tags: List<String>): Response<List<Board>>
 
+    @GET("boards/searchByTagsAnd")
+    suspend fun searchUserHeritagePost(@Query("tags") tags: List<String>): Response<List<Board>>
+
     @GET("boards/searchKeyword")
     suspend fun searchByKeyword(@Query("keyword") keyword: String): Response<List<Board>>
 

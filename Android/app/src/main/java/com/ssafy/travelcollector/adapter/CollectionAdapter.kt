@@ -28,9 +28,13 @@ class CollectionAdapter : BaseAdapter<Product>(){
                 .into(binding.collectionIvImage)
             binding.collectionTvName.text = data.name
             if(data.date==null){
+                binding.collectionTvName.background.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply {setSaturation(0F)})
                 binding.collectionIvImage.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply {setSaturation(0F)})
+                binding.collectionIvImage.background.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply {setSaturation(0F)})
             }else{
+                binding.collectionTvName.background.colorFilter = null
                 binding.collectionIvImage.colorFilter = null
+                binding.collectionIvImage.background.colorFilter = null
             }
             binding.root.setOnClickListener {
                 clickListener.onClick(data.acquisition, data.date != null , layoutPosition)

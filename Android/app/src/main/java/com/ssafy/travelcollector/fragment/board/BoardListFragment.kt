@@ -32,11 +32,11 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
 
         lifecycleScope.launch {
             boardViewModel.searchTag.collect{
-                boardViewModel.searchBoardsByTags(it)
+//                boardViewModel.searchBoardsByTags(it)
+                boardViewModel.searchUserHeritagePost(it)
             }
+
         }
-
-
 
         binding.boardListAddPost.setOnClickListener{
             boardViewModel.setIsHeritageBoard(false)
@@ -60,10 +60,10 @@ class BoardListFragment : BaseFragment<FragmentBoardListBinding>(FragmentBoardLi
         lifecycleScope.launch{
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 launch {
-                    boardViewModel.setSearchBoardTags(listOf())
-                    boardViewModel.loadAllBoards()
+                    if(boardViewModel.searchTag.value.isEmpty()){
+                        boardViewModel.loadAllBoards()
+                    }
                 }
-
                 launch {
                     boardViewModel.boardList.collect{
                         boardAdapter.submitList(it)

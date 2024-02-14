@@ -62,7 +62,11 @@ class HeritageViewModel: ViewModel() {
             val result = withContext(Dispatchers.IO){
                 RetrofitUtil.HERITAGE_SERVICE.searchHeritage(region1, region2, era, category)
             }
-            result.body()?.let { ArrayList(it) }?.let { setCurHeritageList(it) }
+            if(result.code()/100 == 2){
+                result.body()?.let { ArrayList(it) }?.let { setListHeritageList(it) }
+            }else{
+                Log.d(TAG, "searchHeritageList: $result")
+            }
         }
     }
 
@@ -100,6 +104,7 @@ class HeritageViewModel: ViewModel() {
             result.body()?.let { ArrayList(it) }?.let {
                 setHeritageListByName(it)
                 setCurHeritageList(it)
+                setListHeritageList(it)
             }
         }
     }
