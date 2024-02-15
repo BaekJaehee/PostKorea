@@ -50,8 +50,11 @@ class AccountViewModel: ViewModel(){
                 updateToken(token)
             }
 
-
         }
+    }
+
+    fun logout(){
+        _user.update { User(memberEmail = DEFAULT_EMAIL) }
     }
 
     fun getInfo(token: String){

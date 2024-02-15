@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.config.ApplicationClass
@@ -60,7 +62,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                     if(it.isNotEmpty() && it!="Bearer " && it!= "null" && accountViewModel.loginResponseCode / 100 == 2){
                         lifecycleScope.launch {
                             accountViewModel.getInfo(it)
-                            findNavController().navigate(R.id.mainFragment)
                         }
                     }else{
                         if(accountViewModel.loginResponseCode / 100 != 2){
@@ -70,6 +71,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                         manager.deleteToken()
                     }
                 }
+            }
+
+            launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    launch {
+                        accountViewModel.user.collect{
+                            if(it.memberEmail!=AccountViewModel.DEFAULT_EMAIL)
+                                findNavController().navigate(R.id.mainFragment)
+                        }
+                    }
+                }
+
             }
 
         }

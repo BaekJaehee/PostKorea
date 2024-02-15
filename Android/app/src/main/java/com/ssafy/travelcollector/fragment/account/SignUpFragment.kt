@@ -76,15 +76,16 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
                             User(
                                 memberEmail = binding.signUpEtEMail.text.toString(),
                                 memberPwd = binding.signUpEtPw.text.toString(),
-                                userName = binding.signUpEtName.text.toString()
+                                userName = binding.signUpEtName.text.toString(),
+                                userNickname = binding.signUpEtEMail.text.toString()
                             )
                         )
                     }
                     if(res.code()/100 == 2){
                         findNavController().navigate(R.id.loginFragment)
                         showToast("회원가입 성공")
-                    }else{
-                        showToast("실패ㅠㅠ")
+                    }else {
+                        showToast("error code: ${res.code()}\n${res.message()}")
                     }
                 }
             }else{
