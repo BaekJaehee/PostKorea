@@ -239,15 +239,18 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                             heritageViewModel.editPoints(correctAnswers*10){
                                 accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
                             }
-                            var temp = storeViewModel.ownList.value.toMutableList()
-                            temp = temp.filter {
-                                it.date == null
-                            }.toMutableList()
-                            if (!temp.isEmpty()) {
-                                storeViewModel.purchaseProduct(temp[0].id){
-                                    accountViewModel.getInfo(it)
+//                            var temp = storeViewModel.ownList.value.toMutableList()
+//                            temp = temp.filter {
+//                                it.date == null
+//                            }.toMutableList()
+//                            if (!temp.isEmpty()) {
+//                                storeViewModel.purchaseProduct(temp[0].id){
+//                                    accountViewModel.getInfo(it)
+//                                }
+//                            }
+                            storeViewModel.purchaseProduct(15){
+                                    storeViewModel.loadCollection()
                                 }
-                            }
                         } else {
                             if (isSubmit){
                                 end()

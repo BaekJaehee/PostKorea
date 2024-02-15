@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.StoreAdapter
 import com.ssafy.travelcollector.config.BaseFragment
@@ -36,9 +38,13 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(
         mainActivityViewModel.setPageTitle("상점")
         lifecycleScope.launch{
             storeViewModel.loadProductList()
-            accountViewModel.user.collect{
-                binding.storeBtnPts.text = "보유 pts : ${it.point}"
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                    launch { accountViewModel.user.collect{
+                        binding.storeBtnPts.text = "보유 pts : ${it.point}"
+                    }
+                }
             }
+
         }
     }
 

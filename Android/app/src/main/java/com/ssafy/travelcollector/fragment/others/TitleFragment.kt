@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.adapter.TitleAdapter
 import com.ssafy.travelcollector.config.BaseFragment
@@ -40,9 +42,14 @@ class TitleFragment: BaseFragment<FragmentTitleBinding>(FragmentTitleBinding::bi
         mainActivityViewModel.setPageTitle("칭호")
         lifecycleScope.launch {
             achievementViewModel.loadAchievement()
-            accountViewModel.user.collect{
-                binding.titleInUse.text = it.title ?: "칭호 없음"
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                        accountViewModel.user.collect{
+                        binding.titleInUse.text = it.title ?: "칭호 없음"
+                    }
+                }
             }
+
         }
 
         binding.titleInHand.setOnClickListener {
@@ -94,20 +101,25 @@ class TitleFragment: BaseFragment<FragmentTitleBinding>(FragmentTitleBinding::bi
         }
 
         lifecycleScope.launch{
-            achievementViewModel.ownState.collect{
-                state->
-                ownState = state
-                launch{
-                    achievementViewModel.ownAchievement.takeWhile {
-                        state
-                    }.collect{
-                        titleAdapter.submitList(it)
-                    }
 
-                    achievementViewModel.notOwnAchievement.takeWhile {
-                        !state
-                    }.collect{
-                        titleAdapter.submitList(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    achievementViewModel.ownState.collect{
+                            state->
+                        ownState = state
+                        launch{
+                            achievementViewModel.ownAchievement.takeWhile {
+                                state
+                            }.collect{
+                                titleAdapter.submitList(it)
+                            }
+
+                            achievementViewModel.notOwnAchievement.takeWhile {
+                                !state
+                            }.collect{
+                                titleAdapter.submitList(it)
+                            }
+                        }
                     }
                 }
             }
