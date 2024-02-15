@@ -69,8 +69,8 @@ oauth:
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
+      access-key: "AKIAU6GDYJBHU62CFVA7"
+      secret-key: "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"
     region:
       static: ap-northeast-2
 
