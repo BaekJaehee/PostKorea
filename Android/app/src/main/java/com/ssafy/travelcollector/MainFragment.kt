@@ -67,6 +67,15 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
                                     travel.heritageList
                                 )
                                 setMyTravel(travel)
+                                binding.mainCurTravelView.setOnClickListener {
+                                    travelViewModel.apply {
+                                        val curTravel = travelViewModel.onGoingTravel.value
+                                        setTravelPlanHeritageList(curTravel.heritageList)
+                                        setUserTravel(curTravel)
+                                        setUserTravelId(curTravel.id)
+                                        findNavController().navigate(R.id.travelPlanFragment)
+                                    }
+                                }
                             }
                         }
                     }
