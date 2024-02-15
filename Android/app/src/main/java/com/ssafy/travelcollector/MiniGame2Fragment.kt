@@ -258,6 +258,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     private fun yearUpDownCheck() {
         if (myAnswer!! == year!!) {
             succeedGuessingYear()
+            return
         } else if (myAnswer!! > year!!) {
             Glide.with(this)
                 .load(R.drawable.arrow_downward)
@@ -282,6 +283,7 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     private fun yearRangeUpDownCheck() {
         if (myAnswer!! in year_start!!..year_end!!) {
             succeedGuessingYear()
+            return
         } else if (myAnswer!! > year_end!!) {
             Glide.with(this)
                 .load(R.drawable.arrow_downward)
