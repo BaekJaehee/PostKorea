@@ -29,6 +29,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
     private var heritageList : MutableList<Heritage> = ArrayList()
     private var heritageName : MutableList<Heritage> = ArrayList()
     private var heritageCategory : MutableList<Heritage> = ArrayList()
+    private var isEnd = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -200,6 +201,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvQuestionNumber.text = "맞은 문제 : $correctAnswers / 10"
         binding.gameTvNext.visibility = View.GONE
         binding.gameTvEnd.visibility = View.VISIBLE
+        isEnd = true
     }
 
     override fun onClick(view: View?) {
@@ -219,33 +221,33 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
             }
 
             R.id.game_tv_next -> {
-                if (currentStage == 0) {
-                    start()
-                } else if (currentStage < 10) {
-                    if (selectedOption != null) {
-                        onSubmit(selectedOption!!)
-                    } else {
-                        if (isSubmit){
-                            nextStage()
-                            setImage()
-                        }
-                    }
-                } else {
-                    if (selectedOption != null) {
-                        onSubmit(selectedOption!!)
-                        heritageViewModel.editPoints(correctAnswers*10){
-                            accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
+                if (!isEnd) {
+                    if (currentStage == 0) {
+                        start()
+                    } else if (currentStage < 10) {
+                        if (selectedOption != null) {
+                            onSubmit(selectedOption!!)
+                        } else {
+                            if (isSubmit){
+                                nextStage()
+                                setImage()
+                            }
                         }
                     } else {
-                        if (isSubmit){
-                            end()
-
+                        if (selectedOption != null) {
+                            onSubmit(selectedOption!!)
+                            heritageViewModel.editPoints(correctAnswers*10){
+                                accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
+                            }
                             val temp = (15..28).toMutableList()
                             temp.shuffle()
                             storeViewModel.purchaseProduct(temp[0]){
                                 accountViewModel.getInfo(it)
                             }
-
+                        } else {
+                            if (isSubmit){
+                                end()
+                            }
                         }
                     }
                 }
