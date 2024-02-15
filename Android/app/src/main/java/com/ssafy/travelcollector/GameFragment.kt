@@ -241,7 +241,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                             }
                             var temp = storeViewModel.ownList.value.toMutableList()
                             temp = temp.filter {
-                                it.date == null
+                                it.date == null && it.id > 14
                             }.toMutableList()
                             if (!temp.isEmpty()) {
                                 storeViewModel.purchaseProduct(temp[0].id){
