@@ -17,7 +17,6 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
-import com.ssafy.travelcollector.databinding.FragmentStoreBinding
 
 private const val TAG = "GameFragment"
 
@@ -30,6 +29,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
     private var heritageList : MutableList<Heritage> = ArrayList()
     private var heritageName : MutableList<Heritage> = ArrayList()
     private var heritageCategory : MutableList<Heritage> = ArrayList()
+    private var isEnd = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,6 +38,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvCorrect.setOnClickListener(this)
         binding.gameTvWrong.setOnClickListener(this)
         binding.gameTvNext.setOnClickListener(this)
+        binding.gameTvEnd.setOnClickListener(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -197,8 +198,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameIvHeritage.visibility = View.GONE
         binding.gameTvQuestionUpper.text = "수고하셨습니다"
         binding.gameTvQuestionLower.text = "획득한 포인트 : ${correctAnswers*10}"
-        binding.gameTvQuestionNumber.visibility = View.GONE
-        binding.gameTvNext.text = "맞은 문제 : $correctAnswers / 10"
+        binding.gameTvQuestionNumber.text = "맞은 문제 : $correctAnswers / 10"
+        binding.gameTvNext.visibility = View.GONE
+        binding.gameTvEnd.visibility = View.VISIBLE
+        isEnd = true
     }
 
     override fun onClick(view: View?) {
@@ -218,29 +221,45 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
             }
 
             R.id.game_tv_next -> {
-                if (currentStage == 0) {
-                    start()
-                } else if (currentStage < 10) {
-                    if (selectedOption != null) {
-                        onSubmit(selectedOption!!)
-                    } else {
-                        if (isSubmit){
-                            nextStage()
-                            setImage()
-                        }
-                    }
-                } else {
-                    if (selectedOption != null) {
-                        onSubmit(selectedOption!!)
-                        heritageViewModel.editPoints(correctAnswers*10){
-                            accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
+                if (!isEnd) {
+                    if (currentStage == 0) {
+                        start()
+                    } else if (currentStage < 10) {
+                        if (selectedOption != null) {
+                            onSubmit(selectedOption!!)
+                        } else {
+                            if (isSubmit){
+                                nextStage()
+                                setImage()
+                            }
                         }
                     } else {
-                        if (isSubmit){
-                            end()
+                        if (selectedOption != null) {
+                            onSubmit(selectedOption!!)
+                            heritageViewModel.editPoints(correctAnswers*10){
+                                accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
+                            }
+                            var temp = storeViewModel.ownList.value.toMutableList()
+                            temp = temp.filter {
+                                it.date == null && it.id > 14
+                            }.toMutableList()
+                            if (!temp.isEmpty()) {
+                                storeViewModel.purchaseProduct(temp[0].id){
+                                    accountViewModel.getInfo(it)
+                                }
+                            }
+                        } else {
+                            if (isSubmit){
+                                end()
+                            }
                         }
                     }
                 }
+            }
+
+            R.id.game_tv_end -> {
+                correctView(binding.gameTvEnd)
+                findNavController().navigate(R.id.culturalAssetDetailFragment)
             }
         }
     }

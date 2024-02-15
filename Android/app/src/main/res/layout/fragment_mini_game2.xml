@@ -128,6 +128,20 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/mini_game_tv_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:padding="14dp"
+            android:text="종료"
+            android:textColor="#7A8089"
+            android:textSize="40sp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 
