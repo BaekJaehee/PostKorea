@@ -186,8 +186,12 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             .load(heritageViewModel.curHeritage.value.imageUrl) // 불러올 이미지 url
             .into(binding.miniGameIvHeritage) // 이미지를 넣을 뷰
 
+        binding.miniGameIvUpDown.visibility = View.VISIBLE
+        Glide.with(this)
+            .load(R.drawable.arrow_up_down)
+            .into(binding.miniGameIvUpDown)
+
         binding.miniGameTvUpDown.visibility = View.VISIBLE
-        binding.miniGameTvMyAnswer.visibility = View.VISIBLE
         binding.miniGameTvRemainingTries.visibility = View.VISIBLE
         binding.miniGameTvRemainingTries.text = "남은 기회 : $life"
         binding.miniGameTvYearRange.visibility = View.VISIBLE
@@ -200,10 +204,10 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     }
 
     private fun onSubmitYear(){
+        binding.miniGameTvUpDown.visibility = View.GONE
         if (binding.miniGameEtAnswer.text!!.isNotEmpty()){
             myAnswer = binding.miniGameEtAnswer.text.toString().toInt()
             if (myAnswer!! in start..end){
-                binding.miniGameTvMyAnswer.text = "내가 제출한 연도 : $myAnswer 년"
                 if (year != null){
                     yearUpDownCheck()
                 } else {
@@ -219,11 +223,15 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         if (myAnswer!! == year!!) {
             succeedGuessingYear()
         } else if (myAnswer!! > year!!) {
-            binding.miniGameTvUpDown.text = "Down"
+            Glide.with(this)
+                .load(R.drawable.arrow_downward)
+                .into(binding.miniGameIvUpDown)
             life -= 1
             end = myAnswer!! - 1
         } else {
-            binding.miniGameTvUpDown.text = "Up"
+            Glide.with(this)
+                .load(R.drawable.arrow_upward)
+                .into(binding.miniGameIvUpDown)
             life -= 1
             start = myAnswer!! + 1
         }
@@ -239,11 +247,15 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         if (myAnswer!! in year_start!!..year_end!!) {
             succeedGuessingYear()
         } else if (myAnswer!! > year_end!!) {
-            binding.miniGameTvUpDown.text = "Down"
+            Glide.with(this)
+                .load(R.drawable.arrow_downward)
+                .into(binding.miniGameIvUpDown)
             life -= 1
             end = myAnswer!! - 1
         } else if (myAnswer!! < year_start!!) {
-            binding.miniGameTvUpDown.text = "Up"
+            Glide.with(this)
+                .load(R.drawable.arrow_upward)
+                .into(binding.miniGameIvUpDown)
             life -= 1
             start = myAnswer!! + 1
         }
@@ -256,15 +268,15 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     }
 
     private fun succeedGuessingYear() {
+        binding.miniGameIvUpDown.visibility = View.GONE
         binding.miniGameTvDescription.visibility = View.VISIBLE
         binding.miniGameTvDescription.text = "정답 : ${heritageViewModel.curHeritage.value.era}"
         binding.miniGameTvStart.visibility = View.VISIBLE
         binding.miniGameTvStart.text = " 성 공 "
-
+        binding.miniGameTvUpDown.visibility = View.VISIBLE
         binding.miniGameTvUpDown.text = "얻은 포인트 : ${life*10}"
-        binding.miniGameTvRemainingTries.visibility = View.GONE
-        binding.miniGameTvMyAnswer.visibility = View.GONE
         binding.miniGameTvYearRange.visibility = View.GONE
+        binding.miniGameTvRemainingTries.visibility = View.GONE
         binding.miniGameTextInputLayout.visibility = View.GONE
 
         heritageViewModel.editPoints(life*10){
@@ -275,14 +287,12 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     }
 
     private fun failGuessingYear() {
+        binding.miniGameIvUpDown.visibility = View.GONE
         binding.miniGameTvDescription.visibility = View.VISIBLE
         binding.miniGameTvDescription.text = "정답 : ${heritageViewModel.curHeritage.value.era}"
         binding.miniGameTvStart.visibility = View.VISIBLE
         binding.miniGameTvStart.text = " 실 패 "
-
-        binding.miniGameTvUpDown.text = "얻은 포인트 : ${life*10}"
         binding.miniGameTvRemainingTries.visibility = View.GONE
-        binding.miniGameTvMyAnswer.visibility = View.GONE
         binding.miniGameTvYearRange.visibility = View.GONE
         binding.miniGameTextInputLayout.visibility = View.GONE
 
