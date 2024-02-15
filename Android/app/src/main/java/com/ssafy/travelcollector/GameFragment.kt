@@ -17,7 +17,6 @@ import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
-import com.ssafy.travelcollector.databinding.FragmentStoreBinding
 
 private const val TAG = "GameFragment"
 
@@ -240,6 +239,13 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                     } else {
                         if (isSubmit){
                             end()
+
+                            val temp = (15..28).toMutableList()
+                            temp.shuffle()
+                            storeViewModel.purchaseProduct(temp[0]){
+                                accountViewModel.getInfo(it)
+                            }
+
                         }
                     }
                 }
