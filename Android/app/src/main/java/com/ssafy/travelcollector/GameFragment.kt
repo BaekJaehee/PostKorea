@@ -38,6 +38,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameTvCorrect.setOnClickListener(this)
         binding.gameTvWrong.setOnClickListener(this)
         binding.gameTvNext.setOnClickListener(this)
+        binding.gameTvEnd.setOnClickListener(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -197,8 +198,9 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
         binding.gameIvHeritage.visibility = View.GONE
         binding.gameTvQuestionUpper.text = "수고하셨습니다"
         binding.gameTvQuestionLower.text = "획득한 포인트 : ${correctAnswers*10}"
-        binding.gameTvQuestionNumber.visibility = View.GONE
-        binding.gameTvNext.text = "맞은 문제 : $correctAnswers / 10"
+        binding.gameTvQuestionNumber.text = "맞은 문제 : $correctAnswers / 10"
+        binding.gameTvNext.visibility = View.GONE
+        binding.gameTvEnd.visibility = View.VISIBLE
     }
 
     override fun onClick(view: View?) {
@@ -241,6 +243,11 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                         }
                     }
                 }
+            }
+
+            R.id.game_tv_end -> {
+                correctView(binding.gameTvEnd)
+                findNavController().navigate(R.id.culturalAssetDetailFragment)
             }
         }
     }

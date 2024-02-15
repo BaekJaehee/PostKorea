@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentMiniGame2Binding
@@ -46,6 +47,11 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             }
             handled
         }
+
+        binding.miniGameTvEnd.setOnClickListener {
+            findNavController().navigate(R.id.culturalAssetDetailFragment)
+        }
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -299,15 +305,17 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
 
     private fun succeedGuessingYear() {
         binding.miniGameIvUpDown.visibility = View.GONE
-        binding.miniGameTvDescription.visibility = View.VISIBLE
-        binding.miniGameTvDescription.text = "정답 : ${heritageViewModel.curHeritage.value.era}"
-        binding.miniGameTvStart.visibility = View.VISIBLE
-        binding.miniGameTvStart.text = " 성 공 "
-        binding.miniGameTvUpDown.visibility = View.VISIBLE
-        binding.miniGameTvUpDown.text = "얻은 포인트 : ${life*10}"
+        binding.miniGameTvStart.visibility = View.GONE
         binding.miniGameTvYearRange.visibility = View.GONE
-        binding.miniGameTvRemainingTries.visibility = View.GONE
         binding.miniGameTextInputLayout.visibility = View.GONE
+
+        binding.miniGameTvEnd.visibility = View.VISIBLE
+        binding.miniGameTvUpDown.visibility = View.VISIBLE
+
+        binding.miniGameTvDescription.visibility = View.VISIBLE
+        binding.miniGameTvDescription.text = " 성 공 "
+        binding.miniGameTvUpDown.text = "정답 : ${heritageViewModel.curHeritage.value.era}"
+        binding.miniGameTvRemainingTries.text = "얻은 포인트 : ${life*10}"
 
         heritageViewModel.editPoints(life*10){
             accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
@@ -319,9 +327,13 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
     private fun failGuessingYear() {
         binding.miniGameIvUpDown.visibility = View.GONE
         binding.miniGameTvDescription.visibility = View.VISIBLE
-        binding.miniGameTvDescription.text = "정답 : ${heritageViewModel.curHeritage.value.era}"
-        binding.miniGameTvStart.visibility = View.VISIBLE
-        binding.miniGameTvStart.text = " 실 패 "
+        binding.miniGameTvUpDown.visibility = View.VISIBLE
+
+        binding.miniGameTvDescription.text = " 실 패 "
+        binding.miniGameTvUpDown.text = "정답 : ${heritageViewModel.curHeritage.value.era}"
+
+        binding.miniGameTvEnd.visibility = View.VISIBLE
+
         binding.miniGameTvRemainingTries.visibility = View.GONE
         binding.miniGameTvYearRange.visibility = View.GONE
         binding.miniGameTextInputLayout.visibility = View.GONE

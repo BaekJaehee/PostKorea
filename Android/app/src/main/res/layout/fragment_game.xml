@@ -153,6 +153,21 @@
             android:visibility="gone"
             />
 
+        <TextView
+            android:id="@+id/game_tv_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_round_brown"
+            android:gravity="center"
+            android:padding="14dp"
+            android:textColor="#7A8089"
+            android:textSize="40sp"
+            android:text="종료"
+            android:visibility="gone"
+            />
+
     </LinearLayout>
 
 
