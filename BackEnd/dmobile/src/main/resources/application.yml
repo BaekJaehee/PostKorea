@@ -10,7 +10,7 @@ spring:
   datasource:
     url: jdbc:mariadb://i10d102.p.ssafy.io:3306/project
     username: d102
-    password: ${DB_PASSWORD}
+    password: "0125"
     # 개인용 데이터베이스 환경에 맞추어 셋업 필요
 #    url: jdbc:mariadb://localhost:3307/test
 #    username: root
@@ -69,8 +69,8 @@ oauth:
 cloud:
   aws:
     credentials:
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
+      access-key: "AKIAU6GDYJBHU62CFVA7"
+      secret-key: "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"
     region:
       static: ap-northeast-2
 
