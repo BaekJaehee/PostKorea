@@ -44,6 +44,10 @@ public class AchieveMemberService {
         achieveMember.setAchieveDate(new Date().getTime());
         achieveMember.setRelicName(detailDataRepository.getReferenceById(relicId).getCcbaMnm1());
 
+        if(achieveMemberRepository.existsAchieveMemberByKeyAchieveIdAndKeyMemberId(achieveId, memberId)) {
+            return;
+        }
+
         achieveMemberRepository.save(achieveMember);
     }
 

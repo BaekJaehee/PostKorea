@@ -19,4 +19,6 @@ public interface AchieveMemberRepository extends JpaRepository<AchieveMember, Ac
     @Query("select a from Achieve a where a.achieveId not in " +
             "(select am.achieve.achieveId from AchieveMember am where am.member.id = :memberId)")
     List<Achieve> findByAchievesNotOwnedByMember(@Param("memberId") Long memberId);
+
+    boolean existsAchieveMemberByKeyAchieveIdAndKeyMemberId(Long achieveId, Long memberId);
 }
