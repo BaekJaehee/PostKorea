@@ -243,8 +243,10 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                             temp = temp.filter {
                                 it.date == null
                             }.toMutableList()
-                            storeViewModel.purchaseProduct(temp[0].id){
-                                accountViewModel.getInfo(it)
+                            if (!temp.isEmpty()) {
+                                storeViewModel.purchaseProduct(temp[0].id){
+                                    accountViewModel.getInfo(it)
+                                }
                             }
                         } else {
                             if (isSubmit){

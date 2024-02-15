@@ -325,8 +325,10 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
         temp = temp.filter {
             it.date == null
         }.toMutableList()
-        storeViewModel.purchaseProduct(temp[0].id){
-            accountViewModel.getInfo(it)
+        if (!temp.isEmpty()) {
+            storeViewModel.purchaseProduct(temp[0].id){
+                accountViewModel.getInfo(it)
+            }
         }
 
         isEnd = true
