@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2284e34e-5504-4554-88e6-d743076911e9" name="Changes" comment="fix: @Query import 추가">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/controller/ShopController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/controller/ShopController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/repository/ShopMemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/repository/ShopMemberRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/service/ShopMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/dmobile/src/main/java/com/ssafy/dmobile/shop/service/ShopMemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test3.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,13 +60,16 @@
     "Gradle.C:/Users/SSAFY/Desktop/develop to push/BackEnd/dmobile/build.gradle.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/backend/shop",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
@@ -94,6 +98,7 @@
       <workItem from="1707108419361" duration="132000" />
       <workItem from="1707118450186" duration="201000" />
       <workItem from="1707293882564" duration="27000" />
+      <workItem from="1708005886567" duration="291000" />
     </task>
     <task id="LOCAL-00001" summary="fix: import 추가">
       <option name="closed" value="true" />
