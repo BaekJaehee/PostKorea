@@ -3,7 +3,9 @@ package com.ssafy.travelcollector.fragment.travel
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.ssafy.travelcollector.R
@@ -58,22 +60,29 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         }
 
         lifecycleScope.launch {
-            travelViewModel.loadUserTravelList()
-            travelViewModel.loadOnGoingTravel()
-            travelViewModel.onGoingTravel.collect{
-                travel->
-                if(travel.id!=-1){
-                    binding.travelListOliOngoing.setImages(
-                        ArrayList(travel.heritageList.map{it.imageUrl})
-                    )
-                    binding.travelListTvOngoingTitle.text = travel.name
-                    binding.travelListTvDuration.text =
-                        "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
-                }else{
-                    binding.travelListViewOngoing.visibility = View.GONE
-                    binding.travelListTvAltText.visibility = View.VISIBLE
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    travelViewModel.loadUserTravelList()
+                    travelViewModel.loadOnGoingTravel()
+                }
+                launch {
+                    travelViewModel.onGoingTravel.collect{
+                            travel->
+                        if(travel.id!=-1){
+                            binding.travelListOliOngoing.setImages(
+                                ArrayList(travel.heritageList.map{it.imageUrl})
+                            )
+                            binding.travelListTvOngoingTitle.text = travel.name
+                            binding.travelListTvDuration.text =
+                                "${TimeConverter.timeMilliToDateString(travel.startDate)} ~ ${TimeConverter.timeMilliToDateString(travel.endDate)}"
+                        }else{
+                            binding.travelListViewOngoing.visibility = View.GONE
+                            binding.travelListTvAltText.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
+
         }
     }
 

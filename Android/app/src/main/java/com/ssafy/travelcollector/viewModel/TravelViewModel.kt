@@ -104,19 +104,21 @@ class TravelViewModel: ViewModel() {
             val newTravel = withContext(Dispatchers.IO){
                 val newTravel = arrayListOf<TravelWithHeritageList>()
                 for(res in responseList){
-                    newTravel.add(TravelWithHeritageList(
-                        id = res.planId,
-                        name = res.name,
-                        startDate = res.startDate,
-                        endDate = res.endDate,
-                        condition = res.condition,
-                        heritageList = ArrayList(
-                            withContext(Dispatchers.IO){
-                                RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
-                                    AccountViewModel.ACCESS_TOKEN, res.planId
-                                ).body()!!
-                            })
-                    ))
+                    val heritageRes = withContext(Dispatchers.IO){
+                        RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                            AccountViewModel.ACCESS_TOKEN, res.planId
+                        )
+                    }
+                    if(heritageRes.code()/100 == 2){
+                        newTravel.add(TravelWithHeritageList(
+                            id = res.planId,
+                            name = res.name,
+                            startDate = res.startDate,
+                            endDate = res.endDate,
+                            condition = res.condition,
+                            heritageList = ArrayList(heritageRes.body()!!)
+                        ))
+                    }
                 }
                 newTravel
             }
@@ -144,20 +146,22 @@ class TravelViewModel: ViewModel() {
             if(ongoing.code()/100 == 2){
                 if(ongoing.body()!!.isNotEmpty()){
                     val res = ongoing.body()!![0]
-                    val travel = TravelWithHeritageList(
-                        id = res.planId,
-                        name = res.name,
-                        startDate = res.startDate,
-                        endDate = res.endDate,
-                        condition = res.condition,
-                        heritageList = ArrayList(
-                            withContext(Dispatchers.IO){
-                                RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
-                                    AccountViewModel.ACCESS_TOKEN, res.planId
-                                ).body()!!
-                            })
-                    )
-                    _onGoingTravel.update { travel }
+                    val heritageRes = withContext(Dispatchers.IO){
+                        RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                            AccountViewModel.ACCESS_TOKEN, res.planId
+                        )
+                    }
+                    if(heritageRes.code()/100 == 2){
+                        val travel = TravelWithHeritageList(
+                            id = res.planId,
+                            name = res.name,
+                            startDate = res.startDate,
+                            endDate = res.endDate,
+                            condition = res.condition,
+                            heritageList = ArrayList(heritageRes.body()!!)
+                        )
+                        _onGoingTravel.update { travel }
+                    }
                 }else{
                     _onGoingTravel.update { TravelWithHeritageList()}
                 }

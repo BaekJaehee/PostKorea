@@ -84,8 +84,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(
                     if(res.code()/100 == 2){
                         findNavController().navigate(R.id.loginFragment)
                         showToast("회원가입 성공")
-                    }else{
-                        showToast("실패ㅠㅠ")
+                    }else {
+                        showToast("error code: ${res.code()}\n${res.message()}")
                     }
                 }
             }else{

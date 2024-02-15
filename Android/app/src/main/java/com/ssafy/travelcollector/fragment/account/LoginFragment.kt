@@ -60,7 +60,6 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                     if(it.isNotEmpty() && it!="Bearer " && it!= "null" && accountViewModel.loginResponseCode / 100 == 2){
                         lifecycleScope.launch {
                             accountViewModel.getInfo(it)
-                            findNavController().navigate(R.id.mainFragment)
                         }
                     }else{
                         if(accountViewModel.loginResponseCode / 100 != 2){
@@ -69,6 +68,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(
                         }
                         manager.deleteToken()
                     }
+                }
+            }
+
+            launch {
+                accountViewModel.user.collect{
+                    if(it.memberEmail!=AccountViewModel.DEFAULT_EMAIL)
+                        findNavController().navigate(R.id.mainFragment)
                 }
             }
 

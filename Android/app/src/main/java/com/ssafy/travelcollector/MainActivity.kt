@@ -134,6 +134,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                                 accountViewModel.updateToken("")
                                 navController.popBackStack(R.id.loginFragment, true)
                                 navController.navigate(R.id.loginFragment)
+                                accountViewModel.logout()
                             }
                         }
                         sideWelcome.text = "님 안녕하세요"
