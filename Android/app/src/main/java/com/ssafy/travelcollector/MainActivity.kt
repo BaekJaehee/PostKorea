@@ -61,13 +61,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
     private fun initGeofence(){
         GeofenceManager.geofenceCallback = object : GeofenceManager.GeofenceCallback{
             override fun onEnter(id: String) {
-                showToast("enter")
+//                showToast("enter")
                 Log.d(TAG, "onEnter: ")
                 mainActivityViewModel.addGameEnableHeritage(id.toInt())
             }
 
             override fun onDwell(id: String) {
-                showToast("dwell")
+//                showToast("dwell")
                 Log.d(TAG, "onDwell: ")
                 mainActivityViewModel.addVisitedHeritage(id.toInt()){
                     achievementViewModel.loadAchievement()
@@ -76,7 +76,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             }
 
             override fun onExit(id: String) {
-                showToast("exit")
+//                showToast("exit")
                 Log.d(TAG, "onExit: ")
                 mainActivityViewModel.removeGameEnableHeritage(id.toInt())
             }

@@ -75,17 +75,6 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
 
         }
 
-//        lifecycleScope.launch{
-//            boardViewModel.boardDetail.collect{
-//                Log.d(TAG, "initView: $it")
-////                binding.heritagePostTvTitle.text = it.title
-////                binding.heritagePostText.text = it.content
-////                binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
-////                imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
-////                        boardViewModel.loadComments(it.id)
-//            }
-//
-//        }
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN

@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 private const val TAG = "GalleryLauncher"
 class GalleryLauncher(fragment: Fragment) {
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+
     fun launch(){
         if(Build.VERSION.SDK_INT >=Build.VERSION_CODES.TIRAMISU){
             openGallery()
