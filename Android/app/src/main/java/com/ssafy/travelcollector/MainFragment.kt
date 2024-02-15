@@ -34,12 +34,6 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
 
         mainActivity.setNavigationBarStatus(true)
 
-        lifecycleScope.launch{
-            accountViewModel.user.collect{
-                Log.d(TAG, "onViewCreated: $it")
-            }
-        }
-
         initView()
         initAdapter()
     }
@@ -66,6 +60,8 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
                                 mainActivityViewModel.createGeofenceList(
                                     travel.heritageList
                                 )
+                                binding.mainTravelTitle.setTextColor(binding.root.resources.getColor(R.color.orange))
+                                binding.mainTvDuration.setTextColor(binding.root.resources.getColor(R.color.orange))
                                 setMyTravel(travel)
                                 binding.mainCurTravelView.setOnClickListener {
                                     travelViewModel.apply {
@@ -88,7 +84,17 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
                     travelViewModel.userTravelList.collect{lst->
                         if(travelViewModel.onGoingTravel.value.id == -1 && lst.isNotEmpty()){
                             val first = lst[0]
+                            binding.mainTravelTitle.setTextColor(binding.root.resources.getColor(R.color.black))
+                            binding.mainTvDuration.setTextColor(binding.root.resources.getColor(R.color.black))
                             setMyTravel(first)
+                            binding.mainCurTravelView.setOnClickListener{
+                                travelViewModel.apply {
+                                    setTravelPlanHeritageList(first.heritageList)
+                                    setUserTravel(first)
+                                    setUserTravelId(first.id)
+                                    findNavController().navigate(R.id.travelPlanFragment)
+                                }
+                            }
                         }
                     }
                 }
@@ -101,7 +107,17 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
                             && travelViewModel.userTravelList.value.isEmpty()){
                             if(lst.isNotEmpty()){
                                 val travel = lst[Random.nextInt(lst.size)]
+                                binding.mainTravelTitle.setTextColor(binding.root.resources.getColor(R.color.black))
+                                binding.mainTvDuration.setTextColor(binding.root.resources.getColor(R.color.black))
                                 setMyTravel(travel)
+                                binding.mainCurTravelView.setOnClickListener{
+                                    travelViewModel.apply {
+                                        setTravelPlanHeritageList(travel.heritageList)
+                                        setUserTravel(travel)
+                                        setUserTravelId(travel.id)
+                                        findNavController().navigate(R.id.travelPastFragment)
+                                    }
+                                }
                             }else{
                                 binding.mainCurTravelView.visibility = View.GONE
                                 binding.mainTvAltText.visibility = View.VISIBLE
