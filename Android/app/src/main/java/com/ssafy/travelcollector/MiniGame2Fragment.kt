@@ -112,6 +112,16 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                     if (count == 2){
                         year_start = era["통일신라"]!!.get(0)
                         year_end = era["통일신라"]!!.get(1)
+                        if (ccceName.contains("초기") || ccceName.contains("전기")) {
+                            year_end = era["통일신라"]!!.get(0) + 100
+                        }
+                        if (ccceName.contains("말기") || ccceName.contains("후기")) {
+                            year_start = era["통일신라"]!!.get(1) - 100
+                        }
+                        if (ccceName.contains("중기") || ccceName.contains("중엽")) {
+                            year_start = era["통일신라"]!!.get(0) + 100
+                            year_end = era["통일신라"]!!.get(1) - 100
+                        }
                     } else if (count > 2){
                         for (i in era.keys) {
                             if (i == "신라") continue
@@ -129,6 +139,16 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                     if (count == 2){
                         year_start = era["후삼국"]!!.get(0)
                         year_end = era["후삼국"]!!.get(1)
+                        if (ccceName.contains("초기") || ccceName.contains("전기")) {
+                            year_end = era["후삼국"]!!.get(0) + 100
+                        }
+                        if (ccceName.contains("말기") || ccceName.contains("후기")) {
+                            year_start = era["후삼국"]!!.get(1) - 100
+                        }
+                        if (ccceName.contains("중기") || ccceName.contains("중엽")) {
+                            year_start = era["후삼국"]!!.get(0) + 100
+                            year_end = era["후삼국"]!!.get(1) - 100
+                        }
                     } else if (count > 2){
                         for (i in era.keys) {
                             if (i == "삼국") continue
