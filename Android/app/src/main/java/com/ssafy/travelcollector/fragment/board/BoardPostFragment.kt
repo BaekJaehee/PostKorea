@@ -20,6 +20,7 @@ import com.ssafy.travelcollector.adapter.ImageSliderAdapter
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentHeritagePostBinding
 import com.ssafy.travelcollector.dto.Comment
+import com.ssafy.travelcollector.dto.User
 import com.ssafy.travelcollector.util.TimeConverter
 import kotlinx.coroutines.launch
 import retrofit2.http.Url
@@ -53,26 +54,29 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         binding.heritagePostVp2Images.adapter = imageAdapter
 
         lifecycleScope.launch{
-            launch {
-                boardViewModel.loadDetailBoard()
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    boardViewModel.loadDetailBoard()
 
-                boardViewModel.boardDetail.collect{
-                    binding.heritagePostTvTitle.text = it.title
-                    binding.heritagePostText.text = it.content
-                    binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
-                    imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
-                    boardViewModel.setComments(ArrayList(it.comments))
+                    boardViewModel.boardDetail.collect{
+                        binding.heritagePostTvTitle.text = it.title
+                        binding.heritagePostText.text = it.content
+                        binding.heritagePostTvDay.text = TimeConverter.timeMilliToDateString(it.date)
+                        imageAdapter.submitList(it.images.map { Uri.parse(it.url)  })
+                        boardViewModel.setComments(ArrayList(it.comments))
+                    }
+                }
+                launch {
+                    boardViewModel.writer.collect{
+                        if(it.memberEmail!=""){
+                            Glide.with(requireContext())
+                                .load(it.profileUrl)
+                                .fallback(R.drawable.profile)
+                                .into(binding.heritagePostProfileImg)
+                        }
+                    }
                 }
             }
-            launch {
-                boardViewModel.writer.collect{
-                    Glide.with(requireContext())
-                        .load(it.profileUrl)
-                        .fallback(R.drawable.profile)
-                        .into(binding.heritagePostProfileImg)
-                }
-            }
-
         }
 
 
@@ -133,5 +137,9 @@ class BoardPostFragment : BaseFragment<FragmentHeritagePostBinding>(FragmentHeri
         }
         binding.heritagePostEtComment.setText("")
     }
-    
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        boardViewModel.setWriter(User())
+    }
 }

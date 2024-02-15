@@ -41,7 +41,6 @@ class BoardViewModel: ViewModel() {
     private val _postingId = MutableStateFlow(-1)
     val postingId = _postingId.asStateFlow()
     fun setCurPostingId(id: Int){
-        Log.d(TAG, "setCurPostingId: adfd")
         _postingId.update { id }}
 
     fun postBoard(title: String, content: String, images: ArrayList<MultipartBody.Part>, tags: List<String>){
