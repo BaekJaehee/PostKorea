@@ -321,9 +321,11 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
         }
 
-        val temp = (15..28).toMutableList()
-        temp.shuffle()
-        storeViewModel.purchaseProduct(temp[0]){
+        var temp = storeViewModel.ownList.value.toMutableList()
+        temp = temp.filter {
+            it.date == null
+        }.toMutableList()
+        storeViewModel.purchaseProduct(temp[0].id){
             accountViewModel.getInfo(it)
         }
 
