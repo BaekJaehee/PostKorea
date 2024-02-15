@@ -148,6 +148,16 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
                             if (ccceName.contains(i)){
                                 year_start = era[i]?.get(0)
                                 year_end = era[i]?.get(1)
+                                if (ccceName.contains("초기") || ccceName.contains("전기")) {
+                                    year_end = era[i]!!.get(0) + 100
+                                }
+                                if (ccceName.contains("말기") || ccceName.contains("후기")) {
+                                    year_start = era[i]!!.get(1) - 100
+                                }
+                                if (ccceName.contains("중기") || ccceName.contains("중엽")) {
+                                    year_start = era[i]!!.get(0) + 100
+                                    year_end = era[i]!!.get(1) - 100
+                                }
                             }
                         }
                     }
