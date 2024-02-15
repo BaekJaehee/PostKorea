@@ -50,18 +50,23 @@ class TravelViewModel: ViewModel() {
         val heritageIdList = newTravel.heritageList.map { it.id }
 
         viewModelScope.launch{
-            RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
-                token = AccountViewModel.ACCESS_TOKEN,
-                travelId = withContext(Dispatchers.IO){
-                    RetrofitUtil.TRAVEL_SERVICE.planTravel(
-                        AccountViewModel.ACCESS_TOKEN, newTravel
-                    ).body()!!.planId
-                },
-                travelList = heritageIdList
-            )
+            val res = withContext(Dispatchers.IO){
+                RetrofitUtil.TRAVEL_SERVICE.addHeritageListToTravelPlan(
+                    token = AccountViewModel.ACCESS_TOKEN,
+                    travelId = withContext(Dispatchers.IO){
+                        RetrofitUtil.TRAVEL_SERVICE.planTravel(
+                            AccountViewModel.ACCESS_TOKEN, newTravel
+                        ).body()!!.planId
+                    },
+                    travelList = heritageIdList
+                )
+            }
+            if(res.code()/100 == 2){
+                loadUserTravelList()
+                loadOnGoingTravel()
+            }
         }
-        loadUserTravelList()
-        loadOnGoingTravel()
+
     }
 
     fun updateTravel(newTravel: TravelWithHeritageList){
@@ -136,22 +141,27 @@ class TravelViewModel: ViewModel() {
     fun loadOnGoingTravel(){
         viewModelScope.launch {
             val ongoing = withContext(Dispatchers.IO){RetrofitUtil.TRAVEL_SERVICE.getOngoingTravelList(AccountViewModel.ACCESS_TOKEN)}
-            if(ongoing.code()/100 == 2 && ongoing.body()!!.isNotEmpty()){
-                val res = ongoing.body()!![0]
-                val travel = TravelWithHeritageList(
-                    id = res.planId,
-                    name = res.name,
-                    startDate = res.startDate,
-                    endDate = res.endDate,
-                    condition = res.condition,
-                    heritageList = ArrayList(
-                        withContext(Dispatchers.IO){
-                            RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
-                                AccountViewModel.ACCESS_TOKEN, res.planId
-                            ).body()!!
-                        })
-                )
-                _onGoingTravel.update { travel }
+            if(ongoing.code()/100 == 2){
+                if(ongoing.body()!!.isNotEmpty()){
+                    val res = ongoing.body()!![0]
+                    val travel = TravelWithHeritageList(
+                        id = res.planId,
+                        name = res.name,
+                        startDate = res.startDate,
+                        endDate = res.endDate,
+                        condition = res.condition,
+                        heritageList = ArrayList(
+                            withContext(Dispatchers.IO){
+                                RetrofitUtil.TRAVEL_SERVICE.getHeritageListOfTravel(
+                                    AccountViewModel.ACCESS_TOKEN, res.planId
+                                ).body()!!
+                            })
+                    )
+                    _onGoingTravel.update { travel }
+                }else{
+                    _onGoingTravel.update { TravelWithHeritageList()}
+                }
+
             }
         }
     }
@@ -164,7 +174,8 @@ class TravelViewModel: ViewModel() {
                 )
             }
             if(res.code()/100==2){
-                loadOnGoingTravel()
+                if(onGoingTravel.value.id == userTravelId.value)
+                    _onGoingTravel.update { TravelWithHeritageList() }
                 loadUserTravelList()
             }else{
                 Log.d(TAG, "deleteTravel: ${res}")

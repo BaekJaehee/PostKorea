@@ -47,24 +47,45 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
                        .fitCenter()
                        .into(binding.culturalAssetDetailIv)
                    binding.culturalAssetDetailTvDescription.text = it.content
-                   if(it.gameEnable){
-                       mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.MiniGame))
+//                   if(it.gameEnable){
+//                       mainActivityViewModel.addDetailState(arrayListOf(DetailStateEnum.MiniGame))
+//                   }
+                   if(mainActivityViewModel.gameEnableList.value.contains(it.id)){
+                       binding.culturalAssetMiniGames.visibility = View.VISIBLE
+                       binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
+                   }else if(mainActivityViewModel.detailState.value.contains(DetailStateEnum.AddToTravel)
+                       && !travelViewModel.travelPlanHeritageList.value.contains(it)){
+                       binding.culturalAssetMiniGames.visibility = View.GONE
+                       binding.culturalAssetDetailBtnAddToTravel.visibility = View.VISIBLE
+                   }else{
+                       binding.culturalAssetMiniGames.visibility = View.GONE
+                       binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
                    }
                 }
             }
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    mainActivityViewModel.detailState.collect{
-                        if(it.contains(DetailStateEnum.MiniGame)){
-                            binding.culturalAssetDetailBtnGame.visibility = View.VISIBLE
-                            binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
-                        }else if(it.contains(DetailStateEnum.AddToTravel)){
-                            binding.culturalAssetDetailBtnGame.visibility = View.GONE
-                            binding.culturalAssetDetailBtnAddToTravel.visibility = View.VISIBLE
-                        }
-                    }
-                }
-            }
+//            launch {
+//                repeatOnLifecycle(Lifecycle.State.STARTED){
+////                    mainActivityViewModel.gameEnableList.collect{
+////                        if(it.contains(heritageViewModel.curHeritage.value.id)){
+////                            binding.culturalAssetMiniGames.visibility = View.VISIBLE
+////                            binding.culturalAssetDetailBtnAddToTravel.visibility = View.GONE
+////                        }else{
+////                            binding.culturalAssetMiniGames.visibility = View.GONE
+////                        }
+////                    }
+//                    mainActivityViewModel.detailState.collect{
+//                        if(it.contains(DetailStateEnum.MiniGame)
+//                            && mainActivityViewModel.gameEnableList.value.contains(heritageViewModel.curHeritage.value.id)
+//                            ){
+//
+//                        }else if(it.contains(DetailStateEnum.AddToTravel)
+//                            && ){
+//                            binding.culturalAssetMiniGames.visibility = View.GONE
+//                            binding.culturalAssetDetailBtnAddToTravel.visibility = View.VISIBLE
+//                        }
+//                    }
+//                }
+//            }
         }
 
         binding.culturalAssetDetailBtnAddToTravel.setOnClickListener {
@@ -95,8 +116,8 @@ class CulturalAssetDetailFragment : BaseFragment<FragmentCulturalAssetDetailBind
             ))
             findNavController().navigate(R.id.boardListFragment)
         }
-
     }
+
 
     private fun kakaoNavi(){
         if (NaviClient.instance.isKakaoNaviInstalled(requireContext())) {

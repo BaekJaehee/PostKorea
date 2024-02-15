@@ -59,14 +59,19 @@ class MainFragment : BaseFragment<FragmentMainBinding> (FragmentMainBinding::bin
             }
 
             launch {
-                travelViewModel.onGoingTravel.collect{ travel ->
-                    if(travel.id!=-1){
-                        mainActivityViewModel.createGeofenceList(
-                            travel.heritageList
-                        )
-                        setMyTravel(travel)
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    launch {
+                        travelViewModel.onGoingTravel.collect{ travel ->
+                            if(travel.id!=-1){
+                                mainActivityViewModel.createGeofenceList(
+                                    travel.heritageList
+                                )
+                                setMyTravel(travel)
+                            }
+                        }
                     }
                 }
+
             }
 
             launch {
