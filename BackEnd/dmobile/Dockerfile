@@ -2,5 +2,8 @@ FROM openjdk:17-jdk-alpine
 VOLUME /tmp
 COPY ./build/libs/dmobile-0.0.1-SNAPSHOT.jar /app.jar
 ENV JAVA_OPTS=""
+ENV DB_PASSWORD="0125"
+ENV AWS_ACCESS_KEY_ID="AKIAU6GDYJBHU62CFVA7"
+ENV AWS_SECRET_ACCESS_KEY="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"
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
