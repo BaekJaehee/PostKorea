@@ -1,7 +1,7 @@
 package com.ssafy.dmobile.theme.service;
 
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
+import com.ssafy.dmobile.common.exception.CustomException;
+import com.ssafy.dmobile.common.exception.ExceptionType;
 import com.ssafy.dmobile.relic.entity.DetailData;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import com.ssafy.dmobile.theme.dto.RelicDetailDTO;

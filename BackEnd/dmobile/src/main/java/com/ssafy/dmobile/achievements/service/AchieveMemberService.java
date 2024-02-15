@@ -9,8 +9,6 @@ import com.ssafy.dmobile.achievements.entity.visit.dto.MemberAchieveResponseDto;
 import com.ssafy.dmobile.achievements.repository.AchieveMemberRepository;
 import com.ssafy.dmobile.achievements.repository.AchieveRepository;
 import com.ssafy.dmobile.achievements.repository.MemberRelicRepository;
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.relic.repository.DetailDataRepository;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import com.ssafy.dmobile.achievements.entity.achieve.Achieve;
 import com.ssafy.dmobile.achievements.entity.achieve.AchieveMember;
 import com.ssafy.dmobile.achievements.service.AchieveMemberService;
 import com.ssafy.dmobile.member.service.MemberService;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import com.ssafy.dmobile.common.utils.AuthTokensGenerator;
 import com.ssafy.dmobile.achievements.entity.visit.MemberRelic;
 import com.ssafy.dmobile.achievements.entity.visit.dto.MemberAchieveResponseDto;
 import com.ssafy.dmobile.achievements.entity.visit.dto.MemberRelicResponseDto;

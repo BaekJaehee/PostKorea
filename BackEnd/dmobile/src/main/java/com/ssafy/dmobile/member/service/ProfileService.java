@@ -1,26 +1,19 @@
 package com.ssafy.dmobile.member.service;
 
-import com.ssafy.dmobile.Board.service.S3Service;
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
+import com.ssafy.dmobile.board.service.S3Service;
+import com.ssafy.dmobile.common.exception.CustomException;
+import com.ssafy.dmobile.common.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 @RequiredArgsConstructor

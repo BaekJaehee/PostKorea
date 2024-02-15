@@ -4,8 +4,8 @@ import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.entity.request.*;
 import com.ssafy.dmobile.member.entity.response.MemberResponseDto;
 import com.ssafy.dmobile.member.service.MemberService;
-import com.ssafy.dmobile.utils.AuthTokenDto;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import com.ssafy.dmobile.common.utils.AuthTokenDto;
+import com.ssafy.dmobile.common.utils.AuthTokensGenerator;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

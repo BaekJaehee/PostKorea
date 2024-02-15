@@ -2,7 +2,7 @@ package com.ssafy.dmobile.member.controller;
 
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.member.service.ProfileService;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import com.ssafy.dmobile.common.utils.AuthTokensGenerator;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

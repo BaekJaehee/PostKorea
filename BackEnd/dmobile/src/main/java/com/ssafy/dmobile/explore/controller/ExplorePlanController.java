@@ -1,23 +1,20 @@
 package com.ssafy.dmobile.explore.controller;
 
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
+import com.ssafy.dmobile.common.exception.CustomException;
+import com.ssafy.dmobile.common.exception.ExceptionType;
 import com.ssafy.dmobile.explore.entity.ExplorePlan;
 import com.ssafy.dmobile.explore.entity.dto.ExplorePlanDto;
 import com.ssafy.dmobile.explore.service.ExplorePlanService;
 import com.ssafy.dmobile.explore.service.RelicExplorePlanService;
 import com.ssafy.dmobile.relic.entity.DetailData;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import com.ssafy.dmobile.common.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController

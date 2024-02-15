@@ -4,8 +4,8 @@ import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.oauth.service.params.OAuthLoginParams;
 import com.ssafy.dmobile.oauth.service.response.OAuthInfoResponse;
-import com.ssafy.dmobile.utils.AuthTokenDto;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import com.ssafy.dmobile.common.utils.AuthTokenDto;
+import com.ssafy.dmobile.common.utils.AuthTokensGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.ssafy.dmobile.shop.controller;
 
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
+import com.ssafy.dmobile.common.exception.CustomException;
+import com.ssafy.dmobile.common.exception.ExceptionType;
 import com.ssafy.dmobile.member.entity.Member;
 import com.ssafy.dmobile.member.repository.MemberRepository;
 import com.ssafy.dmobile.shop.entity.dto.ShopMemberDto;
@@ -14,7 +14,7 @@ import com.ssafy.dmobile.shop.repository.ShopRepository;
 import com.ssafy.dmobile.member.service.MemberService;
 import com.ssafy.dmobile.shop.service.ShopMemberService;
 import com.ssafy.dmobile.shop.service.ShopService;
-import com.ssafy.dmobile.utils.AuthTokensGenerator;
+import com.ssafy.dmobile.common.utils.AuthTokensGenerator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.ssafy.dmobile.explore.service;
 
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
+import com.ssafy.dmobile.common.exception.CustomException;
+import com.ssafy.dmobile.common.exception.ExceptionType;
 import com.ssafy.dmobile.explore.entity.RelicExplorePlan;
 import com.ssafy.dmobile.explore.entity.RelicExplorePlanKey;
 import com.ssafy.dmobile.explore.repository.ExplorePlanRepository;

@@ -1,7 +1,7 @@
 package com.ssafy.dmobile.achievements.entity.mapper;
 
-import com.ssafy.dmobile.exception.CustomException;
-import com.ssafy.dmobile.exception.ExceptionType;
+import com.ssafy.dmobile.common.exception.CustomException;
+import com.ssafy.dmobile.common.exception.ExceptionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

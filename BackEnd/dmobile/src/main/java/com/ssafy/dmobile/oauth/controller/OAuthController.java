@@ -3,7 +3,7 @@ package com.ssafy.dmobile.oauth.controller;
 import com.ssafy.dmobile.oauth.service.OAuthLoginService;
 import com.ssafy.dmobile.oauth.service.params.KakaoLoginParams;
 import com.ssafy.dmobile.oauth.service.params.NaverLoginParams;
-import com.ssafy.dmobile.utils.AuthTokenDto;
+import com.ssafy.dmobile.common.utils.AuthTokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
