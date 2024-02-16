@@ -19,6 +19,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.kakao.sdk.common.KakaoSdk
 import com.navercorp.nid.NaverIdLoginSDK
+import com.ssafy.travelcollector.BuildConfig
 import com.ssafy.travelcollector.config.geofence.GeofenceBroadcastReceiver
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -30,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 import java.util.prefs.Preferences
+
 
 
 private const val TAG = "ApplicationClass"
@@ -61,6 +63,8 @@ class ApplicationClass : Application() {
     override fun onCreate() {
         super.onCreate()
 
+
+        
         TedPermission.create()
             .setPermissionListener(object: PermissionListener{
                 override fun onPermissionGranted() {
@@ -78,10 +82,8 @@ class ApplicationClass : Application() {
                 android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
             ).check()
 
-
-
-        NaverIdLoginSDK.initialize(applicationContext, NAVER_CLIENT_ID, NAVER_CLIENT_SECRET, NAVER_CLIENT_NAME)
-        KakaoSdk.init(applicationContext, KAKAO_APP_KEY)
+        NaverIdLoginSDK.initialize(applicationContext, BuildConfig.NAVER_CLIENT_ID, BuildConfig.NAVER_CLIENT_SECRET, BuildConfig.NAVER_CLIENT_NAME)
+        KakaoSdk.init(applicationContext, BuildConfig.KAKAO_APP_KEY)
 
         retrofit = Retrofit.Builder()
             .baseUrl(SERVER_URL)
@@ -114,11 +116,6 @@ class ApplicationClass : Application() {
     }
 
     companion object{
-        const val NAVER_CLIENT_ID = "ISnINdg5vxbmmrhbZ2rJ"
-        const val NAVER_CLIENT_SECRET = "Zc1XDYhfgo"
-        const val NAVER_CLIENT_NAME = "dMoblie"
-        const val KAKAO_APP_KEY = "6bc61f45686049a50d5900bd5a6c330b"
-
         const val SERVER_URL = "http://i10d102.p.ssafy.io:8080/"
 
         lateinit var retrofit: Retrofit
