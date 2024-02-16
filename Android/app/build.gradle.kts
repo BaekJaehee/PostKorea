@@ -1,13 +1,19 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+val properties = Properties()
+properties.load(project.rootProject.file("local.properties").inputStream())
 
 android {
     namespace = "com.ssafy.travelcollector"
     compileSdk = 33
 
     defaultConfig {
+
         applicationId = "com.ssafy.travelcollector"
         minSdk = 24
         targetSdk = 33
@@ -15,6 +21,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "KAKAO_APP_KEY", properties.getProperty("kakao_api_key"))
+        buildConfigField("String", "NAVER_CLIENT_ID", properties.getProperty("naver_client_id"))
+        buildConfigField("String", "NAVER_CLIENT_SECRET", properties.getProperty("naver_client_secret"))
+        buildConfigField("String", "NAVER_CLIENT_NAME", properties.getProperty("naver_client_name"))
     }
 
     buildTypes {
@@ -36,6 +47,10 @@ android {
 
     viewBinding{
         enable = true
+    }
+
+    buildFeatures{
+        buildConfig = true
     }
 }
 

@@ -323,19 +323,15 @@ class MiniGame2Fragment : BaseFragment<FragmentMiniGame2Binding>(FragmentMiniGam
             accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
         }
 
-//        var temp = storeViewModel.ownList.value.toMutableList()
-//        temp = temp.filter {
-//            it.date == null
-//        }.toMutableList()
-//        if (!temp.isEmpty()) {
-//            storeViewModel.purchaseProduct(temp[0].id){
-//                accountViewModel.getInfo(it)
-//            }
-//        }
-
-           storeViewModel.purchaseProduct(16){
-                storeViewModel.loadCollection()
+        var temp = storeViewModel.ownList.value.toMutableList()
+        temp = temp.filter {
+            it.date == null && it.id > 14
+        }.toMutableList()
+        if (!temp.isEmpty()) {
+            storeViewModel.purchaseProduct(temp[0].id){
+                accountViewModel.getInfo(it)
             }
+        }
 
         isEnd = true
     }
