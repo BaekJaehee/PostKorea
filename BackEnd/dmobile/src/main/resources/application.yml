@@ -39,6 +39,7 @@ jwt:
   secret-key: ${JWT_SECRET_KEY}
 
 file:
+  upload-dir: C:\Users\SSAFY\Documents\uploads
   max-file-size: 5MB
 
 oauth:
