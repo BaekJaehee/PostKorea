@@ -33,8 +33,6 @@ import java.util.concurrent.TimeUnit
 import java.util.prefs.Preferences
 
 
-
-private const val TAG = "ApplicationClass"
 class ApplicationClass : Application() {
 
     val gson: Gson = GsonBuilder().setLenient().create()
