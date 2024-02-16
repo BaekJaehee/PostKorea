@@ -60,11 +60,12 @@ class TravelListFragment : BaseFragment<FragmentTravelListBinding> (FragmentTrav
         }
 
         lifecycleScope.launch {
+            launch {
+                travelViewModel.loadUserTravelList()
+                travelViewModel.loadOnGoingTravel()
+            }
+
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                launch {
-                    travelViewModel.loadUserTravelList()
-                    travelViewModel.loadOnGoingTravel()
-                }
                 launch {
                     travelViewModel.onGoingTravel.collect{
                             travel->
