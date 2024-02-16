@@ -43,16 +43,6 @@ class ApplicationClass : Application() {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-//    val errorInterceptor = Interceptor{
-//        val request = it.request()
-//        val response = it.proceed(request)
-//        if(!response.isSuccessful){
-//            Toast.makeText(applicationContext, "통신 오류", Toast.LENGTH_SHORT).show()
-//            Log.d(TAG, "abcd: $response")
-//        }
-//        response
-//    }
-
     val okHttpClient = OkHttpClient.Builder()
         .readTimeout(5000, TimeUnit.MILLISECONDS)
         .connectTimeout(5000, TimeUnit.MILLISECONDS)
