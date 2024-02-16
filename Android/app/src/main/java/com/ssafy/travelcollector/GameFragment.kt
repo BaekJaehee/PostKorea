@@ -5,6 +5,7 @@ import android.view.View
 import com.ssafy.travelcollector.config.BaseFragment
 import com.ssafy.travelcollector.databinding.FragmentGameBinding
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -182,6 +183,7 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
             }
         }
         binding.gameTvNext.text = "다음"
+        showToast("${heritageList!![currentStage-1].name}")
         selectedOption = null
         isSubmit = true
     }
@@ -239,18 +241,16 @@ class GameFragment : BaseFragment<FragmentGameBinding>(FragmentGameBinding::bind
                             heritageViewModel.editPoints(correctAnswers*10){
                                 accountViewModel.getInfo(AccountViewModel.ACCESS_TOKEN)
                             }
-//                            var temp = storeViewModel.ownList.value.toMutableList()
-//                            temp = temp.filter {
-//                                it.date == null
-//                            }.toMutableList()
-//                            if (!temp.isEmpty()) {
-//                                storeViewModel.purchaseProduct(temp[0].id){
-//                                    accountViewModel.getInfo(it)
-//                                }
-//                            }
-                            storeViewModel.purchaseProduct(15){
-                                    storeViewModel.loadCollection()
+                            var temp = storeViewModel.ownList.value.toMutableList()
+                            temp = temp.filter {
+                                it.date == null && it.id > 14
+                            }.toMutableList()
+                            if (!temp.isEmpty()) {
+                                storeViewModel.purchaseProduct(temp[0].id){
+                                    accountViewModel.getInfo(it)
                                 }
+                            }
+
                         } else {
                             if (isSubmit){
                                 end()
