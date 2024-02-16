@@ -1,20 +1,8 @@
-#server:
-#  forward-headers-strategy: framework
-#  port: 443
-#  ssl:
-#    enabled: true
-#    key-store: classpath:ssl/certificate.p12
-#    key-store-password: "0125"
-#    key-store-type: PKCS12
 spring:
   datasource:
-    url: jdbc:mariadb://i10d102.p.ssafy.io:3306/project
-    username: d102
-    password: "0125"
-    # 개인용 데이터베이스 환경에 맞추어 셋업 필요
-#    url: jdbc:mariadb://localhost:3307/test
-#    username: root
-#    password: "0000"
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
 #    hibernate:
@@ -26,9 +14,9 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ukyoung147@gmail.com
+    username: ${GMAIL_USERNAME}
     # password는 앱 비밀번호 값이며 기존 구글 비밀번호와는 다른 값임
-    password: vfkcpxxqwlyrldll
+    password: ${GMAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -48,20 +36,19 @@ logging.level:
 #  org.hibernate.type: trace
 
 jwt:
-  secret-key: a3f62325a07a3194531c43a4fb97e85d8c635959ff92bf833bd86a98a5c2cbe02a3f082a5058712221c8e7cac9ad5143ed3f6d3bce64ef052b2df2bd95a0132c
+  secret-key: ${JWT_SECRET_KEY}
 
 file:
-  upload-dir: C:\Users\SSAFY\Documents\uploads
   max-file-size: 5MB
 
 oauth:
   kakao:
-    client-id: 4748a59e12003074b3681b074013b84d
+    client-id: ${KAKAO_CLIENT_ID}
     url:
       auth: https://kauth.kakao.com
       api: https://kapi.kakao.com
   naver:
-    client-id: ISnINdg5vxbmmrhbZ2rJ
+    client-id: ${NAVER_CLIENT_ID}
     url:
       auth: https://nid.naver.com
       api: https://openapi.naver.com
@@ -69,8 +56,8 @@ oauth:
 cloud:
   aws:
     credentials:
-      access-key: "AKIAU6GDYJBHU62CFVA7"
-      secret-key: "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"
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
     region:
       static: ap-northeast-2
 
@@ -80,7 +67,6 @@ app:
 
 springdoc:
   packages-to-scan: com.ssafy.dmobile
-  # consumes: request, produces: response
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
@@ -89,7 +75,6 @@ springdoc:
     operations-sorter: method
   api-docs:
     path: /api-docs/json
-#    path: http://i10d102.p.ssafy.io:8080/api-docs/json/swagger-config
     groups:
       enabled: true
   cache:
