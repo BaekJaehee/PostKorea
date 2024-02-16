@@ -2,24 +2,16 @@ package com.ssafy.travelcollector.customView
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.marginLeft
-import androidx.core.view.size
 import com.bumptech.glide.Glide
 import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.databinding.OverlapImagesBinding
-import com.ssafy.travelcollector.dto.TravelWithHeritageList
 import de.hdodenhof.circleimageview.CircleImageView
-import okhttp3.internal.wait
 
-private const val TAG = "OverlapImages"
+
 class OverlapImages constructor(context: Context, attrs: AttributeSet) :  ConstraintLayout(context, attrs){
 
     private val binding: OverlapImagesBinding by lazy{
