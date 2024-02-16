@@ -11,7 +11,6 @@ import com.ssafy.travelcollector.R
 import com.ssafy.travelcollector.databinding.OverlapImagesBinding
 import de.hdodenhof.circleimageview.CircleImageView
 
-
 class OverlapImages constructor(context: Context, attrs: AttributeSet) :  ConstraintLayout(context, attrs){
 
     private val binding: OverlapImagesBinding by lazy{
