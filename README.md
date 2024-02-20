@@ -170,3 +170,174 @@
 > 
 
 ![api 명세서.png](/images/API.png)
+
+## 저작권 표시
+> 이 프로젝트는 다음 저작물들을 이용하였습니다.
+
+출처 1:
+- 제목: 사람모양 토우
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=2659
+- 라이선스: 공공누리 제1유형
+
+출처 2:
+- 제목: [de39be97] 연천 전곡리 유적 주먹도끼
+- 작성자: 한국학중앙연구원·유남해
+- 출처 링크: https://encykorea.aks.ac.kr/Article/E0049243
+- 라이선스: 공공누리 제1유형
+
+출처 3:
+- 제목: 금동관장식
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=514
+- 라이선스: 공공누리 제1유형
+
+출처 4:
+- 제목: 한국식 동검
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=4617
+- 라이선스: 공공누리 제1유형
+
+출처 5:
+- 제목: 굽다리접시
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=82600
+- 라이선스: 공공누리 제1유형
+
+출처 6:
+- 제목: [9f8e95ab] 무예도보통지
+- 작성자: 한국학중앙연구원 
+- 출처 링크: https://encykorea.aks.ac.kr/Article/E0019166
+- 라이선스: 공공누리 제1유형
+
+출처 7:
+- 제목: 금성리 고분군 출토 사곡검
+- 작성자: 국립광주박물관
+- 출처 링크: https://www.emuseum.go.kr/detail?relicId=PS0100100800100037900000
+- 라이선스: 공공누리 제1유형
+
+출처 8:
+- 제목: 월도
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=27934
+- 라이선스: 공공누리 제1유형
+
+출처 9:
+- 제목: 목안
+- 작성자: 서울역사박물관
+- 출처 링크: https://museum.seoul.go.kr/www/relic/RelicView.do?mcsjgbnc=PS01003026001&mcseqno2=00000&cdLanguage=KOR&mcseqno1=010655
+- 라이선스: 공공누리 제1유형
+
+출처 10:
+- 제목: 청자 철화 국화 넝쿨무늬 장구
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=7143
+- 라이선스: 공공누리 제1유형
+
+출처 11:
+- 제목: 돌창
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=200740
+- 라이선스: 공공누리 제1유형
+
+출처 12:
+- 제목: 토제 소탑
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=35816100
+- 라이선스: 공공누리 제1유형
+
+출처 13:
+- 제목: 옹관
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.emuseum.go.kr/detail?relicId=PS0100100102400539200000
+- 라이선스: 공공누리 제1유형
+
+출처 14:
+- 제목: 금동제 널못
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=2654
+- 라이선스: 공공누리 제1유형
+
+출처 15:
+- 제목: 철제 금은입사 사인참사검
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=8203
+- 라이선스: 공공누리 제1유형
+
+출처 16:
+- 제목: 말띠 꾸미개
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=585
+- 라이선스: 공공누리 제1유형
+
+출처 17:
+- 제목: 선각단화쌍조문 금박
+- 작성자: 국립경주문화재연구소
+- 출처 링크: https://nrich.go.kr/gyeongju/displayView.do?menuIdx=500&bbs_idx=43291&display_type=C#link
+- 라이선스: 공공누리 제1유형
+
+출처 18:
+- 제목: 곡옥
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=4431
+- 라이선스: 공공누리 제1유형
+
+출처 19:
+- 제목: 염거화상 탑명동판 탑본
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=333
+- 라이선스: 공공누리 제1유형
+
+출처 20:
+- 제목: 비천무늬 암막새
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=135010
+- 라이선스: 공공누리 제1유형
+
+출처 21:
+- 제목: 보상화무늬 벽돌
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=1895
+- 라이선스: 공공누리 제1유형
+
+출처 22:
+- 제목: 황갈유 굽다리항아리
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=708
+- 라이선스: 공공누리 제1유형
+
+출처 23:
+- 제목: 은팔찌
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=587
+- 라이선스: 공공누리 제1유형
+
+출처 24:
+- 제목: 수레바퀴모양 토기
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=1951
+- 라이선스: 공공누리 제1유형
+
+출처 25:
+- 제목: 사슴뿔모양 잔
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=2106
+- 라이선스: 공공누리 제1유형
+
+출처 26:
+- 제목: 짐승얼굴무늬 기와 거푸집
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=3052
+- 라이선스: 공공누리 제1유형
+
+출처 27:
+- 제목: 유리 구슬 목걸이
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=54730
+- 라이선스: 공공누리 제1유형
+
+출처 28:
+- 제목: 장란형 토기
+- 작성자: 국립중앙박물관
+- 출처 링크: https://www.museum.go.kr/site/main/relic/search/view?relicId=35832151
+- 라이선스: 공공누리 제1유형
